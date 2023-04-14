@@ -48,9 +48,9 @@ assignees: Arman17Babaei
 
 ## تسک‌های نفر اول
 
-  **نام و نام خانوادگی:**
+  **علیرضا ملک حسینی:**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>کامیت نام و شماره دانشجویی در md.README</summary>
 
   <div dir="ltr" align='right'>
 
