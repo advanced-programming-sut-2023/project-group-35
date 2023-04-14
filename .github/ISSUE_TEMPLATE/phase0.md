@@ -62,9 +62,9 @@ assignees: Arman17Babaei
 
 ## تسک‌های نفر دوم
 
-  **نام و نام خانوادگی:**
+  **امیرهمایون شریفی زاده:**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>کامیت نام و شماره دانشجویی</summary>
 
   <div dir="ltr" align='right'>
 
