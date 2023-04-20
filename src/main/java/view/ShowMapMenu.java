@@ -3,7 +3,7 @@ import main.java.model.*;
 
 import java.util.regex.Matcher;
 
-public class ShowMapMenu {
+public class ShowMapMenu extends Menu{
     private Map map;
     private int x;
     private int y;

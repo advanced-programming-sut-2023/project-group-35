@@ -1,10 +1,15 @@
 package main.java.controller;
 
-import main.java.model.Map;
+import main.java.model.*;
 import main.java.Enum.*;
 
 public class MapController {
+    //private Game game;
     private Map map;
+
+    public MapController(Map map) {
+        this.map = map;
+    }
 
     public int getSizeOfMap() {
         return 0;

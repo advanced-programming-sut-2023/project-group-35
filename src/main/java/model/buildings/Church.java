@@ -1,6 +1,6 @@
 package main.java.model.buildings;
 import main.java.Enum.*;
-import main.java.controller.GameController;
+import main.java.controller.*;
 import main.java.model.Reign;
 
 import java.util.ArrayList;

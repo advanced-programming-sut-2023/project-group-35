@@ -8,6 +8,7 @@ import main.java.view.RegisterAndLoginMenu;
 
 public class UserController {
     private User loggedInUser;
+
     public String checkForQuotation(String text){
         if((text.charAt(0)=='\"') && (text.trim().charAt(text.trim().length() - 1) == '\"'))
             return text.substring(1,text.length()-1);

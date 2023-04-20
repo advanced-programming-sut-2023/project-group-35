@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import main.java.model.Manager;
 
 
-public class RegisterAndLoginMenu {
+public class RegisterAndLoginMenu extends Menu{
     private UserController userController = new UserController();
 
 

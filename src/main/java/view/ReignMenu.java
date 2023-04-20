@@ -5,7 +5,7 @@ import main.java.model.User;
 
 import java.util.regex.Matcher;
 
-public class ReignMenu {
+public class ReignMenu extends Menu{
 
     private String input;
     private Matcher matcher;
