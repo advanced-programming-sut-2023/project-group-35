@@ -57,7 +57,7 @@ public class UserController {
             return "Invalid Email format";
         securityQuestion = RegisterAndLoginMenu.getSafetyQuestion();
         answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
-        User userToBeAdded = new User(userName,password,nickName,email,securityQuestion,answerToSecurity,0);
+        User userToBeAdded = new User(userName,password,nickName,email,securityQuestion,answerToSecurity);
         Manager.addUser(userToBeAdded);
         Manager.fileCreator(userToBeAdded);
         return "Sign up was succesful,we have "+userName+"on board now";

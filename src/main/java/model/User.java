@@ -1,14 +1,15 @@
 package main.java.model;
 
 
-public class User {
+public class User implements Comparable {
     private String userName;
     private String password;
     public String nickName;
     private String email;
     private String securityQuestion;
     private String securityAnswer;
-    public int highscore;
+    public int highScore;
+    public int totalScore;
 
     public String getUserName() {
         return userName;
@@ -59,13 +60,18 @@ public class User {
     }
 
     public User(String userName, String password, String nickName,
-                String email, String securityQuestion, String securityAnswer, int highscore) {
+                String email, String securityQuestion, String securityAnswer) {
         this.userName = userName;
         this.password = password;
         this.nickName = nickName;
         this.email = email;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
-        this.highscore = highscore;
+        this.highScore = 0;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return ((User)o).totalScore -this.totalScore;
     }
 }

@@ -2,7 +2,6 @@ package main.java.view;
 
 import main.java.Enum.*;
 import main.java.controller.UserController;
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -37,9 +36,11 @@ public class RegisterAndLoginMenu extends Menu{
     }
 
     public boolean booleanErrorInCreateUser(String contentText) {
-        if (CommandEnums.getMatcher(contentText, CommandEnums.PASSWORD_USED_IN_LOGIN) == null || CommandEnums.getMatcher(contentText, CommandEnums.USERNAME) == null)
+        if (CommandEnums.getMatcher(contentText, CommandEnums.PASSWORD_USED_IN_LOGIN) == null
+                || CommandEnums.getMatcher(contentText, CommandEnums.USERNAME) == null)
             return false;
-        else if (CommandEnums.getMatcher(contentText, CommandEnums.NICKNAME) == null || CommandEnums.getMatcher(contentText, CommandEnums.EMAIL) == null)
+        else if (CommandEnums.getMatcher(contentText, CommandEnums.NICKNAME) == null
+                || CommandEnums.getMatcher(contentText, CommandEnums.EMAIL) == null)
             return false;
         return true;
     }
