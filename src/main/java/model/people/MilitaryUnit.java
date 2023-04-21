@@ -4,6 +4,7 @@ import Enum.*;
 import model.Reign;
 
 public class MilitaryUnit {
+
     private Reign owner;
     public UnitType unitType;
     private int number;
@@ -41,6 +42,9 @@ public class MilitaryUnit {
         this.hp = hp;
     }
     public void getDamaged(int amountOfDamage){}
+    public Reign getOwner() {
+        return owner;
+    }
 
 
 

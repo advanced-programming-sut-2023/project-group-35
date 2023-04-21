@@ -20,6 +20,9 @@ public class Building {
 
     }
     public void getDamaged(int amountOfDamage){}
+    public Reign getOwner() {
+        return owner;
+    }
 
 
 }

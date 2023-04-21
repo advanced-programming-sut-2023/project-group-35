@@ -11,6 +11,7 @@ public class User implements Comparable {
     private String securityAnswer;
     public int highScore;
     public int totalScore;
+    private Map map;
     private static final ArrayList<User> users = new ArrayList<>();
 
     public User(String userName, String password, String nickName,
@@ -91,6 +92,14 @@ public class User implements Comparable {
 
     public void setSecurityAnswer(String securityAnswer) {
         this.securityAnswer = securityAnswer;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
 
