@@ -1,10 +1,10 @@
-package main.java.model;
+package model;
 
 
-import main.java.model.buildings.Building;
-import main.java.model.people.MilitaryUnit;
-import main.java.model.structures.Structure;
-import main.java.Enum.*;
+import model.buildings.Building;
+import model.people.MilitaryUnit;
+import model.structures.Structure;
+import Enum.*;
 import java.util.ArrayList;
 
 

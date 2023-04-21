@@ -1,6 +1,6 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.*;
+import model.*;
 
 public class ReignController extends GameController{
     public ReignController(Game game) {

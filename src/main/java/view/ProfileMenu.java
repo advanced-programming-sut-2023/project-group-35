@@ -1,7 +1,7 @@
-package main.java.view;
+package view;
 
 import java.util.regex.Matcher;
-import main.java.model.User;
+import model.User;
 public class ProfileMenu extends Menu{
     private User loggedInUser;
     private String input;

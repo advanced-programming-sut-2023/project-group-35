@@ -1,11 +1,10 @@
-package main.java.model.people;
+package model.people;
 
-import main.java.Enum.*;
-
-import javax.swing.plaf.synth.Region;
+import Enum.*;
+import model.Reign;
 
 public class MilitaryUnit {
-    private Region owner;
+    private Reign owner;
     public UnitType unitType;
     private int number;
     private int hp;
@@ -19,7 +18,7 @@ public class MilitaryUnit {
     }
 
 
-    public MilitaryUnit(Region owner, UnitType unitType, int number , int hp) {
+    public MilitaryUnit(Reign owner, UnitType unitType, int number , int hp) {
         this.owner = owner;
         this.unitType = unitType;
         this.number = number;

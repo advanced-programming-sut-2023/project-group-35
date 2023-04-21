@@ -1,10 +1,10 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.*;
-import main.java.model.buildings.*;
+import model.*;
+import model.buildings.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import main.java.Enum.*;
+import Enum.*;
 
 public class GameController {
 

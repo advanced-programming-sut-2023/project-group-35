@@ -1,9 +1,9 @@
-package main.java.model;
+package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import main.java.Enum.*;
-import main.java.model.people.*;
+import Enum.*;
+import model.people.*;
 
 public class Reign {
     private User user;

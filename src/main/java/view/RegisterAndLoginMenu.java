@@ -1,14 +1,16 @@
-package main.java.view;
+package view;
 
-import main.java.Enum.*;
-import main.java.controller.UserController;
+import Enum.*;
+import model.*;
+import controller.UserController;
+
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-import main.java.model.*;
+
 
 
 public class RegisterAndLoginMenu extends Menu{

@@ -1,12 +1,12 @@
-package main.java.model.people;
+package model.people;
 
-import javax.swing.plaf.synth.Region;
-import main.java.Enum.*;
+import Enum.*;
+import model.*;
 public class Assassin extends MilitaryUnit{
 
 
     private boolean isVisible;
-    public Assassin(Region owner, UnitType unitType, int number, int hp) {
+    public Assassin(Reign owner, UnitType unitType, int number, int hp) {
         super(owner, unitType, number, hp);
     }
 

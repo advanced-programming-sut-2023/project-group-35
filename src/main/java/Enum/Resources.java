@@ -1,4 +1,4 @@
-package main.java.Enum;
+package Enum;
 
 public enum Resources {
     WOOD(20 , 18),

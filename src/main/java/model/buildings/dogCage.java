@@ -1,7 +1,7 @@
-package main.java.model.buildings;
+package model.buildings;
 
-import main.java.model.Reign;
-import main.java.Enum.*;
+import model.Reign;
+import Enum.*;
 public class dogCage extends Building{
 
     public dogCage(Reign owner, int hp, BuildingType buildingType) {

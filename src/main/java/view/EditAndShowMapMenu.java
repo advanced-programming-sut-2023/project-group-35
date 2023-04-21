@@ -1,6 +1,6 @@
-package main.java.view;
+package view;
 
-import main.java.controller.*;
+import controller.*;
 
 import java.util.*;
 import java.util.regex.Matcher;

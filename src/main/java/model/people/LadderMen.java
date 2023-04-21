@@ -1,5 +1,5 @@
-package main.java.model.people;
-import main.java.Enum.*;
+package model.people;
+import Enum.*;
 
 import javax.swing.plaf.synth.Region;
 

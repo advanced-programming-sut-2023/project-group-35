@@ -1,7 +1,7 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.Map;
-import main.java.Enum.*;
+import model.Map;
+import Enum.*;
 
 
 public class MapController {

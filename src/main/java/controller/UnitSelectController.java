@@ -1,7 +1,7 @@
-package main.java.controller;
+package controller;
 
-import main.java.Enum.*;
-import main.java.model.*;
+import Enum.*;
+import model.*;
 
 public class UnitSelectController extends GameController{
     public UnitSelectController(Game game) {

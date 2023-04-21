@@ -1,4 +1,4 @@
-package main.java.Enum;
+package Enum;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

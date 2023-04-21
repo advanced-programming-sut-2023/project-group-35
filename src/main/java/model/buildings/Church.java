@@ -1,7 +1,7 @@
-package main.java.model.buildings;
-import main.java.Enum.*;
-import main.java.controller.*;
-import main.java.model.Reign;
+package model.buildings;
+import Enum.*;
+import controller.*;
+import model.Reign;
 
 import java.util.ArrayList;
 

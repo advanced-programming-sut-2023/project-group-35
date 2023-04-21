@@ -1,6 +1,6 @@
-package main.java.model;
+package model;
 
-import main.java.model.buildings.*;
+import model.buildings.*;
 
 import javax.swing.plaf.synth.*;
 import java.util.*;

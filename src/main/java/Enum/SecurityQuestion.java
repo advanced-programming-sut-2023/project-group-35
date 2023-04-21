@@ -1,4 +1,4 @@
-package main.java.Enum;
+package Enum;
 
 public enum SecurityQuestion {
     FATHER_NAME("what is your father name?"),

@@ -1,9 +1,9 @@
-package main.java.model.buildings;
+package model.buildings;
 
-import main.java.model.Reign;
-import main.java.model.people.MilitaryUnit;
-import main.java.Enum.*;
-import main.java.model.people.RangedUnit;
+import model.Reign;
+import model.people.MilitaryUnit;
+import Enum.*;
+import model.people.RangedUnit;
 
 import java.util.ArrayList;
 

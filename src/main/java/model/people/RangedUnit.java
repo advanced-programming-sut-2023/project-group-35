@@ -1,12 +1,13 @@
-package main.java.model.people;
-import main.java.Enum.*;
+package model.people;
 
-import javax.swing.plaf.synth.Region;
+import Enum.*;
+import model.*;
+
 
 public class RangedUnit extends MilitaryUnit{
     private int range;
 
-    public RangedUnit(Region owner, UnitType unitType, int number, int hp, int range) {
+    public RangedUnit(Reign owner, UnitType unitType, int number, int hp, int range) {
         super(owner, unitType, number , hp);
         this.range = range;
     }

@@ -1,5 +1,5 @@
-package main.java.model;
-import main.java.Enum.*;
+package model;
+import Enum.*;
 
 import java.util.ArrayList;
 

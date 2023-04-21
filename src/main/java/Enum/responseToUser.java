@@ -1,4 +1,4 @@
-package main.java.Enum;
+package Enum;
 
 public enum responseToUser {
     // faghat sakhtam shayad asan niaz nabashe

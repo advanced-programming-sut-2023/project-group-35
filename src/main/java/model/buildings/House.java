@@ -1,8 +1,8 @@
-package main.java.model.buildings;
+package model.buildings;
 
-import main.java.Enum.*;
-import main.java.controller.GameController;
-import main.java.model.Reign;
+import Enum.*;
+import controller.GameController;
+import model.Reign;
 
 public class House extends Building{
 

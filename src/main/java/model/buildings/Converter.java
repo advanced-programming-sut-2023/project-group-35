@@ -1,7 +1,7 @@
-package main.java.model.buildings;
+package model.buildings;
 
-import main.java.Enum.*;
-import main.java.model.Reign;
+import Enum.*;
+import model.Reign;
 
 public class Converter extends Building{
     int rate;

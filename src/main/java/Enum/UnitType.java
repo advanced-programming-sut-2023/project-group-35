@@ -1,4 +1,4 @@
-package main.java.Enum;
+package Enum;
 
 public enum UnitType {
     ARCHER(5 , 5, 10 , 10 ,5 , Resources.BOW , BuildingType.building);

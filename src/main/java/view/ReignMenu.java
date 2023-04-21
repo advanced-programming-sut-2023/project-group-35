@@ -1,7 +1,7 @@
-package main.java.view;
+package view;
 
-import main.java.controller.UserController;
-import main.java.model.User;
+import controller.UserController;
+import model.User;
 
 import java.util.regex.Matcher;
 

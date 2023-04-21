@@ -1,10 +1,10 @@
-package main.java.controller;
+package controller;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
-import main.java.model.*;
-import main.java.view.RegisterAndLoginMenu;
+import model.*;
+import view.RegisterAndLoginMenu;
 
 public class UserController {
     private User loggedInUser;
@@ -43,7 +43,7 @@ public class UserController {
             return "There is some field empty!";
         else if(!userName.matches("\\w+"))
             return "Invalid username format!";
-        else if(Manager.getUserByName(userName) != null) {
+        else if(User.getUserByUsername(userName) != null) {
             String suggestedUserName = RegisterAndLoginMenu.suggestNewName(userName);
             userName = suggestedUserName;
         }

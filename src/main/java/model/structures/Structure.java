@@ -1,7 +1,7 @@
-package main.java.model.structures;
+package model.structures;
 
-import main.java.model.people.Engineer;
-import main.java.model.people.MilitaryUnit;
+import model.people.Engineer;
+import model.people.MilitaryUnit;
 
 public class Structure {
     private int hp;

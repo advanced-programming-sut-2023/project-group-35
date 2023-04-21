@@ -1,4 +1,4 @@
-package main.java.Enum;
+package Enum;
 
 public enum Direction {
     up(0 , 1),

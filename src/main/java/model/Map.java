@@ -1,5 +1,6 @@
-package main.java.model;
+package model;
 
+import model.*;
 public class Map {
     public int dimensions;
     Block[][] blocks;

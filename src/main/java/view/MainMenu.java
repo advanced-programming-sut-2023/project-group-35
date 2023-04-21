@@ -1,7 +1,7 @@
-package main.java.view;
+package view;
 
-import main.java.Enum.*;
-import main.java.model.*;
+import Enum.*;
+import model.*;
 
 public class MainMenu extends Menu{
 
@@ -10,7 +10,7 @@ public class MainMenu extends Menu{
         while(true) {
             this.input = scanner.nextLine();
             if((matcher = Menu.getMatcher(input, Commands.MAP_MENU.regex)) != null) {
-                EditAndShowMapMenu mapMenu = new EditAndShowMapMenu()
+                //EditAndShowMapMenu mapMenu = new EditAndShowMapMenu()
             }
         }
 

@@ -1,6 +1,6 @@
-package main.java.model.structures;
+package model.structures;
 
-import main.java.model.people.Engineer;
+import model.people.Engineer;
 
 public class Ladder extends Structure{
     public Ladder(int hp, boolean moving, int speed, Engineer mover) {

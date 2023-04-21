@@ -1,7 +1,7 @@
-package main.java.model.people;
+package model.people;
 
 import java.util.ArrayList;
-import main.java.Enum.*;
+import Enum.*;
 
 import javax.swing.plaf.synth.Region;
 

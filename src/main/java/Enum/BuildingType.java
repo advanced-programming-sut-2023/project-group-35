@@ -1,6 +1,4 @@
-package main.java.Enum;
-
-import java.util.HashMap;
+package Enum;
 
 public enum BuildingType {
     building();

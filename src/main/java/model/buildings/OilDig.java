@@ -1,7 +1,7 @@
-package main.java.model.buildings;
+package model.buildings;
 
-import main.java.model.Reign;
-import main.java.Enum.*;
+import model.Reign;
+import Enum.*;
 public class OilDig extends Building{
     private boolean isBurning;
     public OilDig(Reign owner, int hp, BuildingType buildingType) {
