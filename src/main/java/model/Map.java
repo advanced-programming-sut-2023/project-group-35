@@ -1,8 +1,15 @@
 package main.java.model;
 
-import java.util.ArrayList;
-
 public class Map {
-    private final ArrayList<Block> blocks = new ArrayList<>();
+    public int dimensions;
+    Block[][] blocks;
+
+    //private final ArrayList<Block> blocks = new ArrayList<>();
     User owner;
+
+    public Map(User owner , int dimensions) {
+        this.owner = owner;
+        this.dimensions= dimensions;
+        blocks = new Block[dimensions][dimensions];
+    }
 }

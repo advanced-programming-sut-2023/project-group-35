@@ -1,12 +1,18 @@
 package main.java.view;
 
-import java.util.regex.Matcher;
+import main.java.Enum.*;
+import main.java.model.*;
 
 public class MainMenu extends Menu{
-    private String input;
-    private Matcher matcher;
-    public void run() {
 
+    private User loggedInUser;
+    public void run() {
+        while(true) {
+            this.input = scanner.nextLine();
+            if((matcher = Menu.getMatcher(input, Commands.MAP_MENU.regex)) != null) {
+                EditAndShowMapMenu mapMenu = new EditAndShowMapMenu()
+            }
+        }
 
     }
 }

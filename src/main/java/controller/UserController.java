@@ -51,14 +51,14 @@ public class UserController {
             return "so you got the error...";
         if(passwordConfirm != null && !passwordConfirm.equals(password))
             return "You didn't repeat the password correctly";
-        if(Manager.getUserByEmail(email) != null)
+        if(User.getUserByEmail(email) != null)
             return "Email already exists in Server!";
         else if(!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))
             return "Invalid Email format";
         securityQuestion = RegisterAndLoginMenu.getSafetyQuestion();
         answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
         User userToBeAdded = new User(userName,password,nickName,email,securityQuestion,answerToSecurity);
-        Manager.addUser(userToBeAdded);
+        User.addUser(userToBeAdded);
         Manager.fileCreator(userToBeAdded);
         return "Sign up was succesful,we have "+userName+"on board now";
     }

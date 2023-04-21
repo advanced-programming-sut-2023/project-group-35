@@ -7,7 +7,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
-import main.java.model.Manager;
+
+import main.java.model.*;
 
 
 public class RegisterAndLoginMenu extends Menu{
@@ -141,10 +142,10 @@ public class RegisterAndLoginMenu extends Menu{
     public static String suggestNewName(String oldUserName) {
         String string;
         Scanner scn = new Scanner(System.in);
-        System.out.println("Your username exists,our suggested user name is: " + oldUserName + Manager.getSizeOfUser() + "if you agree print ok else enter a new name.");
+        System.out.println("Your username exists,our suggested user name is: " + oldUserName + User.getSizeOfUser() + "if you agree print ok else enter a new name.");
         string = scn.nextLine();
         if (string.trim().equals("ok"))
-            return oldUserName + Manager.getSizeOfUser();
+            return oldUserName + User.getSizeOfUser();
         string = scn.nextLine();
         return string;
     }

@@ -1,7 +1,8 @@
 package main.java.controller;
 
-import main.java.model.*;
+import main.java.model.Map;
 import main.java.Enum.*;
+
 
 public class MapController {
     //private Game game;

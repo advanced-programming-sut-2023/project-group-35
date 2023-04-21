@@ -1,6 +1,8 @@
 package main.java.model;
 
 
+import java.util.*;
+
 public class User implements Comparable {
     private String userName;
     private String password;
@@ -10,6 +12,39 @@ public class User implements Comparable {
     private String securityAnswer;
     public int highScore;
     public int totalScore;
+    private static final ArrayList<User> users = new ArrayList<>();
+
+    public User(String userName, String password, String nickName,
+                String email, String securityQuestion, String securityAnswer) {
+        this.userName = userName;
+        this.password = password;
+        this.nickName = nickName;
+        this.email = email;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
+        this.highScore = 0;
+    }
+
+    public static User getUserByUsername(String userName){
+        for(User user: users){
+            if(userName.equals(user.getUserName()))
+                return user;
+        }
+        return null;
+    }
+    public static User getUserByEmail(String email){
+        for(User user: users){
+            if(email.equalsIgnoreCase(user.getEmail()))
+                return user;
+        }
+        return null;
+    }
+    public static int getSizeOfUser(){
+        return users.size();
+    }
+    public static void addUser(User user){
+        users.add(user);
+    }
 
     public String getUserName() {
         return userName;
@@ -59,16 +94,6 @@ public class User implements Comparable {
         this.securityAnswer = securityAnswer;
     }
 
-    public User(String userName, String password, String nickName,
-                String email, String securityQuestion, String securityAnswer) {
-        this.userName = userName;
-        this.password = password;
-        this.nickName = nickName;
-        this.email = email;
-        this.securityQuestion = securityQuestion;
-        this.securityAnswer = securityAnswer;
-        this.highScore = 0;
-    }
 
     @Override
     public int compareTo(Object o) {
