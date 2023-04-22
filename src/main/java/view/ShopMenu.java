@@ -1,11 +1,25 @@
 package view;
 
-import java.util.regex.Matcher;
-
+import controller.ShopController;
+import Enum.*;
 public class ShopMenu extends Menu{
-    private String input;
-    private Matcher matcher;
+    ShopController shopController;
+
+    public ShopMenu(ShopController shopController) {
+        this.shopController = shopController;
+    }
 
     public void run() {
+        while (true) {
+            input = scanner.nextLine();
+            if(input.matches("show price list")) {
+                System.out.println(shopController.showPriceList());
+            } else if((matcher = getMatcher(input , Commands.PURCHASE.regex)) != null) {
+                System.out.println(shopController.purchase(matcher));
+            } else if((matcher = getMatcher(input , Commands.SELL.regex)) != null) {
+                System.out.println(shopController.sell(matcher));
+            } else if((input.matches(Commands.BACK.regex))) return;
+            else System.out.println("invalid command");
+        }
     }
 }

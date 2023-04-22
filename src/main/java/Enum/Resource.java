@@ -23,8 +23,8 @@ public enum Resource {
 
 
 
-    private int buyPrice;
-    private int sellPrice;
+    public int buyPrice;
+    public int sellPrice;
 
     Resource(int buyPrice, int sellPrice) {
         this.buyPrice = buyPrice;

@@ -17,6 +17,7 @@ public class Reign {
     private int fearRate;
 
     private final HashMap<Resource, Integer> resources = new HashMap<>();
+    private final HashMap<Resource ,Integer> resourceCapacity = new HashMap<>();
     private ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
 
     private ArrayList<TradeItem> tradeHistory = new ArrayList<>();
@@ -41,6 +42,14 @@ public class Reign {
     }
     public int getResourceAmount(Resource resource) {
         return resources.get(resource);
+    }
+    public int getResourceCapacity(Resource resource) {
+        return resourceCapacity.get(resource);
+    }
+
+    public void changeResourceCapacity(Resource resource , int amount) {
+        int former = resourceCapacity.get(resource);
+        resourceCapacity.replace(resource, former + amount);
     }
 
     public String showTradeList() {

@@ -41,8 +41,14 @@ public enum Commands {
     DONATION("donate -t (?<resourceType>\\S+) -a (?<resourceAmount>\\d+) -m (?<message>.+)"),
     ACCEPT_REQUEST("request accept -i (?<id>\\d+) -m (?<message>\\.+)"),
     TRADE_LIST("show trade list"),
-    TRADE_HISTORY("show trade history");
+    TRADE_HISTORY("show trade history"),
 
+    // SHOP MENU
+    PURCHASE("buy -i (?<item>\\S+) -a (?<amount>\\d+)"),
+    SELL("sell -i (?<item>\\S+) -a (?<amount>\\d+)"),
+
+    // back
+    BACK("back");
 
     public String regex;
     private Commands(String regex){
