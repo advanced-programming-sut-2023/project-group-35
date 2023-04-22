@@ -112,6 +112,7 @@ public class RegisterAndLoginMenu extends Menu{
                 return true;
             else {
                 System.out.println("You failed to repeat the password correctly!");
+                return false;
             }
         }
     }
@@ -150,6 +151,14 @@ public class RegisterAndLoginMenu extends Menu{
             return oldUserName + User.getSizeOfUser();
         string = scn.nextLine();
         return string;
+    }
+    public static boolean checkTheSecurityHitAndPass(User user){
+        System.out.println(user.getSecurityQuestion());
+        Scanner scn = new Scanner(System.in);
+        String lastLine = scn.nextLine();
+        if(lastLine.equals(user.getSecurityAnswer()))
+            return true;
+        return false;
     }
 
 }

@@ -11,17 +11,44 @@ public class User implements Comparable {
     private String securityAnswer;
     public int highScore;
     public int totalScore;
+    private int attemptsNumber;
+    private long lastAttemptForLogin;
+    private String sloganOfUser;
+
     private static final ArrayList<User> users = new ArrayList<>();
 
     public User(String userName, String password, String nickName,
-                String email, String securityQuestion, String securityAnswer) {
+                String email, String securityQuestion, String securityAnswer,String slogan) {
         this.userName = userName;
         this.password = password;
         this.nickName = nickName;
         this.email = email;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
+        this.sloganOfUser = slogan;
         this.highScore = 0;
+        this.attemptsNumber = 0;
+        this.lastAttemptForLogin = 0;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public void setAttemptsNumber(int attemptsNumber) {
+        this.attemptsNumber = attemptsNumber;
+    }
+
+    public int getAttemptsNumber() {
+        return attemptsNumber;
+    }
+
+    public static ArrayList<User> getUsers() {
+        return users;
     }
 
     public static User getUserByUsername(String userName){
@@ -92,7 +119,23 @@ public class User implements Comparable {
     public void setSecurityAnswer(String securityAnswer) {
         this.securityAnswer = securityAnswer;
     }
+    public void addNumberOfAttempts(){ attemptsNumber++;}
 
+    public long getLastAttemptForLogin() {
+        return lastAttemptForLogin;
+    }
+
+    public void setLastAttemptForLogin(long lastAttemptForLogin) {
+        this.lastAttemptForLogin = lastAttemptForLogin;
+    }
+
+    public String getSloganOfUser() {
+        return sloganOfUser;
+    }
+
+    public void setSloganOfUser(String sloganOfUser) {
+        this.sloganOfUser = sloganOfUser;
+    }
 
     @Override
     public int compareTo(Object o) {

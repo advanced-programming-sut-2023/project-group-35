@@ -1,8 +1,11 @@
 package controller;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import model.*;
 import view.RegisterAndLoginMenu;
 
@@ -37,6 +40,7 @@ public class UserController {
         String answerToSecurity = null;
         if(matcher.group("sloganText") != null)
             slogan = matcher.group("sloganText");
+        //TODO:Random slogan generator;
         if(!password.equals("Random"))
             passwordConfirm = matcher.group("passwordConfirm");
         if(userName.length() < 1 || password.length() < 1 || email.length() < 1 || nickName.length() < 1)
@@ -57,42 +61,125 @@ public class UserController {
             return "Invalid Email format";
         securityQuestion = RegisterAndLoginMenu.getSafetyQuestion();
         answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
-        User userToBeAdded = new User(userName,password,nickName,email,securityQuestion,answerToSecurity);
+        User userToBeAdded = new User(userName,password,nickName,email,securityQuestion,answerToSecurity,slogan);
         User.addUser(userToBeAdded);
         Manager.fileCreator(userToBeAdded);
-        return "Sign up was succesful,we have "+userName+"on board now";
+        return "Sign up was successful,we have "+userName+"on board now";
     }
-    public String questionPick(Matcher matcher) {
-        return null;
+    public String login(Matcher matcher,String command) throws NoSuchAlgorithmException, IOException {
+        String userName = checkForQuotation(matcher.group("username"));
+        String password = checkForQuotation(matcher.group("password"));
+        Boolean gonnaBeLoggedIn = null;
+        Pattern stayLoggedIn = Pattern.compile("--stay-logged-in");
+        Matcher matcherOfLogin = stayLoggedIn.matcher(command);
+        if(matcherOfLogin.find()) gonnaBeLoggedIn = true;
+        else gonnaBeLoggedIn = false;
+        if(User.getUserByUsername(userName) == null)
+            return "No such user found!";
+        else if((User.getUserByUsername(userName).getLastAttemptForLogin() - System.currentTimeMillis()) <=
+                User.getUserByUsername(userName).getAttemptsNumber()*1000)
+            return "wait few seconds before another try";
+        else if(!Manager.turnPasswordToSha256(password).equals(User.getUserByUsername(userName).getPassword())) {
+            User.getUserByUsername(userName).addNumberOfAttempts();
+            User.getUserByUsername(userName).setLastAttemptForLogin(System.currentTimeMillis());
+            return "Password didn't match";
+        }
+        else{
+         loggedInUser = User.getUserByUsername(userName);
+         if(gonnaBeLoggedIn){
+             FileWriter fileWriter = new FileWriter("loggedIn.txt");
+             fileWriter.write(loggedInUser.getUserName());
+             fileWriter.close();
+         }
+         loggedInUser.setAttemptsNumber(0);
+         return "logged in successfully";
+
+        }
     }
-    public String login(Matcher matcher) {
-        return null;
+    public String forgotMyPassword(String userName,String password){
+        if(User.getUserByUsername(userName) == null)
+            return "No such user exists!";
+        else if(!RegisterAndLoginMenu.checkTheSecurityHitAndPass(User.getUserByUsername(userName)))
+                return "you didn't answered security question correctly";
+        else if(!RegisterAndLoginMenu.checkPasswordErrors(password))
+            return "you get the error...";
+        else{
+            User.getUserByUsername(userName).setPassword(password);
+            return "password changed successfully";
+        }
+
     }
-    public String usernameChange(String newUsername) {
-        return null;
+    public String usernameChange(String newUserName) {
+        if(!newUserName.matches("\\w+") || newUserName.length() < 1)
+            return "Invalid username format!";
+        else{
+            loggedInUser.setUserName(newUserName);
+            return "your username changed!";
+        }
     }
     public String nicknameChange(String newNickName) {
-        return null;
+        if(!newNickName.matches("\\w+") || newNickName.length() < 1)
+            return "Invalid username format!";
+        else{
+            loggedInUser.setNickName(newNickName);
+            return "your nickname changed!";
+        }
     }
-    public String passwordChanger(Matcher matcher , String confirmPass) {
-        return null;
+    public String passwordChanger(String oldPass , String newPass) throws NoSuchAlgorithmException, IOException {
+        if(!loggedInUser.getPassword().equals(Manager.turnPasswordToSha256(oldPass)))
+            return "You entered wrong password!";
+        else if(loggedInUser.getPassword().equals(Manager.turnPasswordToSha256(newPass)))
+        return "your new password is same as last one";
+        else if(!RegisterAndLoginMenu.checkPasswordErrors(newPass))
+            return "so you got the error...";
+        else if(!RegisterAndLoginMenu.checkPassword(newPass))
+            return "try the command again!";
+        else{
+            loggedInUser.setPassword(newPass);
+            return "your password changed!";
+        }
     }
     public String emailChange(String email) {
-        return null;
+        if(User.getUserByEmail(email) != null)
+            return "this email is already in database";
+        else if(!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))
+            return "Invalid Email format";
+        else{
+            loggedInUser.setEmail(email);
+            return "your email changed!";
+        }
     }
     public String changeOrRemoveSlogan(String slogan) {
-        return null;
+        if(loggedInUser.getSloganOfUser() == null && slogan == null)
+            return "you have no slogan to remove!";
+        if(slogan == null){
+            loggedInUser.setSloganOfUser(null);
+            return "your slogan removed!";
+        }
+        else{
+            loggedInUser.setSloganOfUser(slogan);
+            return "your slogan changed!";
+        }
     }
-    public void displayHighScore() {
-        return;
+    public int displayHighScore() {
+        return loggedInUser.getHighScore();
     }
-    public void displayRank() {
-        return;
+    public int displayRank() {
+         int rankOfUser = 1;
+        for(User user:User.getUsers())
+            if(loggedInUser.getHighScore() < user.getHighScore()) rankOfUser++;
+        return rankOfUser;
     }
-    public void displaySlogan() {
-        return;
+    public String displaySlogan() {
+        return loggedInUser.getSloganOfUser();
     }
     public String displayProfile() {
-        return null;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Your NickName: "+loggedInUser.getNickName());
+        stringBuilder.append("Your Slogan: "+loggedInUser.getSloganOfUser());
+        stringBuilder.append("Your highscore is "+loggedInUser.getHighScore());
+        stringBuilder.append("Your rank between users "+displayRank());
+        String out = stringBuilder.toString();
+        return out;
     }
 }
