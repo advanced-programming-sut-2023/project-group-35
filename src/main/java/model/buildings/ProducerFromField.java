@@ -5,9 +5,9 @@ import model.Reign;
 public class ProducerFromField extends Producer{
 
     private FieldType fieldType;
-    private Resources produced;
+    private Resource produced;
 
-    public ProducerFromField(Reign owner, int hp, BuildingType buildingType, FieldType fieldType, int rate, Resources produced) {
+    public ProducerFromField(Reign owner, int hp, BuildingType buildingType, FieldType fieldType, int rate, Resource produced) {
         super(owner, hp, buildingType, rate, produced);
         this.fieldType = fieldType;
     }

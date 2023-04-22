@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Diagram>
   <ID>JAVA</ID>
-  <OriginalElement>Enum.Resources</OriginalElement>
+  <OriginalElement>Enum.Resource</OriginalElement>
   <nodes>
     <node x="345.0" y="1404.0">model.people.DogUnit</node>
     <node x="85.0" y="1404.0">model.people.Engineer</node>
@@ -9,7 +9,7 @@
     <node x="1751.0" y="1116.0">controller.UserController</node>
     <node x="1611.0" y="830.0">model.buildings.Converter</node>
     <node x="1677.5" y="645.0">model.buildings.Building</node>
-    <node x="819.0" y="-68.5">Enum.Resources</node>
+    <node x="819.0" y="-68.5">Enum.Resource</node>
     <node x="1173.0" y="1380.0">model.people.Assassin</node>
     <node x="1357.0" y="1527.0">view.EditMapMenu</node>
     <node x="959.0" y="1527.0">view.StartGameMenu</node>
@@ -242,7 +242,7 @@
       <point x="0.0" y="-39.0" />
       <point x="0.0" y="50.0" />
     </edge>
-    <edge source="Enum.Resources" target="java.lang.Enum" relationship="GENERALIZATION">
+    <edge source="Enum.Resource" target="java.lang.Enum" relationship="GENERALIZATION">
       <point x="0.0" y="-49.5" />
       <point x="911.0" y="-124.0" />
       <point x="1213.75" y="-124.0" />

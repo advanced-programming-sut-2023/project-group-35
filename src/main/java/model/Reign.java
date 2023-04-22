@@ -6,6 +6,9 @@ import Enum.*;
 import model.people.*;
 
 public class Reign {
+
+
+    private int gold;
     private User user;
     private int population;
     private int popularity;
@@ -13,24 +16,120 @@ public class Reign {
     private int foodRate;
     private int fearRate;
 
-    HashMap<Resources, Integer> resources = new HashMap<>();
+    private final HashMap<Resource, Integer> resources = new HashMap<>();
+    private final HashMap<Resource ,Integer> resourceCapacity = new HashMap<>();
     private ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
 
     private ArrayList<TradeItem> tradeHistory = new ArrayList<>();
     private ArrayList<TradeItem> notification = new ArrayList<>();
-
+    private ArrayList<TradeItem> requestsFromMe = new ArrayList<>();
+    private ArrayList<TradeItem> RequestsFromOthers = new ArrayList<>();
 
     public Reign(User user) {
         this.user = user;
         initializeResources();
     }
+
     public void initializeResources(){
 
     }
-    public void addToResource(Resources resource, int number) {
+
+    public void addToResource(Resource resource, int number) {
 
     }
-    public void removeFromResources(Resources resources , int number) {
+    public void removeFromResources(Resource resource, int number) {
 
+    }
+    public int getResourceAmount(Resource resource) {
+        return resources.get(resource);
+    }
+    public int getResourceCapacity(Resource resource) {
+        return resourceCapacity.get(resource);
+    }
+
+    public void changeResourceCapacity(Resource resource , int amount) {
+        int former = resourceCapacity.get(resource);
+        resourceCapacity.replace(resource, former + amount);
+    }
+
+    public String showTradeList() {
+        String output = "requests from you:";
+        for (TradeItem tradeItem : requestsFromMe) {
+            output += "\n" + ""; //todo complete this
+        }
+        return output;
+    }
+    public String showNotification(boolean wasADonation) {
+        String output = "";
+        for (TradeItem tradeItem : notification) {
+            if(tradeItem.isADonation() != wasADonation) continue;
+            output += "\nfrom: " + tradeItem.firstReign + " to: " + tradeItem.secondReign;
+            //todo complete output;
+        }
+        return output;
+    }
+    public ArrayList<TradeItem> getTradeHistory() {
+        return tradeHistory;
+    }
+
+    public ArrayList<TradeItem> getNotification() {
+        return notification;
+    }
+
+    public ArrayList<TradeItem> getRequestsFromMe() {
+        return requestsFromMe;
+    }
+
+    public ArrayList<TradeItem> getRequestsFromOthers() {
+        return RequestsFromOthers;
+    }
+    public void changeResourceAmount(Resource resource, int amount) {
+        int former = resources.get(resource);
+        resources.replace(resource , former + amount);
+    }
+    public String getHistoryOfTrades(boolean wasADonation) {
+        String output = "";
+        for (TradeItem tradeItem : tradeHistory) {
+            if(wasADonation != tradeItem.isADonation()) continue;
+            output += "\nfrom " + tradeItem.firstReign.getUser().getNickName()
+                    + " to: " + tradeItem.secondReign.getUser().getNickName()
+                    ; //todo complete this
+        }
+        return output;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void spendGold(int amount) {
+        gold -= amount;
+    }
+
+    public void earnGold(int amount) {
+        gold += amount;
+    }
+    public User getUser() {
+        return user;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public int getPopularity() {
+        return popularity;
+    }
+
+    public int getTaxRate() {
+        return taxRate;
+    }
+
+    public int getFoodRate() {
+        return foodRate;
+    }
+
+    public int getFearRate() {
+        return fearRate;
     }
 }

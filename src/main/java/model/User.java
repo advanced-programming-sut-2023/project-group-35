@@ -14,7 +14,7 @@ public class User implements Comparable {
     private int attemptsNumber;
     private long lastAttemptForLogin;
     private String sloganOfUser;
-
+    private Map map;
     private static final ArrayList<User> users = new ArrayList<>();
 
     public User(String userName, String password, String nickName,
@@ -123,6 +123,14 @@ public class User implements Comparable {
 
     public long getLastAttemptForLogin() {
         return lastAttemptForLogin;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     public void setLastAttemptForLogin(long lastAttemptForLogin) {

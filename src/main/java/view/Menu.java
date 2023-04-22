@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 public class Menu {
     public static final Scanner scanner = new Scanner(System.in);
-    public String input;
-    public Matcher matcher;
+    protected String input;
+    protected Matcher matcher;
 
     public void run() throws IOException, NoSuchAlgorithmException {
 

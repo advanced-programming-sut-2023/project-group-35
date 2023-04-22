@@ -1,6 +1,6 @@
 package Enum;
 
-public enum Resources {
+public enum Resource {
     WOOD(20 , 18),
 //    GOLD(),
 //    STONE(),
@@ -23,11 +23,17 @@ public enum Resources {
 
 
 
-    private int buyPrice;
-    private int sellPrice;
+    public int buyPrice;
+    public int sellPrice;
 
-    Resources(int buyPrice, int sellPrice) {
+    Resource(int buyPrice, int sellPrice) {
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
+    }
+    public static Resource getResourceByName(String name) {
+        for (Resource value : Resource.values()) {
+            if(value.name().toLowerCase().equals(name)) return value;
+        }
+        return null;
     }
 }

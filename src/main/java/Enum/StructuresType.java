@@ -10,4 +10,5 @@ public enum StructuresType {
     TREBUCHET,
     FLAME_THROWER;
 
+
 }

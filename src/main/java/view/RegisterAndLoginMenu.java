@@ -21,7 +21,7 @@ public class RegisterAndLoginMenu extends Menu{
         Scanner scn = new Scanner(System.in);
         while (true) {
             input = scn.nextLine();
-            if ((matcher = CommandEnums.getMatcher(input, CommandEnums.CREATE_USER)) != null &&
+            if ((matcher = Commands.getMatcher(input, Commands.CREATE_USER)) != null &&
                     booleanErrorInCreateUser(matcher.group("contentText").trim())) {
                 System.out.println(userController.register(matcher));
             } else {
@@ -36,11 +36,11 @@ public class RegisterAndLoginMenu extends Menu{
     }
 
     public boolean booleanErrorInCreateUser(String contentText) {
-        if (CommandEnums.getMatcher(contentText, CommandEnums.PASSWORD_USED_IN_LOGIN) == null
-                || CommandEnums.getMatcher(contentText, CommandEnums.USERNAME) == null)
+        if (Commands.getMatcher(contentText, Commands.PASSWORD_USED_IN_LOGIN) == null
+                || Commands.getMatcher(contentText, Commands.USERNAME) == null)
             return false;
-        else if (CommandEnums.getMatcher(contentText, CommandEnums.NICKNAME) == null
-                || CommandEnums.getMatcher(contentText, CommandEnums.EMAIL) == null)
+        else if (Commands.getMatcher(contentText, Commands.NICKNAME) == null
+                || Commands.getMatcher(contentText, Commands.EMAIL) == null)
             return false;
         return true;
     }

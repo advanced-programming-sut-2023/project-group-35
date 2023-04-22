@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import model.*;
+import view.MainMenu;
 import view.RegisterAndLoginMenu;
 
 public class UserController {
@@ -16,8 +17,6 @@ public class UserController {
         if((text.charAt(0)=='\"') && (text.trim().charAt(text.trim().length() - 1) == '\"'))
             return text.substring(1,text.length()-1);
         return text;
-
-
     }
     public String UserController(Matcher matcher) {
         return null;
@@ -181,5 +180,17 @@ public class UserController {
         stringBuilder.append("Your rank between users "+displayRank());
         String out = stringBuilder.toString();
         return out;
+    }
+
+
+    public void chooseMap() {
+        while (true) {
+            String mapName = MainMenu.getMapFromUser(Map.getMapList());
+            Map map = Map.getTemplateMapByName(mapName);
+            if (map != null) {
+                loggedInUser.setMap(map);
+                break;
+            }
+        }
     }
 }

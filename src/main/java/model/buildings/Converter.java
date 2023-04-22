@@ -5,10 +5,10 @@ import model.Reign;
 
 public class Converter extends Building{
     int rate;
-    Resources input;
-    Resources output;
+    Resource input;
+    Resource output;
 
-    public Converter(Reign owner,int hp , BuildingType buildingType, int rate, Resources input, Resources output) {
+    public Converter(Reign owner, int hp , BuildingType buildingType, int rate, Resource input, Resource output) {
         super(owner, hp, buildingType);
         this.rate = rate;
         this.input = input;

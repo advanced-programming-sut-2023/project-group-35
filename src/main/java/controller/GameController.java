@@ -8,14 +8,13 @@ import Enum.*;
 
 public class GameController {
 
-    private Game game;
+    protected Reign playingReign;
+    protected Game game;
 
     public GameController(Game game) {
         this.game = game;
+        this.playingReign = game.getPlayingReign();
     }
-
-
-
 
 
     public String dropBuilding(Matcher matcher) {
@@ -31,21 +30,11 @@ public class GameController {
         return null;
     }
 
-
-
-
-
-
     public String selectUnit(int x , int y) {
         return null;
     }
 
-
-
-
-
-
-
+    // drop unit chie aslan?????
 
 
 
