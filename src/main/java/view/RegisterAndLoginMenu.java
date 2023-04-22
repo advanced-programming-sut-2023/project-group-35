@@ -17,9 +17,6 @@ public class RegisterAndLoginMenu extends Menu{
     private UserController userController = new UserController();
 
 
-    private String input;
-    private Matcher matcher;
-
     public void run() throws IOException, NoSuchAlgorithmException {
         Scanner scn = new Scanner(System.in);
         while (true) {
