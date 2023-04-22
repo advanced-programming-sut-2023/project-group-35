@@ -1,7 +1,7 @@
 package Enum;
 
 public enum UnitType {
-    ARCHER(5 , 5, 10 , 10 ,5 , Resources.BOW , BuildingType.building);
+    ARCHER(5 , 5, 10 , 10 ,5 , Resource.BOW , BuildingType.building);
 
     private int cost;
     private final int attackPower;
@@ -9,11 +9,11 @@ public enum UnitType {
     private final int speed;
     private int id;
     private int range;
-    private Resources resource;
+    private Resource resource;
     private BuildingType producedIn;
 
 
-    UnitType(int cost, int attackPower, int defencePower, int speed , int range , Resources resource, BuildingType producedIn) {
+    UnitType(int cost, int attackPower, int defencePower, int speed , int range , Resource resource, BuildingType producedIn) {
         this.cost = cost;
         this.attackPower = attackPower;
         this.defencePower = defencePower;

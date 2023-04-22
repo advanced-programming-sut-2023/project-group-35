@@ -2,18 +2,16 @@ package model.buildings;
 import Enum.*;
 import model.Reign;
 
-import java.util.ArrayList;
-
 public class Producer extends Building{
     public int rate;
 
     //ArrayList<Resources> resources = new ArrayList<>();
-    Resources resource;
+    Resource resource;
 
-    public Producer(Reign owner, int hp, BuildingType buildingType , int rate, Resources resources) {
+    public Producer(Reign owner, int hp, BuildingType buildingType , int rate, Resource resource) {
         super(owner, hp, buildingType);
         this.rate = rate;
-        this.resource = resources;
+        this.resource = resource;
     }
 
     public void addResources() {

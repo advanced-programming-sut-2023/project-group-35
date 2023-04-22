@@ -34,7 +34,14 @@ public enum Commands {
     DROP_ROCK("drop rock -x (?<x>\\d+) -y (?<y>\\d+) -d (?<direction>\\S)"),
     DROP_TREE("drop tree -x (?<x>\\d+) -y (?<y>\\d+) -t (?<tree>\\S+)"),
     DROP_BUILDING("drop building -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S+)"),
-    DROP_UNIT("drop unit -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S) -c (?<count>\\d+)");
+    DROP_UNIT("drop unit -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S) -c (?<count>\\d+)"),
+
+    // TRADE MENU
+    ADD_REQUEST("request -t (?<type>\\S+) -a (?<amount>\\d+) -p (?<price>\\d+) -m (?<message>.+)"),
+    DONATION("donate -t (?<resourceType>\\S+) -a (?<resourceAmount>\\d+) -m (?<message>.+)"),
+    ACCEPT_REQUEST("request accept -i (?<id>\\d+) -m (?<message>\\.+)"),
+    TRADE_LIST("show trade list"),
+    TRADE_HISTORY("show trade history");
 
 
     public String regex;
