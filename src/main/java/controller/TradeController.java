@@ -16,6 +16,16 @@ public class TradeController extends GameController{
     public String showTradeList () {
         return playingReign.showTradeList()  + '\n' + TradeItem.showTradeList();
     }
+    public String showMyRequestsFromOthers () {
+        String output = "requests form other reigns: ";
+        for (TradeItem request : playingReign.getRequestsFromOthers()) {
+            output += "\n" + "product: " + request.getResource().name().toLowerCase()
+                    + "amount: " + request.getAmount()
+                    + "price" + request.getPrice();
+            if(request.getSecondReign() != null) output += "from " + request.getSecondReign().getNickName();
+        }
+        return output;
+    }
     public String showMembers() {
         return game.showReigns();
     }
@@ -55,7 +65,7 @@ public class TradeController extends GameController{
         secondReign = tradeItem.getFirstReign();
         if(tradeItem.getSecondReign().equals(playingReign)) return "this request is not from you";
         if(playingReign.getResourceAmount(tradeItem.getResource()) < tradeItem.getAmount())
-            return "you don't have enough resource to give" + secondReign.getUser().getNickName();
+            return "you don't have enough resource to give" + secondReign.getNickName();
         tradeItem.setMessage(matcher.group("message"));
         playingReign.earnGold(tradeItem.getPrice());
         playingReign.changeResourceAmount(tradeItem.getResource(), -tradeItem.getAmount());
@@ -68,6 +78,21 @@ public class TradeController extends GameController{
         secondReign.getNotification().add(tradeItem);
         secondReign = null;
         return "the trade was accepted successfully";
+    }
+    public String deleteTrade(Matcher matcher) {
+        int id = Integer.parseInt(matcher.group("id"));
+        TradeItem tradeItem = TradeItem.getTradeItemById(id);
+        if(tradeItem == null) return "this item does not exist";
+        if(!tradeItem.getFirstReign().equals(playingReign)) return "you did not add this request";
+        TradeItem.getTradeList().remove(tradeItem);
+        playingReign.getRequestsFromOthers().remove(tradeItem);
+        secondReign = tradeItem.getSecondReign();
+        if(secondReign != null) {
+            secondReign.getNotification().remove(tradeItem);
+            secondReign.getRequestsFromMe().remove(tradeItem);
+        }
+        playingReign.earnGold(tradeItem.getPrice());
+        return "your request was successfully removed";
     }
     public String donate(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
@@ -87,7 +112,10 @@ public class TradeController extends GameController{
     }
     public String notification() {
         return "Donations: \n" + playingReign.showNotification(true)
-                + "\n Trades: \n" + playingReign.getHistoryOfTrades(false);
+                + "\n Trades: \n" + playingReign.showNotification(false);
+    }
+    public void clearNotification() {
+        playingReign.clearNotification();
     }
 
     public void deleteSecondReign() {

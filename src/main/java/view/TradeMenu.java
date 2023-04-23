@@ -23,12 +23,18 @@ public class TradeMenu extends Menu{
                 tradeController.deleteSecondReign();
             } else if(input.matches("show trade list")) {
                 System.out.println(tradeController.showTradeList());
-            }
-            else if((matcher = getMatcher(input, Commands.ACCEPT_REQUEST.regex)) != null) {
+            } else if(input.matches("show my requests from others")) {
+                System.out.println(tradeController.showMyRequestsFromOthers());
+            } else if((matcher = getMatcher(input , Commands.DELETE_TRADE.regex)) != null) {
+                System.out.println(tradeController.deleteTrade(matcher));
+            } else if((matcher = getMatcher(input, Commands.ACCEPT_REQUEST.regex)) != null) {
                 System.out.println(tradeController.acceptTrade(matcher));
             } else if(input.matches("show trade history")) {
                 System.out.println(tradeController.showTradeHistory());
-            } else if(input.matches("back")) return;
+            } else if(input.matches("back")) {
+                tradeController.clearNotification();
+                return;
+            }
             else System.out.println("invalid command");
         }
     }
