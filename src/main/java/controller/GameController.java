@@ -27,7 +27,12 @@ public class GameController {
         return null;
     }
     public String selectBuilding(int x, int y) {
-        return null;
+        if(!isCoordinatesCorrect(x, y)) return "coordinates are not correct";
+        Building building = game.getBuilding(x, y);
+        if(building == null) return "there is no building in this block";
+        if(!building.isOwnerCorrect(game.getPlayingReign())) return "the building is not yours";
+        game.setSelectedBuilding(building);
+        return "select building successful";
     }
 
     public String selectUnit(int x , int y) {
@@ -57,6 +62,21 @@ public class GameController {
     {}
     public void leaveGame(){}
     public void showTurnsPassed(){}
+
+    public Game getGame () {
+        return game;
+    }
+    public Reign getPlayingReign() {
+        return playingReign;
+    }
+    public Map getMap() {
+        return game.getMap();
+    }
+    public boolean isCoordinatesCorrect(int x , int y) {
+        int dimension = game.getMap().dimensions;
+        if(x <= dimension && x >= 1 && y <= dimension && y >= 1) return true;
+        return false;
+    }
 }
 
 

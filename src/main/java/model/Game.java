@@ -1,6 +1,7 @@
 package model;
 
 import model.buildings.*;
+import model.people.MilitaryUnit;
 
 import javax.swing.plaf.synth.*;
 import java.util.*;
@@ -9,8 +10,11 @@ public class Game {
     private Map map;
     private User starter;
     private Reign playingReign;
+
+
     private Building selectedBuilding;
-    private Block selectedBlock;
+    private MilitaryUnit selectedUnit; // people nabayad bashe?
+    //private Block selectedBlock;
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Reign> reigns = new ArrayList<>();
     int turnsPassed;
@@ -35,4 +39,14 @@ public class Game {
         return null;
     }
 
+    public void setSelectedBuilding(Building building) {
+        this.selectedBuilding = building;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+    public Building getBuilding(int x , int y) {
+        return getMap().getBlockByLocation(x, y).getBuilding();
+    }
 }
