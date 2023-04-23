@@ -4,9 +4,9 @@ import model.*;
 
 import java.util.regex.*;
 
-public class BuildingSelectController extends GameController{
+public class BuildingController extends GameController{
 
-    public BuildingSelectController(Game game) {
+    public BuildingController(Game game) {
         super(game);
     }
 

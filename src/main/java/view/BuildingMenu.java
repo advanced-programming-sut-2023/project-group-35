@@ -1,14 +1,12 @@
 package view;
 
-import controller.BuildingSelectController;
-
-import java.util.regex.Matcher;
+import controller.BuildingController;
 
 public class BuildingMenu extends Menu{
-    private BuildingSelectController buildingSelectController;
+    private BuildingController buildingController;
 
-    public BuildingMenu(BuildingSelectController buildingSelectController) {
-        this.buildingSelectController = buildingSelectController;
+    public BuildingMenu(BuildingController buildingController) {
+        this.buildingController = buildingController;
     }
 
     public void run() {
