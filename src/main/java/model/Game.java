@@ -24,7 +24,7 @@ public class Game {
         int i = 1;
         for (Reign reign : reigns) {
             output += "\n" + i + "- " + "username: " + reign.getUser().getUserName()
-                    + "Nick Name: " + reign.getUser().getNickName();
+                    + "Nick Name: " + reign.getNickName();
         }
         return output;
     }
@@ -34,7 +34,7 @@ public class Game {
     }
     public Reign getReignByNickName(String nickName) {
         for (Reign reign : reigns) {
-            if(reign.getUser().getNickName().equals(nickName)) return reign;
+            if(reign.getNickName().equals(nickName)) return reign;
         }
         return null;
     }

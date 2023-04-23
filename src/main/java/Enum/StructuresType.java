@@ -9,6 +9,4 @@ public enum StructuresType {
     CATAPULT,
     TREBUCHET,
     FLAME_THROWER;
-
-
 }

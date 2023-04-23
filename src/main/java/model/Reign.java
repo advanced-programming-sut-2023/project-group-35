@@ -8,6 +8,7 @@ import model.people.*;
 public class Reign {
 
 
+    private String nickName;
     private int gold;
     private User user;
     private int population;
@@ -27,6 +28,7 @@ public class Reign {
 
     public Reign(User user) {
         this.user = user;
+        this.nickName = user.getNickName();
         initializeResources();
     }
 
@@ -68,6 +70,10 @@ public class Reign {
         }
         return output;
     }
+
+    public void clearNotification() {
+        notification.clear();
+    }
     public ArrayList<TradeItem> getTradeHistory() {
         return tradeHistory;
     }
@@ -96,6 +102,10 @@ public class Reign {
                     ; //todo complete this
         }
         return output;
+    }
+
+    public String getNickName() {
+        return nickName;
     }
 
     public int getGold() {

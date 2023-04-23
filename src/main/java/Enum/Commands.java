@@ -42,6 +42,7 @@ public enum Commands {
     ADD_REQUEST("request -t (?<type>\\S+) -a (?<amount>\\d+) -p (?<price>\\d+) -m (?<message>.+)"),
     DONATION("donate -t (?<resourceType>\\S+) -a (?<resourceAmount>\\d+) -m (?<message>.+)"),
     ACCEPT_REQUEST("request accept -i (?<id>\\d+) -m (?<message>\\.+)"),
+    DELETE_TRADE("delete trade -i (?<id>\\d+)"),
     TRADE_LIST("show trade list"),
     TRADE_HISTORY("show trade history"),
 

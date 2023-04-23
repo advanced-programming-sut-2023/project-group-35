@@ -1,4 +1,13 @@
 package Enum;
 
-public class Color {
+public enum Color {
+    BLUE,
+    RED,
+    GREEN,
+    YELLOW,
+    BLACK,
+    ORANGE,
+    WHITE,
+    PURPLE;
+
 }
