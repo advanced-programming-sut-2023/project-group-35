@@ -23,6 +23,10 @@ public class Building {
     public Reign getOwner() {
         return owner;
     }
+    public boolean isOwnerCorrect(Reign reign) {
+        if (this.owner.equals(reign)) return true;
+        return false;
+    }
 
 
 }

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class Block {
     int x;
     int y;
+
+
     private Building building;
     private ArrayList<Structure> structures;
     private ArrayList<MilitaryUnit> militaryUnits;
@@ -69,6 +71,10 @@ public class Block {
 
     public Tree getTree() {
         return tree;
+    }
+
+    public Building getBuilding() {
+        return building;
     }
 
     public void setTree(Tree tree) {
