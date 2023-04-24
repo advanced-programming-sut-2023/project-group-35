@@ -1,47 +1,51 @@
 package controller;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import model.*;
 import view.MainMenu;
 import view.RegisterAndLoginMenu;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+
 
 public class UserController {
     private User loggedInUser;
 
     public String checkForQuotation(String text){
+        if(text == null)
+            return text;
         if((text.charAt(0)=='\"') && (text.trim().charAt(text.trim().length() - 1) == '\"'))
             return text.substring(1,text.length()-1);
         return text;
     }
-    public String UserController(Matcher matcher) {
-        return null;
+     public UserController() {
+        loadTheData();
     }
-    public String register(Matcher matcher) throws IOException, NoSuchAlgorithmException {
-        //TODO:creater matchers;
-        String userName = checkForQuotation(matcher.group("username"));
-        String password = checkForQuotation(matcher.group("password"));
+    public String register(Matcher matcher,String userName,String password,String email,String nickName,
+                           String slogan,String passwordConfirm) throws IOException, NoSuchAlgorithmException {
         if(password.equals("Random")) {
             password = RegisterAndLoginMenu.getRandomPassword();
             if(RegisterAndLoginMenu.checkPassword(password))
                 System.out.println("It was entered correctly.");
+            passwordConfirm = password;
         }
-
-        String email = checkForQuotation(matcher.group("email"));
-        String nickName = checkForQuotation(matcher.group("nickname"));
-        String slogan = null;
-        String passwordConfirm = null;
         String securityQuestion = null;
         String answerToSecurity = null;
-        if(matcher.group("sloganText") != null)
-            slogan = matcher.group("sloganText");
+        /*if(matcher.group("slogan") != null)
+            slogan = matcher.group("slogan");*/
         //TODO:Random slogan generator;
-        if(!password.equals("Random"))
-            passwordConfirm = matcher.group("passwordConfirm");
         if(userName.length() < 1 || password.length() < 1 || email.length() < 1 || nickName.length() < 1)
             return "There is some field empty!";
         else if(!userName.matches("\\w+"))
@@ -62,12 +66,9 @@ public class UserController {
         answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
         User userToBeAdded = new User(userName,password,nickName,email,securityQuestion,answerToSecurity,slogan);
         User.addUser(userToBeAdded);
-        Manager.fileCreator(userToBeAdded);
         return "Sign up was successful,we have "+userName+"on board now";
     }
-    public String login(Matcher matcher,String command) throws NoSuchAlgorithmException, IOException {
-        String userName = checkForQuotation(matcher.group("username"));
-        String password = checkForQuotation(matcher.group("password"));
+    public String login(String userName,String password,String command) throws NoSuchAlgorithmException, IOException {
         Boolean gonnaBeLoggedIn = null;
         Pattern stayLoggedIn = Pattern.compile("--stay-logged-in");
         Matcher matcherOfLogin = stayLoggedIn.matcher(command);
@@ -78,7 +79,7 @@ public class UserController {
         else if((User.getUserByUsername(userName).getLastAttemptForLogin() - System.currentTimeMillis()) <=
                 User.getUserByUsername(userName).getAttemptsNumber()*1000)
             return "wait few seconds before another try";
-        else if(!Manager.turnPasswordToSha256(password).equals(User.getUserByUsername(userName).getPassword())) {
+        else if(!turnPasswordToSha256(password).equals(User.getUserByUsername(userName).getPassword())) {
             User.getUserByUsername(userName).addNumberOfAttempts();
             User.getUserByUsername(userName).setLastAttemptForLogin(System.currentTimeMillis());
             return "Password didn't match";
@@ -125,9 +126,9 @@ public class UserController {
         }
     }
     public String passwordChanger(String oldPass , String newPass) throws NoSuchAlgorithmException, IOException {
-        if(!loggedInUser.getPassword().equals(Manager.turnPasswordToSha256(oldPass)))
+        if(!loggedInUser.getPassword().equals(turnPasswordToSha256(oldPass)))
             return "You entered wrong password!";
-        else if(loggedInUser.getPassword().equals(Manager.turnPasswordToSha256(newPass)))
+        else if(loggedInUser.getPassword().equals(turnPasswordToSha256(newPass)))
         return "your new password is same as last one";
         else if(!RegisterAndLoginMenu.checkPasswordErrors(newPass))
             return "so you got the error...";
@@ -192,5 +193,42 @@ public class UserController {
                 break;
             }
         }
+    }
+    public static void fileCreator(User user) throws IOException, NoSuchAlgorithmException {
+        FileWriter fileWriter = new FileWriter(user.getUserName()+".json");
+
+        fileWriter.write(user.getUserName()+"\n"+user.getNickName()+"\n"+turnPasswordToSha256(user.getPassword())
+                +"\n"+user.getEmail()+"\n"+user.getSecurityAnswer()+"\n"+user.getSecurityQuestion()+"\n"+user.highScore);
+        fileWriter.close();
+    } //todo change to json
+    public static String turnPasswordToSha256(String password) throws NoSuchAlgorithmException,IOException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");;
+        md.update(password.getBytes(StandardCharsets.UTF_8));
+        byte[] digest = md.digest();
+        String hex = String.format("%064x", new BigInteger(1, digest));
+        return hex;
+    }
+    public static void saveTheData(){
+        Gson gson = new Gson();
+        String json = gson.toJson(User.getUsers());
+        try {
+            FileWriter myWriter = new FileWriter("dataBase.json");
+            myWriter.write(json);
+            myWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void loadTheData() {
+        Reader reader;
+        try {
+            reader = new FileReader("dataBase.json");
+        } catch (FileNotFoundException e) {
+            return;
+        }
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+        for (JsonElement jsonElement : jsonArray)
+            User.getUsers().add(gson.fromJson(jsonElement, User.class));
     }
 }
