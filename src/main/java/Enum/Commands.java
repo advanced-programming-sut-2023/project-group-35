@@ -35,9 +35,14 @@ public enum Commands {
     DROP_TREE("drop tree -x (?<x>\\d+) -y (?<y>\\d+) -t (?<tree>\\S+)"),
     DROP_BUILDING("drop building -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S+)"),
     DROP_UNIT("drop unit -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S) -c (?<count>\\d+)"),
-    // BUILDING MENU
-    SELECT_BUILDING("select building -x (?<x>\\d+) -y (?<y>\\d+)"),
 
+    SELECT_BUILDING("select building -x (?<x>\\d+) -y (?<y>\\d+)"),
+    SELECT_UNIT("select unit -x (?<x>\\d+) -y (?<y>\\d+)\\s*"),
+
+    // BUILDING MENU
+
+    CREATE_UNIT("create unit -t (?<type>\\.+) -c (?<count>\\d+)"), // \\S+ or .+ ?
+    CHANGE_TAX_RATE("change tax rate -r (?<rate>\\d+)"),
     // TRADE MENU
     ADD_REQUEST("request -t (?<type>\\S+) -a (?<amount>\\d+) -p (?<price>\\d+) -m (?<message>.+)"),
     DONATION("donate -t (?<resourceType>\\S+) -a (?<resourceAmount>\\d+) -m (?<message>.+)"),

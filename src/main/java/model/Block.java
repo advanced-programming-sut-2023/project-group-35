@@ -13,12 +13,10 @@ public class Block {
     int x;
     int y;
 
-
     private Building building;
     private ArrayList<Structure> structures;
+
     private ArrayList<MilitaryUnit> militaryUnits;
-
-
 
     private Tree tree;
 
@@ -59,6 +57,20 @@ public class Block {
         if(this.getTree() != null) return true;
         //todo what else?
         return false;
+    }
+
+    public boolean findOpponentInBlock(Reign reign) {
+        for (MilitaryUnit militaryUnit : militaryUnits) {
+            if (!militaryUnit.getOwner().equals(reign)) return true;
+        }
+        for (Structure structure : structures) {
+            if(!structure.getOwner().equals(reign)) return true;
+        }
+        return false;
+    }
+
+    public ArrayList<MilitaryUnit> getMilitaryUnits() {
+        return militaryUnits;
     }
 
     public FieldType getFieldType() {

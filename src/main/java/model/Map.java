@@ -3,6 +3,7 @@ package model;
 import model.*;
 import Enum.*;
 
+import javax.swing.plaf.synth.Region;
 import java.util.ArrayList;
 
 public class Map {
@@ -65,6 +66,14 @@ public class Map {
     public boolean isABase(int x , int y) {
         for (Block block : baseBlocks) {
             if(block.x == x && block.y == y) return true;
+        }
+        return false;
+    }
+    public boolean findUnitsOfOpponent(Block block , int range, Reign reign) {
+        for(int i = block.x - range; i <= block.x + range; i++) {
+            for(int j = block.y - range; j <= block.y + range; j++) {
+                if(this.getBlockByLocation(block.x , block.y).findOpponentInBlock(reign)) return true;
+            }
         }
         return false;
     }

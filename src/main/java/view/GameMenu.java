@@ -33,6 +33,13 @@ public class GameMenu extends Menu{
                     buildingMenu.run();
                 }
 
+            } else if((matcher = getMatcher(input , Commands.SELECT_UNIT.regex)) != null) {
+                String result = gameController.selectUnit(matcher);
+                System.out.println(result);
+                if(result.equals("select units successful!")) {
+                    UnitSelectMenu menu = new UnitSelectMenu(new UnitController(gameController.getGame()));
+                    menu.run();
+                }
             }
         }
 

@@ -1,11 +1,13 @@
 package model.people;
 import Enum.*;
+import model.Block;
+import model.Reign;
 
 import javax.swing.plaf.synth.Region;
 
 public class LadderMen extends MilitaryUnit{
 
-    public LadderMen(Region owner, UnitType unitType, int number , int hp) {
-        super(owner, unitType, number , hp);
+    public LadderMen(UnitType unitType, Reign owner, Block block, int number, int hp) {
+        super(unitType, owner, block, number, hp);
     }
 }

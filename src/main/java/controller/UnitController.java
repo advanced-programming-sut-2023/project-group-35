@@ -3,8 +3,8 @@ package controller;
 import Enum.*;
 import model.*;
 
-public class UnitSelectController extends GameController{
-    public UnitSelectController(Game game) {
+public class UnitController extends GameController{
+    public UnitController(Game game) {
         super(game);
     }
 
@@ -61,4 +61,8 @@ public class UnitSelectController extends GameController{
         return null;
     }
     public String dPS(int x,int y){return null;}
+
+    public void deleteSelectedUnits() {
+        game.setSelectedUnits(null);
+    }
 }

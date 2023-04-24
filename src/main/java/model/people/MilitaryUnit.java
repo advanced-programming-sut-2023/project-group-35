@@ -1,12 +1,16 @@
 package model.people;
 
 import Enum.*;
+import model.Block;
 import model.Reign;
+
+import javax.swing.text.BadLocationException;
 
 public class MilitaryUnit {
 
-    private Reign owner;
     public UnitType unitType;
+    private Reign owner;
+    private Block block;
     private int number;
     private int hp;
     private UnitState unitState;
@@ -18,12 +22,13 @@ public class MilitaryUnit {
         this.unitState = unitState;
     }
 
-
-    public MilitaryUnit(Reign owner, UnitType unitType, int number , int hp) {
-        this.owner = owner;
+    public MilitaryUnit(UnitType unitType, Reign owner, Block block, int number, int hp) {
         this.unitType = unitType;
+        this.owner = owner;
+        this.block = block;
         this.number = number;
         this.hp = hp;
+        this.unitState = UnitState.STABLE;
     }
 
     public int getNumber() {
@@ -46,6 +51,7 @@ public class MilitaryUnit {
         return owner;
     }
 
-
-
+    public Block getBlock() {
+        return block;
+    }
 }

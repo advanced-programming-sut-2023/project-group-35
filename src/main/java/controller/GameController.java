@@ -2,9 +2,11 @@ package controller;
 
 import model.*;
 import model.buildings.*;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import Enum.*;
+
+import model.people.MilitaryUnit;
 
 public class GameController {
 
@@ -28,15 +30,22 @@ public class GameController {
     }
     public String selectBuilding(int x, int y) {
         if(!isCoordinatesCorrect(x, y)) return "coordinates are not correct";
-        Building building = game.getBuilding(x, y);
+        Building building = game.getBuildingOfBlock(x, y);
         if(building == null) return "there is no building in this block";
         if(!building.isOwnerCorrect(game.getPlayingReign())) return "the building is not yours";
         game.setSelectedBuilding(building);
         return "select building successful";
     }
 
-    public String selectUnit(int x , int y) {
-        return null;
+    public String selectUnit(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!isCoordinatesCorrect(x , y)) return "the coordinates you have entered is not in the map";
+        if(game.getUnitsOfBlock(x, y).size() == 0) return "there is no unit in this block";
+        ArrayList<MilitaryUnit> units = game.getUnitsOfReignInBlock(playingReign , x , y);
+        if(units.size() == 0) return "you don't have any unit in this block";
+        game.setSelectedUnits(units);
+        return "select units successful!";
     }
 
     // drop unit chie aslan?????

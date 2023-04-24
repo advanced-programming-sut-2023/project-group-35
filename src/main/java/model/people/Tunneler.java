@@ -5,7 +5,7 @@ import model.*;
 
 
 public class Tunneler extends MilitaryUnit{
-    public Tunneler(Reign owner, UnitType unitType, int number, int hp) {
-        super(owner, unitType, number, hp);
+    public Tunneler(UnitType unitType, Reign owner, Block block, int number, int hp) {
+        super(unitType, owner, block, number, hp);
     }
 }

@@ -2,12 +2,24 @@ package model.people;
 
 import java.util.ArrayList;
 import Enum.*;
+import model.Block;
+import model.Reign;
 
 import javax.swing.plaf.synth.Region;
 
 public class Engineer extends MilitaryUnit{
-    public boolean isWorking = false;
-    public Engineer(Region owner, UnitType unitType, int number , int hp) {
-        super(owner, unitType , number , hp);
+
+    private boolean isWorking = false;
+
+    public Engineer(UnitType unitType, Reign owner, Block block, int number, int hp) {
+        super(unitType, owner, block, number, hp);
     }
+    public boolean isWorking() {
+        return isWorking;
+    }
+
+    public void setWorking(boolean working) {
+        isWorking = working;
+    }
+
 }
