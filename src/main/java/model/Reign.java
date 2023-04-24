@@ -132,4 +132,16 @@ public class Reign {
     public int getFearRate() {
         return fearRate;
     }
+
+    public void setTaxRate(int taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public void setFoodRate(int foodRate) {
+        this.foodRate = foodRate;
+    }
+
+    public void setFearRate(int fearRate) {
+        this.fearRate = fearRate;
+    }
 }
