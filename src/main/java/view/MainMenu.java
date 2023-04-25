@@ -5,13 +5,16 @@ import controller.MapController;
 import controller.UserController;
 import model.*;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
 public class MainMenu extends Menu{
     private UserController userController;
     private User loggedInUser;
     public MainMenu(UserController userController) {
         this.userController = userController;
     }
-    public void run() {
+    public void run() throws NoSuchAlgorithmException, IOException {
         while(true) {
             System.out.println("choose the menu you want to enter");
             this.input = scanner.nextLine();
@@ -19,6 +22,10 @@ public class MainMenu extends Menu{
                 if(mapQuestion().equals("notChosen")) continue;
                 EditAndShowMapMenu mapMenu = new EditAndShowMapMenu(new MapController(loggedInUser.getMap(), false, null));
                 mapMenu.run();
+            }
+            else if(input.matches(Commands.PROFILE_MENU.regex)) {
+                ProfileMenu profileMenu = new ProfileMenu(loggedInUser);
+                profileMenu.run();
             }
         }
 
