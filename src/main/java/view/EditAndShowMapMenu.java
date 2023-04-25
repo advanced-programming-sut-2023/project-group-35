@@ -3,6 +3,8 @@ package view;
 import controller.*;
 import Enum.*;
 
+import java.util.regex.Matcher;
+
 public class EditAndShowMapMenu extends Menu{
     public MapController mapController;
 
@@ -22,8 +24,24 @@ public class EditAndShowMapMenu extends Menu{
             } else if((matcher = getMatcher(input , Commands.SET_TEXTURE.regex)) != null) {
                 int x = Integer.parseInt(matcher.group("x"));
                 int y = Integer.parseInt(matcher.group("y"));
-                FieldType fieldType = null; //todo complete
+                FieldType fieldType = null;
                 mapController.setTextureOfBlock(x, y , null);
+            } else if((matcher = getMatcher(input, Commands.DROP_ROCK.regex)) != null) {
+                System.out.println(mapController.dropRock(matcher));
+            } else if((matcher = getMatcher(input , Commands.CLEAR.regex)) != null) {
+                int x = Integer.parseInt(matcher.group("x"));
+                int y = Integer.parseInt(matcher.group("y"));
+                System.out.println(mapController.clearBlock(x , y));
+            } else if((matcher = getMatcher(input , Commands.DROP_ROCK.regex)) != null) {
+                System.out.println(mapController.dropRock(matcher));
+            } else if((matcher = getMatcher(input , Commands.DROP_TREE.regex)) != null) {
+                System.out.println(mapController.dropTree(matcher));
+            } else if((matcher = getMatcher(input , Commands.SET_AREA_TEXTURE.regex)) != null) {
+                System.out.println(mapController.setTextureOfArea(matcher));
+            } else if((matcher = getMatcher(input , Commands.DROP_BUILDING.regex)) != null) {
+                System.out.println(mapController.dropBuilding(matcher));
+            } else if((matcher = getMatcher(input , Commands.DROP_UNIT.regex)) != null) {
+                System.out.println(mapController.dropUnit(matcher));
             }
         }
     }

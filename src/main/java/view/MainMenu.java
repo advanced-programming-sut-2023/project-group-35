@@ -21,8 +21,6 @@ public class MainMenu extends Menu{
                 mapMenu.run();
             }
         }
-
-
     }
 
     public String mapQuestion() {

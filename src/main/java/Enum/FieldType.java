@@ -18,6 +18,15 @@ public enum FieldType {
     Ocean, // can't pass or struct
     moat; // can' struct but passable/unpassable
 
+    public static FieldType getFieldType(String name) {
+        for (FieldType value : FieldType.values()) {
+            if(value.getName().equals(name)) return value;
+        }
+        return null;
+    }
+    public String getName() {
+        return this.name().toLowerCase().replaceAll("_", " ");
+    }
 
 
 

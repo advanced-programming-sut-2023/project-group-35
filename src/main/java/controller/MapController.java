@@ -74,7 +74,12 @@ public class MapController {
         return "the texture is now set";
     }
 
-    public String setTextureOfArea(int x1, int x2, int y1, int y2, FieldType fieldType) {
+    public String setTextureOfArea(Matcher matcher) {
+        FieldType fieldType = FieldType.getFieldType(matcher.group("type"));
+        int x2 = Integer.parseInt(matcher.group("x2"));
+        int x1 = Integer.parseInt(matcher.group("x1"));
+        int y1 = Integer.parseInt(matcher.group("y1"));
+        int y2 = Integer.parseInt(matcher.group("y2"));
         if(isInTheGame) return "you can't change the texture of the blocks in the game";
         for(int i = x1; i <= x2; i++) {
             for(int j = y1; j<= y2; j++) {
@@ -86,17 +91,26 @@ public class MapController {
         return "the textures are successfully set";
     }
 
+    public String dropBuilding(Matcher matcher) {
+        return null;
+    }
+    public String dropUnit(Matcher matcher) {
+        return null;
+    }
 
-    public String dropRock(int x, int y, String direction) {
+    public String dropRock(Matcher matcher) {
         return null;
         //todo direction???
     }
 
-    public String dropTree(int x, int y, Tree treeName) {
+    public String dropTree(Matcher matcher) {
+        Tree tree = Tree.getTreeByName(matcher.group("tree"));
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
         Block block = map.getBlockByLocation(x, y);
         if(block == null) return "index out of bounds";
         if(block.isOccupied()) return ResponseToUser.OCCUPIED.response;
-        block.setTree(treeName);
+        block.setTree(tree);
         return "tree was dropped successfully";
     }
 

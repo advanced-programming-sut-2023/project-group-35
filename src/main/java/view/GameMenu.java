@@ -4,7 +4,7 @@ import controller.*;
 import Enum.*;
 
 public class GameMenu extends Menu{
-    private GameController gameController;
+    private final GameController gameController;
 
     public GameMenu(GameController gameController) {
         this.gameController = gameController;
@@ -17,7 +17,7 @@ public class GameMenu extends Menu{
                 EditAndShowMapMenu menu = new EditAndShowMapMenu(new MapController(gameController.getMap() , true , gameController.getPlayingReign()));
                 menu.run();
             } else if(input.matches("Reign menu")) {
-                ReignMenu reignMenu = new ReignMenu(); // todo constructor
+                ReignMenu reignMenu = new ReignMenu(new ReignController(gameController.getGame())); // todo constructor
                 reignMenu.run();
             } else if(input.matches("trade menu")) {
                 TradeMenu tradeMenu = new TradeMenu(new TradeController(gameController.getGame()));
@@ -32,7 +32,6 @@ public class GameMenu extends Menu{
                     BuildingMenu buildingMenu = new BuildingMenu(new BuildingController(gameController.getGame()));
                     buildingMenu.run();
                 }
-
             } else if((matcher = getMatcher(input , Commands.SELECT_UNIT.regex)) != null) {
                 String result = gameController.selectUnit(matcher);
                 System.out.println(result);
@@ -42,7 +41,5 @@ public class GameMenu extends Menu{
                 }
             }
         }
-
-
     }
 }

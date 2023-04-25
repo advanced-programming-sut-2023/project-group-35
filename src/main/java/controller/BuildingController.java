@@ -9,7 +9,7 @@ import model.people.MilitaryUnit;
 import java.util.regex.*;
 
 public class BuildingController extends GameController{
-    private Building selectedBuilding;
+    private final Building selectedBuilding;
 
     public BuildingController(Game game) {
         super(game);

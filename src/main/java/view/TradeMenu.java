@@ -53,7 +53,6 @@ public class TradeMenu extends Menu{
                 System.out.println(tradeController.donate(matcher));
             }
         }
-
     }
     public static void nickNameNotFound() {
         System.out.println("nick name not found, please try again");
