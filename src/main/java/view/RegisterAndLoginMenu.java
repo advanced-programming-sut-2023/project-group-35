@@ -18,14 +18,20 @@ public class RegisterAndLoginMenu extends Menu{
 
 
     public void run() throws IOException, NoSuchAlgorithmException {
-        Scanner scn = new Scanner(System.in);
         while (true) {
-            input = scn.nextLine();
-            if ((matcher = Commands.getMatcher(input, Commands.CREATE_USER)) != null &&
+            input = scanner.nextLine();
+            if ((matcher = Commands.getMatcher(input,Commands.CREATE_USER)) != null &&
                     booleanErrorInCreateUser(matcher.group("contentText").trim())) {
-                System.out.println(userController.register(matcher));
+                System.out.println(userController.register(matcher,extractUsername(input),extractPassword(input),
+                        extractEmail(input),extractNickname(input),extractSlogan(input),extractPasswordConfirm(input)));
+            } else if((matcher = Commands.getMatcher(input,Commands.USER_LOGIN)) != null) {
+                System.out.println(userController.login(extractUsername(input),extractPassword(input),input));
+                MainMenu mainMenu = new MainMenu(this.userController);
+                mainMenu.run();
+            } else if ((matcher = Commands.getMatcher(input,Commands.FORGOT_MY_PASSWORD)) != null) {
+                System.out.println(userController.forgotMyPassword(extractUsername(input),extractPassword(input)));
             } else {
-
+                System.out.println("Invalid commend!");
             }
 
         }
@@ -96,7 +102,7 @@ public class RegisterAndLoginMenu extends Menu{
             randomUppercase = (char) (firstUppercaseIndex + letterIndex);
         }
         randomPassword = randomPassword + randomLowercase + randomUppercase + randomInt;
-        System.out.println("our suggested random password is: " + randomPassword + "now retype it.");
+        System.out.println("our suggested random password is: " + randomPassword + " now retype it.");
         return randomPassword;
         //TODO:add non letter
     }
@@ -156,6 +162,47 @@ public class RegisterAndLoginMenu extends Menu{
         if(lastLine.equals(user.getSecurityAnswer()))
             return true;
         return false;
+    }
+    private String extractUsername(String text) {
+        Matcher userNameMatcher = Commands.getMatcher(text, Commands.USERNAME);
+        String username = userController.checkForQuotation(userNameMatcher.group("username"));
+        return username;
+    }
+
+    private String extractPasswordConfirm(String text) {
+        Matcher passwordMatcher =  Commands.getMatcher(input, Commands.PASSWORD_NOT_IN_LOGIN);
+        if (passwordMatcher.group("notPassword") != null) return "random";
+        else return userController.checkForQuotation(passwordMatcher.group("passwordConfirm"));
+    }
+
+    private String extractPassword(String text) {
+        Matcher passwordMatcher = Commands.getMatcher(text, Commands.PASSWORD_NOT_IN_LOGIN);
+        String password = userController.checkForQuotation(passwordMatcher.group("password"));
+        return password;
+
+    }
+
+    private String extractNickname(String text) {
+        Matcher nickNameMatcher = Commands.getMatcher(text, Commands.NICKNAME);
+        String password = userController.checkForQuotation(nickNameMatcher.group("nickName"));
+        return password;
+    }
+
+    private String extractEmail(String text) {
+        Matcher emailMatcher = Commands.getMatcher(text, Commands.EMAIL);
+        String password = userController.checkForQuotation(emailMatcher.group("email"));
+        return password;
+    }
+
+    private String extractSlogan(String text) {
+        String slogan = null;
+        if (Commands.getMatcher(text, Commands.SLOGAN) != null) {
+            Matcher sloganMarcher = Commands.getMatcher(text, Commands.SLOGAN);
+            slogan = userController.checkForQuotation(sloganMarcher.group("slogan"));
+            if (slogan.length() < 1)
+                return null;
+        }
+        return slogan;
     }
 
 }
