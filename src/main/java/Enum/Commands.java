@@ -10,7 +10,6 @@ public enum Commands {
     FORGOT_MY_PASSWORD("\\s*forgot\\s+my\\s+password\\s*"),
     USER_LOGOUT("\\s*user\\s+logout\\s*"),
     QUESTION_PICK("^\\s*question\\s+pick\\s+(?<contentText>.+)$"),
-    CHANGE_PASSWORD("^-u\\s+(?<username>\\S*|(\".*\"))\\s+-p\\s+(?<password>\\S*|(\".*\"))$"),
 
     //login and register factors
     USERNAME("-u\\s+(?<username>\\S*|(\".*\"))"),
@@ -56,7 +55,30 @@ public enum Commands {
     SELL("sell -i (?<item>\\S+) -a (?<amount>\\d+)"),
 
     // back
-    BACK("back");
+    BACK("back"),
+    //reign menu
+    SHOW_POPULARITY_FACTORS("\\s*show\\s+popularity\\s+factors\\s*"),
+    SHOW_POPULARITY("\\s*show\\s+popularity\\s*"),
+    SHOW_FOOD_LIST("\\s*show\\s+food\\s+list\\s*"),
+    FOOD_RATE("\\s*food\\s+rate\\s+-r\\s+(?<rate>\\d+)\\s*"),
+    FOOD_RATE_SHOW("\\s*food\\s+rate\\s+show\\s*"),
+    TAX_RATE("\\s*tax\\s+rate\\s+-r\\s+(?<rate>\\d+)\\s*"),
+    TAX_RATE_SHOW("\\s*tax\\s+rate\\s+show\\s*"),
+    FEAR_RATE_SHOW("\\s*fear\\s+rate\\s+show\\s*"),
+
+    FEAR_RATE("\\s*fear\\s+rate\\s+-r\\s+(?<rate>\\d+)\\s*"),
+    // profile menu
+    PROFILE_MENU("enter profile menu"),
+    CHANGE_USERNAME("^\\s*profile\\s+change\\s+-u\\s+(?<username>\\S*|(\".*\"))\\s*$"),
+    CHANGE_NICKNAME("^\\s*profile\\s+change\\s+-n\\s+(?<nickname>\\S*|(\".*\"))\\s*$"),
+    CHANGE_PASSWORD("^\\s*profile\\s+change\\s+password\\s+(-o\\s+(?<old>\\S*|(\".*\"))\\s+-n\\s+(?<new>\\S*|(\".*\")))\\s*$"),
+    CHANGE_EMAIL("^\\s*profile\\s+change\\s+-e\\s+(?<email>\\S*)\\s*$"),
+    CHANGE_SLOGAN("^\\s*profile\\s+change\\s+slogan\\s+-s\\s+(?<slogan>\\S*|(\".*\"))\\s*$"),
+    REMOVE_SLOGAN("^\\s*Profile\\s+remove\\s+slogan\\s*$"),
+    SHOW_HIGHSCORE("^\\s*profile\\s+display\\s+highscore\\s*$"),
+    SHOW_RANK("^\\s*profile\\s+display\\s+highscore\\s*$"),
+    SHOW_SLOGAN("^\\s*profile\\s+display\\s+slogan\\s*$"),
+    SHOW_INFO("^\\s*profile\\s+display\\s*$");
 
     public String regex;
     private Commands(String regex){

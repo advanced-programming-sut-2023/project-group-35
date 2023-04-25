@@ -164,13 +164,4 @@ public class Reign {
     public int getFearRate() {
         return fearRate;
     }
-
-    public int getUnemployedPopulation() {
-        return unemployedPopulation;
-    }
-
-    public void changeUnemployedPopulation(int change) {
-        this.unemployedPopulation += change;
-    }
-
 }

@@ -9,6 +9,7 @@ import javax.swing.plaf.synth.Region;
 
 public class Engineer extends MilitaryUnit{
 
+
     private boolean isWorking = false;
 
     public Engineer(UnitType unitType, Reign owner, Block block, int number, int hp) {
@@ -17,7 +18,6 @@ public class Engineer extends MilitaryUnit{
     public boolean isWorking() {
         return isWorking;
     }
-
     public void setWorking(boolean working) {
         isWorking = working;
     }
