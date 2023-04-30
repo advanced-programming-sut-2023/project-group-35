@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -147,6 +148,14 @@ public class UserController {
         else{
             loggedInUser.setEmail(email);
             return "your email changed!";
+        }
+    }
+    public String generateRandomSlogan(){
+        Random randomNumber = new Random();
+        int numberChosen = randomNumber.nextInt(4);
+        int counter = 0;
+        for (Slogans dir : Slogans.values()) {
+            // do what you want
         }
     }
     public String changeOrRemoveSlogan(String slogan) {
