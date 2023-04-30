@@ -25,7 +25,7 @@ public class RegisterAndLoginMenu extends Menu{
                 System.out.println(userController.register(matcher,extractUsername(input),extractPassword(input),
                         extractEmail(input),extractNickname(input),extractSlogan(input),extractPasswordConfirm(input)));
             } else if((matcher = Commands.getMatcher(input,Commands.USER_LOGIN)) != null) {
-                System.out.println(userController.login(extractUsername(input),extractPassword(input),input));
+                System.out.println(userController.login(extractUsername(input),extractPasswordInLogin(input),input));
                 MainMenu mainMenu = new MainMenu(this.userController);
                 mainMenu.run();
             } else if ((matcher = Commands.getMatcher(input,Commands.FORGOT_MY_PASSWORD)) != null) {
@@ -42,7 +42,7 @@ public class RegisterAndLoginMenu extends Menu{
     }
 
     public boolean booleanErrorInCreateUser(String contentText) {
-        if (Commands.getMatcher(contentText, Commands.PASSWORD_USED_IN_LOGIN) == null
+        if (Commands.getMatcher(contentText, Commands.PASSWORD_NOT_IN_LOGIN) == null
                 || Commands.getMatcher(contentText, Commands.USERNAME) == null)
             return false;
         else if (Commands.getMatcher(contentText, Commands.NICKNAME) == null
@@ -63,6 +63,10 @@ public class RegisterAndLoginMenu extends Menu{
         int numberChosen;
         while (true) {
             lastLine = scn.nextLine();
+            if(!Commands.getMatcher(lastLine,Commands.ISNUMERIC).matches()) {
+                System.out.println("Wtf,we asked you for a number!");
+                continue;
+            }
             numberChosen = Integer.parseInt(lastLine);
             if (numberChosen > 3 || numberChosen < 1)
                 System.out.println("Invalid question number");
@@ -97,14 +101,13 @@ public class RegisterAndLoginMenu extends Menu{
         for (int i = 0; i < 10; i++) {
             Random random = new Random();
             int letterIndex = random.nextInt(26);
-            randomInt = random.nextInt(99);
+            randomInt = random.nextInt(999);
             randomLowercase = (char) (firstLowercaseIndex + letterIndex);
             randomUppercase = (char) (firstUppercaseIndex + letterIndex);
         }
-        randomPassword = randomPassword + randomLowercase + randomUppercase + randomInt;
+        randomPassword = randomPassword + randomLowercase + randomUppercase + randomInt + "!@";
         System.out.println("our suggested random password is: " + randomPassword + " now retype it.");
         return randomPassword;
-        //TODO:add non letter
     }
 
     public static boolean checkPassword(String password) {
@@ -133,26 +136,21 @@ public class RegisterAndLoginMenu extends Menu{
         } else if (!password.matches(".*[0-9].*")) {
             System.out.println("Your Password doesn't has any number!");
             return false;
-        } else if (!password.matches(".*[!@#$%^&*\\(\\)]")) {
+        } else if (!password.matches(".*[!@#$%^&*\\(\\)].*")) {
             System.out.println("Your Password doesn't has any special character!");
             return false;
         }
         return true;
     }
 
-
-    public String getRandomSlogan() {
-        return null;
-    }
-
     public static String suggestNewName(String oldUserName) {
         String string;
         Scanner scn = new Scanner(System.in);
-        System.out.println("Your username exists,our suggested user name is: " + oldUserName + User.getSizeOfUser() + "if you agree print ok else enter a new name.");
+        System.out.println("Your username exists,our suggested user name is: " + oldUserName + User.getSizeOfUser() +
+                " if you agree print ok else enter a new name.");
         string = scn.nextLine();
         if (string.trim().equals("ok"))
             return oldUserName + User.getSizeOfUser();
-        string = scn.nextLine();
         return string;
     }
     public static boolean checkTheSecurityHitAndPass(User user){
@@ -171,7 +169,7 @@ public class RegisterAndLoginMenu extends Menu{
 
     private String extractPasswordConfirm(String text) {
         Matcher passwordMatcher =  Commands.getMatcher(input, Commands.PASSWORD_NOT_IN_LOGIN);
-        if (passwordMatcher.group("notPassword") != null) return "random";
+        if (passwordMatcher.group("passwordConfirm") == null) return "random";
         else return userController.checkForQuotation(passwordMatcher.group("passwordConfirm"));
     }
 
@@ -199,10 +197,18 @@ public class RegisterAndLoginMenu extends Menu{
         if (Commands.getMatcher(text, Commands.SLOGAN) != null) {
             Matcher sloganMarcher = Commands.getMatcher(text, Commands.SLOGAN);
             slogan = userController.checkForQuotation(sloganMarcher.group("slogan"));
+            if(slogan == null)
+                return null;
             if (slogan.length() < 1)
                 return null;
+            return slogan;
         }
-        return slogan;
+        return null;
+    }
+    private String extractPasswordInLogin(String text){
+        Matcher passwordMatcher = Commands.getMatcher(text, Commands.PASSWORD_USED_IN_LOGIN);
+        String password = userController.checkForQuotation(passwordMatcher.group("password"));
+        return password;
     }
 
 }

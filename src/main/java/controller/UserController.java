@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import model.*;
+import Enum.*;
 import view.MainMenu;
 import view.RegisterAndLoginMenu;
 import com.google.gson.Gson;
@@ -36,17 +37,20 @@ public class UserController {
     }
     public String register(Matcher matcher,String userName,String password,String email,String nickName,
                            String slogan,String passwordConfirm) throws IOException, NoSuchAlgorithmException {
+        //TODO:empty checker and sum returns;
         if(password.equals("Random")) {
             password = RegisterAndLoginMenu.getRandomPassword();
             if(RegisterAndLoginMenu.checkPassword(password))
                 System.out.println("It was entered correctly.");
             passwordConfirm = password;
         }
+        if(slogan != null && slogan.equals("Random")) {
+            slogan = generateRandomSlogan();
+        }
+        if(slogan != null && slogan.length() < 1)
+            return "there is an empty field!";
         String securityQuestion = null;
         String answerToSecurity = null;
-        /*if(matcher.group("slogan") != null)
-            slogan = matcher.group("slogan");*/
-        //TODO:Random slogan generator;
         if(userName.length() < 1 || password.length() < 1 || email.length() < 1 || nickName.length() < 1)
             return "There is some field empty!";
         else if(!userName.matches("\\w+"))
@@ -57,7 +61,7 @@ public class UserController {
         }
         if(!RegisterAndLoginMenu.checkPasswordErrors(password))
             return "so you got the error...";
-        if(passwordConfirm != null && !passwordConfirm.equals(password))
+        if(passwordConfirm != null && !passwordConfirm.trim().equals(password.trim()))
             return "You didn't repeat the password correctly";
         if(User.getUserByEmail(email) != null)
             return "Email already exists in Server!";
@@ -67,7 +71,7 @@ public class UserController {
         answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
         User userToBeAdded = new User(userName,password,nickName,email,securityQuestion,answerToSecurity,slogan);
         User.addUser(userToBeAdded);
-        return "Sign up was successful,we have "+userName+"on board now";
+        return "Sign up was successful,we have "+userName+" on board now";
     }
     public String login(String userName,String password,String command) throws NoSuchAlgorithmException, IOException {
         Boolean gonnaBeLoggedIn = null;
@@ -154,9 +158,14 @@ public class UserController {
         Random randomNumber = new Random();
         int numberChosen = randomNumber.nextInt(4);
         int counter = 0;
-        for (Slogans dir : Slogans.values()) {
-            // do what you want
+        for (Slogans slogan : Slogans.values()) {
+            if(counter < numberChosen+1 && counter > numberChosen) {
+                System.out.println("Your new slogan is: "+slogan.getSlogan());
+                return slogan.getSlogan();
+            }
         }
+        System.out.println("Your new slogan is: this shouldn't happens");
+        return "this shouldn't happens";
     }
     public String changeOrRemoveSlogan(String slogan) {
         if(loggedInUser.getSloganOfUser() == null && slogan == null)

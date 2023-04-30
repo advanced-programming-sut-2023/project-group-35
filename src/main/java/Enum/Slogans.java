@@ -6,6 +6,13 @@ public enum Slogans {
     THIRD("Beware of my wrath"),
     FOURTH("Ours is fury"),
     FIFTH("I'm tired of generating new slogans!");
-    Slogans(String slogan) {
+
+    public String slogan;
+    private Slogans(String slogan){
+        this.slogan = slogan;
+    }
+
+    public String getSlogan() {
+        return slogan;
     }
 }

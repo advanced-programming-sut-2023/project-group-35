@@ -15,12 +15,10 @@ public enum Commands {
     USERNAME("-u\\s+(?<username>\\S*|(\".*\"))"),
     PASSWORD_USED_IN_LOGIN("-p\\s+(?<password>\\S*|(\".*\"))"),
     PASSWORD_NOT_IN_LOGIN("-p\\s+((?<random>random)|((?<password>\\S*|(\".*\"))\\s+(?<passwordConfirm>\\S+|(\".+\"))))"),
-    NICKNAME("-n\\s+(?<nickname>\\S*|(\".*\"))"),
+    NICKNAME("-n\\s+(?<nickName>\\S*|(\".*\"))"),
     EMAIL("-e\\s+(?<email>\\S*)"),
-    SLOGAN("-s\\s+((?<random>random)|(?<sloganText>\\S*|(\".*\")))"),
-    QUESTION_NUMBER("-q\\s+(?<questionNumber>\\d+)"),
-    ANSWER("-a\\s+(?<answerText>\\S+|(\".+\"))"),
-    ANSWER_CONFIRM("-c\\s+(?<answerConfirm>\\S+|(\".+\"))"),
+    SLOGAN("-s\\s+((?<random>random)|(?<slogan>\\S*|(\".*\")))"),
+    ISNUMERIC("-?\\d+(\\.\\d+)?"),
 
     // mapMenu
     MAP_MENU("enter map menu"),
