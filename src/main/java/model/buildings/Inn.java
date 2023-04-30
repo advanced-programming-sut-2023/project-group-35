@@ -9,8 +9,8 @@ public class Inn extends Building{
 
     private int wineRateUsage;
 
-    public Inn(Reign owner, int hp, BuildingType buildingType) {
-        super(owner, hp, buildingType);
+    public Inn(Reign owner, BuildingType buildingType) {
+        super(owner, buildingType);
     }
 
     public void setWineRateUsage(int wineRateUsage) {

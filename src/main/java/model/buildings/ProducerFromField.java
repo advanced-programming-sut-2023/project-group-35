@@ -7,8 +7,8 @@ public class ProducerFromField extends Producer{
     private FieldType fieldType;
     private Resource produced;
 
-    public ProducerFromField(Reign owner, int hp, BuildingType buildingType, FieldType fieldType, int rate, Resource produced) {
-        super(owner, hp, buildingType, rate, produced);
+    public ProducerFromField(Reign owner, BuildingType buildingType, FieldType fieldType, int rate, Resource produced) {
+        super(owner, buildingType, rate, produced);
         this.fieldType = fieldType;
     }
 

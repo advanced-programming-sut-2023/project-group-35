@@ -16,6 +16,13 @@ public class GameController {
         this.playingReign = game.getPlayingReign();
     }
 
+    public String addUser(Matcher matcher) {
+        User user = User.getUserByUsername(matcher.group("username"));
+        if(user == null) return "this user does not exist";
+        if(game.isUserInTheGame(user)) return "this user is already in the game";
+        game.addReign(user);
+        return "user added successfully";
+    }
 
     public String dropBuilding(Matcher matcher) {
         return null;

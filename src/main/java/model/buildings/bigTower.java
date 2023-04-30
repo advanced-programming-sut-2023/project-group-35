@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class bigTower extends Tower{
 
     ArrayList<Structure> structures = new ArrayList<>();
-    public bigTower(Reign owner, int hp, BuildingType buildingType, int fireRange, int defendRange, MilitaryUnit militaryUnit) {
-        super(owner, hp, buildingType, fireRange, defendRange, militaryUnit);
+    public bigTower(Reign owner, BuildingType buildingType, int fireRange, int defendRange, MilitaryUnit militaryUnit) {
+        super(owner, buildingType, fireRange, defendRange, militaryUnit);
     }
 
     @Override

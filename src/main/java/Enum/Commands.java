@@ -4,6 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
+    // main menu
+    START_GAME("\\s*start\\s+a\\s+new\\s+game\\s*"),
+    // start game menu
+    ADD_USER("\\s*add\\s+(?<username>\\S+)\\s*"),
+
     //login and register commands
     CREATE_USER("^\\s*user\\s+create\\s+(?<contentText>.+)$"),
     USER_LOGIN("^\\s*user\\s+login\\s+(?<contentText>.+)$"),

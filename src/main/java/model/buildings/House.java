@@ -6,8 +6,8 @@ import model.Reign;
 
 public class House extends Building{
 
-    public House(Reign owner, int hp, BuildingType buildingType , int Growth) {
-        super(owner, hp, buildingType);
+    public House(Reign owner, BuildingType buildingType , int Growth) {
+        super(owner, buildingType);
         GameController.populationChange(Growth);
     }
     @Override

@@ -5,8 +5,8 @@ import model.Reign;
 public class MovingBridge extends Building{
 
     boolean isBridgeDown;
-    public MovingBridge(Reign owner, int hp, BuildingType buildingType) {
-        super(owner, hp,  buildingType);
+    public MovingBridge(Reign owner, BuildingType buildingType) {
+        super(owner, buildingType);
     }
     public void ChangeBridgeState() {
 

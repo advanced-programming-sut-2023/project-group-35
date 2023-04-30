@@ -15,8 +15,8 @@ public class Tower extends Building{
 
     private ArrayList<RangedUnit> rangedUnits = new ArrayList<>();
 
-    public Tower(Reign owner, int hp, BuildingType buildingType, int fireRange, int defendRange, MilitaryUnit militaryUnit) {
-        super(owner, hp, buildingType);
+    public Tower(Reign owner, BuildingType buildingType, int fireRange, int defendRange, MilitaryUnit militaryUnit) {
+        super(owner, buildingType);
         this.fireRange = fireRange;
         this.defendRange = defendRange;
         this.militaryUnit = militaryUnit;

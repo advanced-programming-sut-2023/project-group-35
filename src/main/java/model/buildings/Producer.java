@@ -8,8 +8,8 @@ public class Producer extends Building{
     //ArrayList<Resources> resources = new ArrayList<>();
     Resource resource;
 
-    public Producer(Reign owner, int hp, BuildingType buildingType , int rate, Resource resource) {
-        super(owner, hp, buildingType);
+    public Producer(Reign owner, BuildingType buildingType , int rate, Resource resource) {
+        super(owner, buildingType);
         this.rate = rate;
         this.resource = resource;
     }

@@ -6,8 +6,8 @@ import model.Reign;
 import java.util.ArrayList;
 
 public class Church extends Building{
-    public Church(Reign owner, int hp, BuildingType buildingType) {
-        super(owner, hp, buildingType);
+    public Church(Reign owner, BuildingType buildingType) {
+        super(owner, buildingType);
         GameController.populationChange(2);
     }
 

@@ -8,8 +8,8 @@ public class Converter extends Building{
     Resource input;
     Resource output;
 
-    public Converter(Reign owner, int hp , BuildingType buildingType, int rate, Resource input, Resource output) {
-        super(owner, hp, buildingType);
+    public Converter(Reign owner, BuildingType buildingType, int rate, Resource input, Resource output) {
+        super(owner, buildingType);
         this.rate = rate;
         this.input = input;
         this.output = output;

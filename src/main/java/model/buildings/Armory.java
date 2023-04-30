@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class Armory extends Building{
 
     private static int capacity = 0;
-    public Armory(Reign owner, int hp, BuildingType buildingType, int capacity) {
-        super(owner, hp, buildingType);
+    public Armory(Reign owner, BuildingType buildingType, int capacity) {
+        super(owner, buildingType);
         Armory.capacity += capacity;
         //addResources();
 

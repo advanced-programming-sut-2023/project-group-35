@@ -10,9 +10,9 @@ public class Building {
     public BuildingType buildingType;
 
     public static ArrayList<Building> allBuildings = new ArrayList<>();
-    public Building(Reign owner, int hp, BuildingType buildingType) {
-        owner = owner;
-        this.hp = hp;
+    public Building(Reign owner, BuildingType buildingType) {
+        this.owner = owner;
+        this.hp = buildingType.hp;
         this.buildingType = buildingType;
     }
 
