@@ -2,17 +2,16 @@ package model.buildings;
 
 import model.Block;
 import model.Reign;
-import model.people.MilitaryUnit;
 import Enum.*;
 import model.structures.Structure;
 
 import java.util.ArrayList;
 
-public class bigTower extends Tower{
+public class BigTower extends Tower{
 
     ArrayList<Structure> structures = new ArrayList<>();
-    public bigTower(BuildingType buildingType, Reign owner, Block block,  int fireRange, int defendRange) {
-        super(buildingType, owner , block, fireRange, defendRange);
+    public BigTower(BuildingType buildingType, Reign owner, Block block) {
+        super(buildingType, owner , block);
     }
     // todo delete this class
     @Override

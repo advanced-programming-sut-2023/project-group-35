@@ -53,16 +53,63 @@ public class GameController {
         playingReign.spendGold(type.goldCost);
         playingReign.changeResourceAmount(type.resourceToBuild, type.resourceAmount);
 
-        BuildTheBuilding(type, block);
-        return null;
-    }
-    public void BuildTheBuilding(BuildingType type, Block block) {
-         if(type.checkForEquals(BuildingType.SMALL_STONE_GATE, BuildingType.BIG_STONE_GATEHOUSE)) {
+        return BuildTheBuilding(type, block);
 
-         }
+    }
+    public String BuildTheBuilding(BuildingType type, Block block) {
+        Building building;
+        if(type.checkForEquals(BuildingType.SHOP)) {
+            building = new Building(type, playingReign, block);
+        }
+        if(type.checkForEquals(BuildingType.SMALL_STONE_GATE, BuildingType.BIG_STONE_GATEHOUSE)) {
+             building = new GateHouse(type, playingReign, block);
+        } else if(type.checkForEquals(BuildingType.HOVEL)) {
+            building = new House(type, playingReign, block);
+        } else if(type.checkForEquals(BuildingType.MOVING_BRIDGE)) {
+            building = new MovingBridge(type, playingReign, block);
+        } else if(type.checkForEquals(BuildingType.LOOKOUT_TOWER, BuildingType.PERIMETER_TOWER, BuildingType.DEFENCE_TURRET)) {
+            building = new Tower(type, playingReign, block);
+        } else if(type.checkForEquals(BuildingType.SQUARE_TOWER, BuildingType.CIRCLE_TOWER)) {
+            building = new BigTower(type, playingReign, block);
+        } else if(type.checkForEquals(BuildingType.ARMOURY)) {
+            building = new Armory(type, playingReign, block); // delete this class?
+        } else if(type.checkForEquals(BuildingType.ARMOURER)) { // what else? پست شکار و
+            building = new Converter(type, playingReign, block, Resource.IRON, Resource.ARMOR );
+        } else if(type.checkForEquals(BuildingType.MILL)) {
+            building = new Converter(type, playingReign, block, Resource.WHEAT, Resource.FLOUR);
+        } else if(type.checkForEquals(BuildingType.BLACK_SMITH)) {
+            building = new Converter(type, playingReign , block, Resource.IRON, Resource.SWORD);
+        } else if(type.checkForEquals(BuildingType.FLETCHER)) {
+            building = new Converter(type, playingReign, block , Resource.WOOD, Resource.BOW);
+        } else if(type.checkForEquals(BuildingType.POLE_TURNER)) {
+            building = new Converter(type, playingReign, block , Resource.WOOD, Resource.SPEAR);
+        } else if(type.checkForEquals(BuildingType.HUNTING_GROUND)) {
+            building = new Converter(type, playingReign, block , Resource.MEAT, Resource.PROCESSED_MEAT);
+        } else if(type.checkForEquals(BuildingType.BREWERY)) {
+            building = new Converter(type, playingReign, block , Resource.HOP, Resource.BEAR);
+        } else if(type.checkForEquals(BuildingType.INN)) {
+            building = new Inn(type, playingReign, block); // delete???
+        } else if(type.checkForEquals(BuildingType.PITCH_RIG)) {
+            if(!block.getFieldType().equals(FieldType.plain)) return "you should drop a pitch rig on a plain";
+            building = new Producer(type, playingReign, block, Resource.TAR);
+        } else if(type.checkForEquals(BuildingType.STONE_MINE)) {
+            // todo check the ground
+            building = new Producer(type, playingReign, block , Resource.STONE);
+        } else if(type.checkForEquals(BuildingType.STOCK_PILE)) {
+            // todo check the near blocks
+        } else if(type.checkForEquals(BuildingType.APPLE_GARDEN)) {
+            building = new Producer(type, playingReign, block, Resource.APPLE);
+        } else if(type.checkForEquals(BuildingType.WHEAT_FARM)) {
+            building = new Producer(type, playingReign, block, Resource.WHEAT);
+        } else if(type.checkForEquals(BuildingType.BAKERY)) {
+            building = new Producer(type, playingReign, block, Resource.BREAD);
+        } else if(type.checkForEquals(BuildingType.DAIRY_FARM)) {
+            building = new Producer(type, playingReign, block , Resource.CHEESE);
+        }
+
         //todo different buildings
 
-
+        return "drop building successful";
     }
     public String dropWall(Matcher matcher) {
         return null;

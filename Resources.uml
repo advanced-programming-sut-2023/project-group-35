@@ -67,7 +67,7 @@
     <node x="2576.0" y="1527.0">view.MainMenu</node>
     <node x="2784.0" y="806.0">model.buildings.KillingDig</node>
     <node x="614.0" y="1116.0">model.people.MilitaryUnit</node>
-    <node x="211.0" y="993.0">model.buildings.bigTower</node>
+    <node x="211.0" y="993.0">model.buildings.BigTower</node>
     <node x="2900.0" y="1527.0">model.TradeItem</node>
   </nodes>
   <notes />
@@ -166,7 +166,7 @@
       <point x="2966.75" y="1195.0" />
       <point x="0.0" y="27.0" />
     </edge>
-    <edge source="model.buildings.bigTower" target="model.buildings.Tower" relationship="GENERALIZATION">
+    <edge source="model.buildings.BigTower" target="model.buildings.Tower" relationship="GENERALIZATION">
       <point x="0.0" y="-39.0" />
       <point x="0.0" y="63.0" />
     </edge>

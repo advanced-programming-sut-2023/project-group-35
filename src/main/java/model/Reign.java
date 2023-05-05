@@ -148,8 +148,8 @@ public class Reign {
         this.population += change;
     }
 
-    public void setPopularity(int popularity) {
-        this.popularity = popularity;
+    public void changePopularity(int change) {
+        this.popularity += change;
     }
 
     public void setTaxRate(int taxRate) {

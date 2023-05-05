@@ -5,11 +5,15 @@ import model.Reign;
 
 public class MovingBridge extends Building{
 
-    boolean isBridgeDown;
+    boolean isBridgePassable;
 
-    public MovingBridge(BuildingType buildingType, Reign owner, Block block, boolean isBridgeDown) {
+    public MovingBridge(BuildingType buildingType, Reign owner, Block block) {
         super(buildingType, owner, block);
-        this.isBridgeDown = isBridgeDown;
+        this.isBridgePassable = false;
+    }
+
+    public void setBridgePassable(boolean bridgePassable) {
+        isBridgePassable = bridgePassable;
     }
 
     public void ChangeBridgeState() {

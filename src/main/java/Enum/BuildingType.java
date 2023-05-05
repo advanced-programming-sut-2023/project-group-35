@@ -5,7 +5,7 @@ public enum BuildingType {
     BASE(null, 0 , 0, 0, 0, 0), // مقر
     SMALL_STONE_GATE( null , 0, 0, 0 , 20, 0),
     BIG_STONE_GATEHOUSE(Resource.STONE , 20 , 0 , 0 , 20, 0),
-    DRAW_BRIDGE(Resource.WOOD, 10 , 0 , 0 , 20, 0), // پل متحرک
+    MOVING_BRIDGE(Resource.WOOD, 10 , 0 , 0 , 20, 0), // پل متحرک
     LOOKOUT_TOWER(Resource.STONE, 10, 0 , 0 , 20, 0),
     PERIMETER_TOWER(Resource.STONE, 10 , 0 , 0 , 20, 0),
     DEFENCE_TURRET(Resource.STONE , 15 , 0 , 0 , 20, 0),
