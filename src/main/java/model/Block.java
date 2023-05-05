@@ -95,4 +95,8 @@ public class Block {
     public void setTree(Tree tree) {
         this.tree = tree;
     }
+
+    public ArrayList<Structure> getStructures() {
+        return structures;
+    }
 }

@@ -14,7 +14,7 @@ public class bigTower extends Tower{
     public bigTower(BuildingType buildingType, Reign owner, Block block,  int fireRange, int defendRange) {
         super(buildingType, owner , block, fireRange, defendRange);
     }
-
+    // todo delete this class
     @Override
     public void nextTurn() {
 

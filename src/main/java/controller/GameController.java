@@ -37,25 +37,32 @@ public class GameController {
         BuildingType type = BuildingType.getBuildingTypeByName(matcher.group("type"));
         if(type == null) return "wrong building type";
         Block block = map.getBlockByLocation(x, y);
-        if (!block.getFieldType().isSuitableForBuilding())
+        if (!block.getFieldType().isSuitableForBuilding)
             return "the filed type is not suitable to drop building";
+        if(map.getBlockByLocation(x, y).getBuilding() != null) return "there is already a building in this block";
+        if(map.getBlockByLocation(x, y).getStructures().size() > 0) {
+            return "drop building failed: there are some structures in this block";
+        }
+        if(type.equals(BuildingType.BASE)) return "you can't build a new base inside a game";
         if(type.equals(BuildingType.PITCH_RIG) && !block.getFieldType().equals(FieldType.plain))
             return "you should build the pitch rig on a plain";
-        if(map.getBlockByLocation(x, y).getBuilding() != null) return "there is already a building in this block";
-        // things other than building?? // like structures
-        // check the side blocks for the same type for stoke pile and ?? ..
-        if(type.equals(BuildingType.BASE)) return "you can't build a new base inside a game";
+        // todo check the side blocks for the same type for stoke pile and ?? ..
         if(type.goldCost > playingReign.getGold()) return "you do not have enough gold";
         if(playingReign.getResourceAmount(type.resourceToBuild) < type.resourceAmount)
             return "you do not have enough resources to build this building";
         playingReign.spendGold(type.goldCost);
         playingReign.changeResourceAmount(type.resourceToBuild, type.resourceAmount);
-        BuildTheBuilding(type);
+
+        BuildTheBuilding(type, block);
         return null;
     }
-    public void BuildTheBuilding(BuildingType type) {
-        // if(type.equals())
+    public void BuildTheBuilding(BuildingType type, Block block) {
+         if(type.checkForEquals(BuildingType.SMALL_STONE_GATE, BuildingType.BIG_STONE_GATEHOUSE)) {
+
+         }
         //todo different buildings
+
+
     }
     public String dropWall(Matcher matcher) {
         return null;
@@ -87,8 +94,6 @@ public class GameController {
 
 
 
-    public static void populationChange(int number) {
-    }
     public String nextTurn() {
         return null;
     }

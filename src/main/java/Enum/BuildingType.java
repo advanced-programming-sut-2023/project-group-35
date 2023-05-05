@@ -2,10 +2,10 @@ package Enum;
 
 import Enum.*;
 public enum BuildingType {
-    BASE(null, 0 , 0, 0, 0),
+    BASE(null, 0 , 0, 0, 0), // مقر
     SMALL_STONE_GATE( null , 0, 0, 0 , 20),
     BIG_STONE_GATEHOUSE(Resource.STONE , 20 , 0 , 0 , 20),
-    DRAW_BRIDGE(Resource.WOOD, 10 , 0 , 0 , 20),
+    DRAW_BRIDGE(Resource.WOOD, 10 , 0 , 0 , 20), // پل متحرک
     LOOKOUT_TOWER(Resource.STONE, 10, 0 , 0 , 20),
     PERIMETER_TOWER(Resource.STONE, 10 , 0 , 0 , 20),
     DEFENCE_TURRET(Resource.STONE , 15 , 0 , 0 , 20),
@@ -81,9 +81,18 @@ public enum BuildingType {
 
     public static BuildingType getBuildingTypeByName(String name) {
         for (BuildingType value : BuildingType.values()) {
-            if(value.getName().equals(name)) return value;
+            if(value.getName().equals(name.toLowerCase().trim())) return value;
         }
         return null;
+    }
+    public boolean canKeepStructure() {
+        return this.checkForEquals(SQUARE_TOWER, CIRCLE_TOWER);
+    }
+    public boolean checkForEquals(BuildingType... types) {
+        for (BuildingType type : types) {
+            if(type.equals(this)) return true;
+        }
+        return false;
     }
 
 }

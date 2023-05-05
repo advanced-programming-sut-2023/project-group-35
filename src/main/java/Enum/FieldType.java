@@ -40,15 +40,13 @@ public enum FieldType {
 
     private String backGroundColor;
 
-    private final boolean isSuitableForBuilding;
+    public final boolean isSuitableForBuilding;
     // ghabel sakht o saz
     FieldType(String backGroundColor, boolean isSuitableForBuilding) {
         this.backGroundColor = backGroundColor;
         this.isSuitableForBuilding = isSuitableForBuilding;
     }
-    public boolean isSuitableForBuilding() {
-        return isSuitableForBuilding;
-    }
+
 
 
 }
