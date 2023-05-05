@@ -21,20 +21,18 @@ public class UserController {
     public String UserController(Matcher matcher) {
         return null;
     }
-    public String register(Matcher matcher) throws IOException, NoSuchAlgorithmException {
-        //TODO:creater matchers;
-        String userName = checkForQuotation(matcher.group("username"));
-        String password = checkForQuotation(matcher.group("password"));
+    public String register(Matcher matcher,String userName,String password,String email,String nickName,
+                           String slogan,String passwordConfirm) throws IOException, NoSuchAlgorithmException {
         if(password.equals("Random")) {
             password = RegisterAndLoginMenu.getRandomPassword();
             if(RegisterAndLoginMenu.checkPassword(password))
                 System.out.println("It was entered correctly.");
         }
 
-        String email = checkForQuotation(matcher.group("email"));
-        String nickName = checkForQuotation(matcher.group("nickname"));
-        String slogan = null;
-        String passwordConfirm = null;
+         email = checkForQuotation(matcher.group("email"));
+         nickName = checkForQuotation(matcher.group("nickname"));
+         slogan = null;
+         passwordConfirm = null;
         String securityQuestion = null;
         String answerToSecurity = null;
         if(matcher.group("sloganText") != null)

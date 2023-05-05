@@ -8,7 +8,7 @@ public class House extends Building{
 
     public House(Reign owner, BuildingType buildingType , int Growth) {
         super(owner, buildingType);
-        GameController.populationChange(Growth);
+        owner.changePopulation(Growth);
     }
     @Override
     public void nextTurn() {

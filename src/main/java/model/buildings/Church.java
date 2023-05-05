@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Church extends Building{
     public Church(Reign owner, BuildingType buildingType) {
         super(owner, buildingType);
-        GameController.populationChange(2);
+        owner.changePopulation(2);
     }
 
 

@@ -7,25 +7,32 @@ public class ReignController extends GameController{
         super(game);
     }
 
-    public static void showPopularityFactors() {
+    public static String showPopularityFactors() {
+        return null;
     }
-    public void showPopularity() {
+    public String showPopularity() {
+        return null;
     }
-    public void showFoodList() {
+    public String showFoodList() {
+        return null;
     }
     public String setFoodRate(int rate) {
         return null;
     }
-    public void showFoodRate() {
-
+    public String showFoodRate() {
+        return null;
     }
     public String setTaxRate(int rate) {
         return null;
     }
-    public void showTaxRate() {
-
+    public String showTaxRate() {
+        return null;
     }
     public String setFearRate(int rate) {
+        return null;
+    }
+
+    public String showFearRate() {
         return null;
     }
 }

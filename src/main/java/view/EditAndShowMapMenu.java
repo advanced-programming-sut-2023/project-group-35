@@ -13,10 +13,10 @@ public class EditAndShowMapMenu extends Menu{
     public void run() {
         while(true) {
             input = scanner.nextLine();
-            if((matcher = getMatcher(input , Commands.SHOW_MAP.regex)) != null) {
+            if(((matcher = getRealMatcher(input, Commands.SHOW_MAP, Commands.X, Commands.Y))) != null) {
                 System.out.println(mapController.showMap(matcher));
-            } else if((matcher = getMatcher(input , Commands.MOVE_MAP.regex)) != null) {
-                System.out.println(mapController.moveMap(matcher));
+//            } else if((matcher = getMatcher(input , Commands.MOVE_MAP)) != null) {
+//                System.out.println(mapController.moveMap(matcher));
             } else if((matcher = getMatcher(input , Commands.SHOW_MAP_DETAILS.regex)) != null) {
                 mapController.showDetail(matcher);
             } else if((matcher = getMatcher(input , Commands.SET_TEXTURE.regex)) != null) {

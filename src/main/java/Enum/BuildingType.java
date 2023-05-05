@@ -79,7 +79,7 @@ public enum BuildingType {
         return tmp.replaceAll("_", " ");
     }
 
-    public BuildingType getBuildingTypeByName(String name) {
+    public static BuildingType getBuildingTypeByName(String name) {
         for (BuildingType value : BuildingType.values()) {
             if(value.getName().equals(name)) return value;
         }

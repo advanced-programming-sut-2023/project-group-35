@@ -13,7 +13,6 @@ public class Block {
     int x;
     int y;
 
-
     private Building building;
     private ArrayList<Structure> structures;
     private ArrayList<MilitaryUnit> militaryUnits;
