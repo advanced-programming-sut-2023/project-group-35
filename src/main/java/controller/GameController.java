@@ -2,6 +2,8 @@ package controller;
 
 import model.*;
 import model.buildings.*;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
 import Enum.*;
 import java.util.regex.Matcher;
 
@@ -46,7 +48,7 @@ public class GameController {
         playingReign.spendGold(type.goldCost);
         playingReign.changeResourceAmount(type.resourceToBuild, type.resourceAmount);
         BuildTheBuilding(type);
-        return ""; //todo complete
+        return null;
     }
     public void BuildTheBuilding(BuildingType type) {
         // if(type.equals())
@@ -75,7 +77,8 @@ public class GameController {
 
 
 
-
+    public static void populationChange(int number) {
+    }
     public String nextTurn() {
         return null;
     }
