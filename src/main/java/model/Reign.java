@@ -12,26 +12,6 @@ public class Reign {
     private int gold;
     private User user;
 
-    public void changePopulation(int change) {
-        this.population += change;
-    }
-
-    public void setPopularity(int popularity) {
-        this.popularity = popularity;
-    }
-
-    public void setTaxRate(int taxRate) {
-        this.taxRate = taxRate;
-    }
-
-    public void setFoodRate(int foodRate) {
-        this.foodRate = foodRate;
-    }
-
-    public void setFearRate(int fearRate) {
-        this.fearRate = fearRate;
-    }
-
     private int population;
     private int unemployedPopulation;
     private int popularity;
@@ -163,5 +143,32 @@ public class Reign {
 
     public int getFearRate() {
         return fearRate;
+    }
+    public void changePopulation(int change) {
+        this.population += change;
+    }
+
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
+    }
+
+    public void setTaxRate(int taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public void setFoodRate(int foodRate) {
+        this.foodRate = foodRate;
+    }
+
+    public void setFearRate(int fearRate) {
+        this.fearRate = fearRate;
+    }
+
+    public int getUnemployedPopulation() {
+        return unemployedPopulation;
+    }
+
+    public void changeUnemployedPopulation(int change) {
+        this.unemployedPopulation = change;
     }
 }

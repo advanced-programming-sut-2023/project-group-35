@@ -2,6 +2,7 @@ package model;
 
 import model.*;
 import Enum.*;
+import model.buildings.Building;
 
 import javax.swing.plaf.synth.Region;
 import java.util.ArrayList;
@@ -56,6 +57,10 @@ public class Map {
         return null;
     }
 
+    public void addRegin(Reign reign) {
+        baseBlocks.get(0).setBuilding(new Building(BuildingType.BASE, reign, baseBlocks.get(0)));
+        baseBlocks.remove(0);
+    }
     public ArrayList<Block> getBlocks() {
         return blocks;
     }
@@ -77,4 +82,8 @@ public class Map {
         }
         return false;
     }
+    public int getNumberOfBases() {
+        return baseBlocks.size();
+    }
+
 }

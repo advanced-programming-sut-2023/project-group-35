@@ -4,6 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
+    // main menu
+    START_GAME("\\s*start\\s+a\\s+new\\s+game\\s*"),
+    // start game menu
+    ADD_USER("\\s*add\\s+(?<username>\\S+)\\s*"),
+
     //login and register commands
     CREATE_USER("^\\s*user\\s+create\\s+(?<contentText>.+)$"),
     USER_LOGIN("^\\s*user\\s+login\\s+(?<contentText>.+)$"),
@@ -20,30 +25,45 @@ public enum Commands {
     SLOGAN("-s\\s+((?<random>random)|(?<slogan>\\S*|(\".*\")))"),
     ISNUMERIC("-?\\d+(\\.\\d+)?"),
 
+
+
     // mapMenu
     MAP_MENU("enter map menu"),
-    SHOW_MAP("show map -x (?<x>\\d+) -y (?<y>\\d+)"),
+    //SHOW_MAP("show map -x (?<x>\\d+) -y (?<y>\\d+)"),
+    SHOW_MAP("^\\s*show\\s+map\\s+"),
+
     MOVE_MAP("move map (up(?<up> \\d+)?)\\s+(down(?<down> \\d+)?)\\s+(left(?<left> \\d+)?)\\s+(right(?<right> \\d+)?)"),
     SHOW_MAP_DETAILS("show details -x (?<x>\\d+) -y (?<y>\\d+)"),
     SET_TEXTURE("set texture -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S+)"),
     SET_AREA_TEXTURE("set texture -x1 (?<x1>\\d+) -y1 (?<y1>\\d+) -x2 (?<x2>\\d+) -y2 (?<y2>\\d+) -t (?<type>\\S+)"),
+    X1("-x1\\s+\\d+"),
+    X2("-x2\\s+\\d+"),
+    Y1("-y1\\s+\\d+"),
+    Y2("-y2\\s+\\d+"),
     CLEAR("clear -x (?<x>\\d+) -y (?<y>\\d+)"),
-    DROP_ROCK("drop rock -x (?<x>\\d+) -y (?<y>\\d+) -d (?<direction>\\S)"),
+    DROP_ROCK("drop rock -x (?<x>\\d+) -y (?<y>\\d+) -d (?<direction>\\S+)"),
+    DIRECTION("-d\\s+\\S+"), //
     DROP_TREE("drop tree -x (?<x>\\d+) -y (?<y>\\d+) -t (?<tree>\\S+)"),
-    DROP_BUILDING("drop building -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S+)"),
+    TREE("-t\\s+\\S+"),
+    //DROP_BUILDING("drop building -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S+)"),
+    DROP_BUILDING("^\\s*drop\\s+building\\s+"),
     DROP_UNIT("drop unit -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S) -c (?<count>\\d+)"),
+    COUNT("-c\\s+\\d+"),
 
     SELECT_BUILDING("select building -x (?<x>\\d+) -y (?<y>\\d+)"),
     SELECT_UNIT("select unit -x (?<x>\\d+) -y (?<y>\\d+)\\s*"),
 
-    // BUILDING MENU
-
     CREATE_UNIT("create unit -t (?<type>\\.+) -c (?<count>\\d+)"), // \\S+ or .+ ?
     CHANGE_TAX_RATE("change tax rate -r (?<rate>\\d+)"),
+    RATE("-r\\s+\\d+"),
     // TRADE MENU
     ADD_REQUEST("request -t (?<type>\\S+) -a (?<amount>\\d+) -p (?<price>\\d+) -m (?<message>.+)"),
-    DONATION("donate -t (?<resourceType>\\S+) -a (?<resourceAmount>\\d+) -m (?<message>.+)"),
+    AMOUNT("-a\\s+\\d+"),
+    PRICE("-p\\s+\\d+"),
+    MESSAGE("-m\\s+\\d+"),
+    DONATION("donate -t (?<type>\\S+) -a (?<amount>\\d+) -m (?<message>.+)"),
     ACCEPT_REQUEST("request accept -i (?<id>\\d+) -m (?<message>\\.+)"),
+    ID("-i\\s+\\d+"),
     DELETE_TRADE("delete trade -i (?<id>\\d+)"),
     TRADE_LIST("show trade list"),
     TRADE_HISTORY("show trade history"),
@@ -76,7 +96,11 @@ public enum Commands {
     SHOW_HIGHSCORE("^\\s*profile\\s+display\\s+highscore\\s*$"),
     SHOW_RANK("^\\s*profile\\s+display\\s+highscore\\s*$"),
     SHOW_SLOGAN("^\\s*profile\\s+display\\s+slogan\\s*$"),
-    SHOW_INFO("^\\s*profile\\s+display\\s*$");
+    SHOW_INFO("^\\s*profile\\s+display\\s*$"),
+    /// groups
+    X("-x\\s+\\d+"),
+    Y("-y\\s+\\d+"),
+    TYPE("-t\\s+(\\S+|(\".+\")");
 
     public String regex;
     private Commands(String regex){
@@ -86,4 +110,6 @@ public enum Commands {
         Matcher matcher = Pattern.compile(command.regex).matcher(input);
         return (matcher.find()) ? matcher : null;
     }
+
+
 }

@@ -1,10 +1,12 @@
 package model.buildings;
 
+import model.Block;
 import model.Reign;
 import Enum.*;
 public class OilDig extends Building{
     private boolean isBurning;
-    public OilDig(Reign owner, int hp, BuildingType buildingType) {
-        super(owner, hp, buildingType);
+
+    public OilDig(BuildingType buildingType, Reign owner, Block block) {
+        super(buildingType, owner, block);
     }
 }

@@ -2,14 +2,16 @@ package model.buildings;
 
 import Enum.*;
 import controller.GameController;
+import model.Block;
 import model.Reign;
 
 public class House extends Building{
 
-    public House(Reign owner, int hp, BuildingType buildingType , int Growth) {
-        super(owner, hp, buildingType);
-        GameController.populationChange(Growth);
+    public House(BuildingType buildingType, Reign owner, Block block, int growth) {
+        super(buildingType, owner, block);
+        owner.changePopulation(growth);
     }
+
     @Override
     public void nextTurn() {
 

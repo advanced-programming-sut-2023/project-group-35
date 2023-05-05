@@ -3,6 +3,8 @@ package view;
 import controller.*;
 import Enum.*;
 
+import java.util.concurrent.ConcurrentMap;
+
 public class GameMenu extends Menu{
     private final GameController gameController;
 
@@ -32,13 +34,8 @@ public class GameMenu extends Menu{
                     BuildingMenu buildingMenu = new BuildingMenu(new BuildingController(gameController.getGame()));
                     buildingMenu.run();
                 }
-            } else if((matcher = getMatcher(input , Commands.SELECT_UNIT.regex)) != null) {
-                String result = gameController.selectUnit(matcher);
-                System.out.println(result);
-                if(result.equals("select units successful!")) {
-                    UnitSelectMenu menu = new UnitSelectMenu(new UnitController(gameController.getGame()));
-                    menu.run();
-                }
+            } else if((matcher = getRealMatcher(input , Commands.DROP_BUILDING, Commands.X, Commands.Y, Commands.TYPE)) != null) {
+                System.out.println(gameController.dropBuilding(matcher));
             }
         }
     }

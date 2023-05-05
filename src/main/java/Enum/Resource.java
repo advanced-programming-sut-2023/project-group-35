@@ -3,7 +3,7 @@ package Enum;
 public enum Resource {
     WOOD(20 , 18),
 //    GOLD(),
-    STONE(20, 10),
+    STONE(20 , 20),
 //    WHEAT(),
 //    APPLE(),
 //    CHEESE(),

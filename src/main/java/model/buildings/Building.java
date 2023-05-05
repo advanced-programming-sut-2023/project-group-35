@@ -12,11 +12,11 @@ public class Building {
     private int hp;
     public static ArrayList<Building> allBuildings = new ArrayList<>();
 
-    public Building(BuildingType buildingType, Block block, Reign owner, int hp) {
+    public Building(BuildingType buildingType, Reign owner, Block block) {
         this.buildingType = buildingType;
         this.block = block;
         this.owner = owner;
-        this.hp = hp;
+        this.hp = buildingType.hp;
     }
 
     public void nextTurn() {
@@ -37,10 +37,6 @@ public class Building {
 
     public int getHp() {
         return hp;
-    }
-
-    public BuildingType getBuildingType() {
-        return buildingType;
     }
 
     public void setHp(int hp) {

@@ -6,8 +6,8 @@ import model.people.MilitaryUnit;
 import java.util.*;
 
 public class Game {
-    private Map map;
     private User starter;
+    private Map map;
     private Reign playingReign;
 
     private Building selectedBuilding;
@@ -16,6 +16,12 @@ public class Game {
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Reign> reigns = new ArrayList<>();
     int turnsPassed;
+
+    public Game(User starter, Map map) {
+        this.starter = starter;
+        this.map = map;
+        addReign(starter);
+    }
 
     public String showReigns() {
         String output = "REIGNS IN THE GAME:";
@@ -36,7 +42,20 @@ public class Game {
         }
         return null;
     }
+    public boolean isUserInTheGame(User userGiven) {
+        for (User user : users) {
+            if(user.equals(userGiven)) return true;
+        }
+        return false;
+    }
 
+    public void addReign(User user) {
+        users.add(user);
+        Reign reign = new Reign(user);
+        reigns.add(reign);
+        if(reigns.size() == 1) playingReign = reign;
+        map.addRegin(reign);
+    }
     public void setSelectedBuilding(Building building) {
         this.selectedBuilding = building;
     }
@@ -66,4 +85,5 @@ public class Game {
     public Building getSelectedBuilding() {
         return selectedBuilding;
     }
+
 }

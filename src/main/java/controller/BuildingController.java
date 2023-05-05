@@ -28,8 +28,8 @@ public class BuildingController extends GameController{
         if(playingReign.getGold() < unitType.cost * count) return "you don't have enough gold";
         if(playingReign.getResourceAmount(unitType.resourceToBuild) < count)
             return "you don't have enough" + unitType.resourceToBuild.name() + "to build this unit";
-        if(!unitType.buildingProducedIn.equals(selectedBuilding.getBuildingType()))
-            return "you can't build " + unitType.name() + "s in a" + selectedBuilding.getBuildingType().getName();
+        if(!unitType.buildingProducedIn.equals(selectedBuilding.buildingType))
+            return "you can't build " + unitType.name() + "s in a" + selectedBuilding.buildingType.getName();
         if(playingReign.getUnemployedPopulation() < count) return "you don't have enough unemployed population";
         MilitaryUnit unit = new MilitaryUnit(unitType , selectedBuilding.getOwner(),
                 selectedBuilding.getBlock(), count, unitType.getDefencePower());
@@ -39,15 +39,15 @@ public class BuildingController extends GameController{
         return "create unit successful";
     }
     public String repair() {
-        if(selectedBuilding.getHp() == selectedBuilding.getBuildingType().hp) return "this building is already repaired";
-        Resource resource = selectedBuilding.getBuildingType().resourceToBuild;
+        if(selectedBuilding.getHp() == selectedBuilding.buildingType.hp) return "this building is already repaired";
+        Resource resource = selectedBuilding.buildingType.resourceToBuild;
         if(resource != null &&
-                playingReign.getResourceAmount(resource) < selectedBuilding.getBuildingType().resourceAmount)
+                playingReign.getResourceAmount(resource) < selectedBuilding.buildingType.resourceAmount)
             return "you don't have enough resources to repair this building";
         if(game.getMap().findUnitsOfOpponent(selectedBuilding.getBlock() , 3 ,  selectedBuilding.getOwner()))
             return "repair failed, there are units belonging to your opponent near this building";
-        selectedBuilding.setHp(selectedBuilding.getBuildingType().hp);
-        if(resource != null) selectedBuilding.getOwner().changeResourceAmount(resource, selectedBuilding.getBuildingType().resourceAmount);
+        selectedBuilding.setHp(selectedBuilding.buildingType.hp);
+        if(resource != null) selectedBuilding.getOwner().changeResourceAmount(resource, selectedBuilding.buildingType.resourceAmount);
         return "building repaired successfully";
     }
 

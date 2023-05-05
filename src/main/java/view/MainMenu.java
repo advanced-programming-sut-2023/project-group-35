@@ -22,6 +22,9 @@ public class MainMenu extends Menu{
                 if(mapQuestion().equals("notChosen")) continue;
                 EditAndShowMapMenu mapMenu = new EditAndShowMapMenu(new MapController(loggedInUser.getMap(), false, null));
                 mapMenu.run();
+            } else if(input.matches(Commands.START_GAME.regex)) {
+                StartGameMenu gameMenu = new StartGameMenu(loggedInUser);
+                gameMenu.run();
             }
             else if(input.matches(Commands.PROFILE_MENU.regex)) {
                 ProfileMenu profileMenu = new ProfileMenu(loggedInUser);

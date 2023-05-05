@@ -1,5 +1,6 @@
 package model.buildings;
 
+import model.Block;
 import model.Reign;
 import model.people.MilitaryUnit;
 import Enum.*;
@@ -10,16 +11,16 @@ import java.util.ArrayList;
 public class Tower extends Building{
     int fireRange;
     int defendRange;
-    private MilitaryUnit militaryUnit;
-
+    private MilitaryUnit militaryUnit; // what is this for??
 
     private ArrayList<RangedUnit> rangedUnits = new ArrayList<>();
 
-    public Tower(Reign owner, int hp, BuildingType buildingType, int fireRange, int defendRange, MilitaryUnit militaryUnit) {
-        super(owner, hp, buildingType);
+
+    public Tower(BuildingType type, Reign owner, Block block, int fireRange, int defendRange) {
+        super(type, owner, block);
         this.fireRange = fireRange;
         this.defendRange = defendRange;
-        this.militaryUnit = militaryUnit;
+        //this.militaryUnit = unit;
     }
 
     public ArrayList<RangedUnit> getRangedUnits() {

@@ -1,12 +1,15 @@
 package model.buildings;
 
+import model.Block;
 import model.Reign;
 import Enum.*;
 public class GateHouse extends House{
     private boolean isOpen;
-    public GateHouse(Reign owner, int hp, BuildingType buildingType, int Growth) {
-        super(owner, hp, buildingType, Growth);
+
+    public GateHouse(BuildingType buildingType, Reign owner, Block block, int growth) {
+        super(buildingType, owner, block, growth);
     }
+
     public void nextTurn() {
 
     }

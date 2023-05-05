@@ -88,6 +88,9 @@ public class Block {
     public Building getBuilding() {
         return building;
     }
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
 
     public void setTree(Tree tree) {
         this.tree = tree;

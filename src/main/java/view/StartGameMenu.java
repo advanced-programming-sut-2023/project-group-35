@@ -1,9 +1,52 @@
 package view;
 
-import java.util.regex.Matcher;
-
+import controller.GameController;
+import model.*;
+import Enum.*;
 public class StartGameMenu extends Menu{
+    //private User playingUser;
+    private int leftUsersToAdd;
+    private final GameController gameController;
+
+    public StartGameMenu(User starter) {
+        //this.playingUser = starter;
+        leftUsersToAdd = starter.getMap().getNumberOfBases();
+        gameController = new GameController(new Game(starter, starter.getMap()));
+    }
+
 
     public void run() {
+        System.out.println("YOU ARE IN THE START GAME MENU");
+        System.out.println("print back to go back to main menu");
+        while (true) {
+            printLeftUsersToEnter();
+            input = scanner.nextLine();
+            if(input.matches(Commands.BACK.regex)) {
+                if(isUserSureToExit()) {
+                    System.out.println("you have exited start game menu");
+                    return;
+                }
+            } else if((matcher = getMatcher(input , Commands.ADD_USER.regex)) != null) {
+                String result = gameController.addUser(matcher);
+                System.out.println(result);
+                if(result.equals("user added successfully")) leftUsersToAdd--;
+                if(leftUsersToAdd == 0) {
+                    System.out.println("great!\nlet's start the game!");
+                    GameMenu gameMenu = new GameMenu(gameController);
+                    gameMenu.run();
+                }
+            } else System.out.println("invalid command");
+        }
+    }
+    public void printLeftUsersToEnter() {
+        System.out.println("there are " + leftUsersToAdd + "users left to add");
+        System.out.println("print their username to add them");
+    }
+    public boolean isUserSureToExit() {
+        System.out.println("are you sure you want to exit start game menu?");
+        System.out.println("print yes to exit");
+        input = scanner.nextLine();
+        if(input.matches("\\s*yes\\s*")) return true;
+        return false;
     }
 }

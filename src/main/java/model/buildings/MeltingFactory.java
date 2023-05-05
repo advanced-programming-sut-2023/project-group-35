@@ -1,10 +1,12 @@
 package model.buildings;
 import Enum.*;
+import model.Block;
 import model.Reign;
 
 public class MeltingFactory extends Building{
     private boolean isFunctioning;
-    public MeltingFactory(Reign owner, int hp, BuildingType buildingType) {
-        super(owner, hp, buildingType);
+
+    public MeltingFactory(BuildingType buildingType, Reign owner, Block block) {
+        super(buildingType, owner, block);
     }
 }
