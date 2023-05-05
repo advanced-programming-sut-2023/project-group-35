@@ -25,9 +25,12 @@ public class RegisterAndLoginMenu extends Menu{
                 System.out.println(userController.register(matcher,extractUsername(input),extractPassword(input),
                         extractEmail(input),extractNickname(input),extractSlogan(input),extractPasswordConfirm(input)));
             } else if((matcher = Commands.getMatcher(input,Commands.USER_LOGIN)) != null) {
-                System.out.println(userController.login(extractUsername(input),extractPasswordInLogin(input),input));
-                MainMenu mainMenu = new MainMenu(this.userController);
-                mainMenu.run();
+                String resOfLogin = userController.login(extractUsername(input),extractPasswordInLogin(input),input);
+                System.out.println(resOfLogin);
+                if(resOfLogin.equals("logged in successfully")) {
+                    MainMenu mainMenu = new MainMenu(this.userController);
+                    mainMenu.run();
+                }
             } else if ((matcher = Commands.getMatcher(input,Commands.FORGOT_MY_PASSWORD)) != null) {
                 System.out.println(userController.forgotMyPassword(extractUsername(input),extractPassword(input)));
             } else {
