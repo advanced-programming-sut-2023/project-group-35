@@ -54,4 +54,8 @@ public class MilitaryUnit {
     public Block getBlock() {
         return block;
     }
+
+    public UnitType getUnitType() {
+        return unitType;
+    }
 }

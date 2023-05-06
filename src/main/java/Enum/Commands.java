@@ -49,13 +49,15 @@ public enum Commands {
     DROP_BUILDING("^\\s*drop\\s+building\\s+"),
     DROP_UNIT("drop unit -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S) -c (?<count>\\d+)"),
     COUNT("-c\\s+\\d+"),
-
+    // select building menu
     SELECT_BUILDING("select building -x (?<x>\\d+) -y (?<y>\\d+)"),
-    SELECT_UNIT("select unit -x (?<x>\\d+) -y (?<y>\\d+)\\s*"),
-
+    SELECT_UNIT("\\s*select\\s+unit\\s*"),
     CREATE_UNIT("create unit -t (?<type>\\.+) -c (?<count>\\d+)"), // \\S+ or .+ ?
     CHANGE_TAX_RATE("change tax rate -r (?<rate>\\d+)"),
     RATE("-r\\s+\\d+"),
+    // select unit menu
+    MOVE_UNIT("\\s*move\\s+unit\\s+to\\s*"),
+
     // TRADE MENU
     ADD_REQUEST("request -t (?<type>\\S+) -a (?<amount>\\d+) -p (?<price>\\d+) -m (?<message>.+)"),
     AMOUNT("-a\\s+\\d+"),
@@ -72,8 +74,6 @@ public enum Commands {
     PURCHASE("buy -i (?<item>\\S+) -a (?<amount>\\d+)"),
     SELL("sell -i (?<item>\\S+) -a (?<amount>\\d+)"),
 
-    // back
-    BACK("back"),
     //reign menu
     SHOW_POPULARITY_FACTORS("\\s*show\\s+popularity\\s+factors\\s*"),
     SHOW_POPULARITY("\\s*show\\s+popularity\\s*"),
@@ -83,7 +83,6 @@ public enum Commands {
     TAX_RATE("\\s*tax\\s+rate\\s+-r\\s+(?<rate>\\d+)\\s*"),
     TAX_RATE_SHOW("\\s*tax\\s+rate\\s+show\\s*"),
     FEAR_RATE_SHOW("\\s*fear\\s+rate\\s+show\\s*"),
-
     FEAR_RATE("\\s*fear\\s+rate\\s+-r\\s+(?<rate>\\d+)\\s*"),
     // profile menu
     PROFILE_MENU("enter profile menu"),
@@ -100,7 +99,10 @@ public enum Commands {
     /// groups
     X("-x\\s+\\d+"),
     Y("-y\\s+\\d+"),
-    TYPE("-t\\s+(\\S+|(\".+\")");
+    TYPE("-t\\s+(\\S+|(\".+\")"),
+
+    // back
+    BACK("back");
 
     public String regex;
     private Commands(String regex){

@@ -2,49 +2,49 @@ package Enum;
 
 import Enum.*;
 public enum BuildingType {
-    BASE(null, 0 , 0, 0, 0, 0), // مقر
-    SMALL_STONE_GATE( null , 0, 0, 0 , 20, 0),
-    BIG_STONE_GATEHOUSE(Resource.STONE , 20 , 0 , 0 , 20, 0),
-    MOVING_BRIDGE(Resource.WOOD, 10 , 0 , 0 , 20, 0), // پل متحرک
-    LOOKOUT_TOWER(Resource.STONE, 10, 0 , 0 , 20, 0),
-    PERIMETER_TOWER(Resource.STONE, 10 , 0 , 0 , 20, 0),
-    DEFENCE_TURRET(Resource.STONE , 15 , 0 , 0 , 20, 0),
-    SQUARE_TOWER(Resource.STONE, 35 , 0 , 0 , 20, 0),
-    CIRCLE_TOWER(Resource.STONE  , 40 , 0 , 0 , 20, 0),
-    ARMOURY(Resource.WOOD, 5, 0, 0, 20, 0), // TO STORE
-    ARMOURER(Resource.WOOD, 20 , 100 , 1, 20, 0),
+    BASE(null, 0 , 0, 0, 0, 0, false), // مقر
+    SMALL_STONE_GATE( null , 0, 0, 0 , 20, 0, false), // changble passsing
+    BIG_STONE_GATEHOUSE(Resource.STONE , 20 , 0 , 0 , 20, 0, false), // changable passing
+    MOVING_BRIDGE(Resource.WOOD, 10 , 0 , 0 , 20, 0, true), // پل متحرک
+    LOOKOUT_TOWER(Resource.STONE, 10, 0 , 0 , 20, 0, false),
+    PERIMETER_TOWER(Resource.STONE, 10 , 0 , 0 , 20, 0, false),
+    DEFENCE_TURRET(Resource.STONE , 15 , 0 , 0 , 20, 0, false),
+    SQUARE_TOWER(Resource.STONE, 35 , 0 , 0 , 20, 0, false),
+    CIRCLE_TOWER(Resource.STONE  , 40 , 0 , 0 , 20, 0, false),
+    ARMOURY(Resource.WOOD, 5, 0, 0, 20, 0, false), // TO STORE
+    ARMOURER(Resource.WOOD, 20 , 100 , 1, 20, 0, false),
     //WORKSHOP(),
-    BARRACK(Resource.STONE, 15 , 0 , 0 , 20, 0),
-    MERCENARY_CAMP(Resource.WOOD, 10 , 0 , 0 ,0, 0),
-    ENGINEER_GUILD(Resource.WOOD, 10, 100 , 0 , 20, 0),
-    KILLING_PIT(Resource.WOOD , 6 ,0, 0, 20, 0),
-    INN(Resource.WOOD , 20 , 100 , 1 , 0, 0),
-    MILL(Resource.WOOD, 20 , 0 , 3 , 0, 0),
-    IRON_MINE(Resource.WOOD, 20 , 0, 2, 0, 0),
-    SHOP(Resource.WOOD, 5, 0 , 1 , 0, 0),
-    OX_TETHER(Resource.WOOD, 5 , 0, 1 ,0, 0),
-    PITCH_RIG(Resource.WOOD, 20 , 0 , 1 , 0, 0),
-    STONE_MINE(Resource.WOOD, 20 , 0 ,3 , 0, 0),
-    STOCK_PILE(null , 0 , 0 , 0  ,0, 0),
-    WOOD_CUTTER(Resource.WOOD, 3 , 0 , 1 , 0, 0),
-    HOVEL(Resource.WOOD, 6 , 0 , 0 , 20, 0),
-    CHURCH(null , 0 , 250 , 0 , 20, 0),
-    CATHEDRAL(null , 0 , 1000 , 0 , 20, 0),
-    BLACK_SMITH(Resource.WOOD , 20 , 100 , 0 , 20, 0),
-    FLETCHER(Resource.WOOD, 20 , 100 ,0 , 0, 0),
-    POLE_TURNER(Resource.WOOD, 10 , 100, 0 , 0, 0),
-    OIL_SMELTER(Resource.IRON, 100 , 0, 100 , 0, 0),
-    CAGED_WAR_DOGS(Resource.WOOD, 10, 0, 100, 0, 0),
+    BARRACK(Resource.STONE, 15 , 0 , 0 , 20, 0, false), //سربازخانه
+    MERCENARY_CAMP(Resource.WOOD, 10 , 0 , 0 ,0, 0, false), // سرباز خانه مزدوران
+    ENGINEER_GUILD(Resource.WOOD, 10, 100 , 0 , 20, 0, false),
+    KILLING_PIT(Resource.WOOD , 6 ,0, 0, 20, 0, true), // passable or unpassable
+    INN(Resource.WOOD , 20 , 100 , 1 , 0, 0, false),
+    MILL(Resource.WOOD, 20 , 0 , 3 , 0, 0, false),
+    IRON_MINE(Resource.WOOD, 20 , 0, 2, 0, 0, true),
+    SHOP(Resource.WOOD, 5, 0 , 1 , 0, 0, false),
+    OX_TETHER(Resource.WOOD, 5 , 0, 1 ,0, 0, false),
+    PITCH_RIG(Resource.WOOD, 20 , 0 , 1 , 0, 0, false),
+    STONE_MINE(Resource.WOOD, 20 , 0 ,3 , 0, 0, true),
+    STOCK_PILE(null , 0 , 0 , 0  ,0, 0, false),
+    WOOD_CUTTER(Resource.WOOD, 3 , 0 , 1 , 0, 0, false),
+    HOVEL(Resource.WOOD, 6 , 0 , 0 , 20, 0, false),
+    CHURCH(null , 0 , 250 , 0 , 20, 0, false),
+    CATHEDRAL(null , 0 , 1000 , 0 , 20, 0, false),
+    BLACK_SMITH(Resource.WOOD , 20 , 100 , 0 , 20, 0, false),
+    FLETCHER(Resource.WOOD, 20 , 100 ,0 , 0, 0, false),
+    POLE_TURNER(Resource.WOOD, 10 , 100, 0 , 0, 0, false),
+    OIL_SMELTER(Resource.IRON, 100 , 0, 100 , 0, 0, false),
+    CAGED_WAR_DOGS(Resource.WOOD, 10, 0, 100, 0, 0, false),
     //SIEGE_TENT(),
-    STABLE(Resource.WOOD, 20, 400, 0 , 0, 0),
-    APPLE_GARDEN(Resource.WOOD, 5, 0, 1, 0, 0),
-    DAIRY_FARM(Resource.WOOD, 10, 0, 1, 0 , 0),
-    HOP_FARM(Resource.WOOD, 15, 0, 1, 0, 0),
-    HUNTING_GROUND(Resource.WOOD, 5, 0, 1, 0, 0),
-    WHEAT_FARM(Resource.WOOD, 15, 0, 1, 0, 0),
-    BAKERY(Resource.WOOD, 10, 0 , 1, 0, 0),
-    BREWERY(Resource.WOOD, 10 , 0, 1, 0, 0),
-    FOOD_STOCK_PILE(Resource.WOOD, 5, 0, 0, 0, 0);
+    STABLE(Resource.WOOD, 20, 400, 0 , 0, 0, true),
+    APPLE_GARDEN(Resource.WOOD, 5, 0, 1, 0, 0, true),
+    DAIRY_FARM(Resource.WOOD, 10, 0, 1, 0 , 0, true),
+    HOP_FARM(Resource.WOOD, 15, 0, 1, 0, 0, true),
+    HUNTING_GROUND(Resource.WOOD, 5, 0, 1, 0, 0, true), // what to do??
+    WHEAT_FARM(Resource.WOOD, 15, 0, 1, 0, 0, true),
+    BAKERY(Resource.WOOD, 10, 0 , 1, 0, 0, false),
+    BREWERY(Resource.WOOD, 10 , 0, 1, 0, 0, false),
+    FOOD_STOCK_PILE(Resource.WOOD, 5, 0, 0, 0, 0, false);
 
 //    TUNNEL(),
 //
@@ -65,8 +65,9 @@ public enum BuildingType {
 
     public final int hp;
     private final int rateOrCapacity;
+    public final boolean passableForTroop;
 
-    BuildingType(Resource resourceToBuild, int resourceAmount, int goldCost, int workersNumber, int hp, int rateOrCapacity) {
+    BuildingType(Resource resourceToBuild, int resourceAmount, int goldCost, int workersNumber, int hp, int rateOrCapacity, boolean passableForTroop) {
         //Group = group;
         this.resourceToBuild = resourceToBuild;
         this.resourceAmount = resourceAmount;
@@ -74,6 +75,7 @@ public enum BuildingType {
         this.workersNumber = workersNumber;
         this.hp = hp;
         this.rateOrCapacity = rateOrCapacity;
+        this.passableForTroop = passableForTroop;
     }
 
     public String getName() {
@@ -100,5 +102,6 @@ public enum BuildingType {
     public int getRelatedInteger() {
         return this.rateOrCapacity;
     }
+
 
 }

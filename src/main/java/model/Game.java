@@ -11,7 +11,7 @@ public class Game {
     private Reign playingReign;
 
     private Building selectedBuilding;
-    private ArrayList<MilitaryUnit> selectedUnits; // people nabayad bashe?
+    private MilitaryUnit selectedUnit; // people nabayad bashe?
     //private Block selectedBlock;
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Reign> reigns = new ArrayList<>();
@@ -60,8 +60,8 @@ public class Game {
         this.selectedBuilding = building;
     }
 
-    public void setSelectedUnits(ArrayList<MilitaryUnit> selectedUnits) {
-        this.selectedUnits = selectedUnits;
+    public void setSelectedUnit(MilitaryUnit selectedUnit) {
+        this.selectedUnit = selectedUnit;
     }
 
     public Map getMap() {
@@ -86,4 +86,7 @@ public class Game {
         return selectedBuilding;
     }
 
+    public MilitaryUnit getSelectedUnit() {
+        return selectedUnit;
+    }
 }

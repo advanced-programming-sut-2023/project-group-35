@@ -6,9 +6,9 @@ import model.buildings.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import Enum.*;
-import java.util.regex.Matcher;
 
 import model.people.MilitaryUnit;
+import view.GameMenu;
 
 public class GameController {
 
@@ -133,8 +133,25 @@ public class GameController {
         if(game.getUnitsOfBlock(x, y).size() == 0) return "there is no unit in this block";
         ArrayList<MilitaryUnit> units = game.getUnitsOfReignInBlock(playingReign , x , y);
         if(units.size() == 0) return "you don't have any unit in this block";
-        game.setSelectedUnits(units);
+        if (units.size() > 1) {
+            int unitNumber = GameMenu.askUserTheUnitToSelect(printUnits(units));
+            if((units.get(unitNumber)) != null) game.setSelectedUnit(units.get(unitNumber));
+            else return "you did not choose the right number of the unit";
+        } else {
+            game.setSelectedUnit(units.get(0));
+        }
         return "select units successful!";
+    }
+
+    public String printUnits(ArrayList<MilitaryUnit> units) {
+        String output = "choose one of the units below by writing the ordinal number of the unit";
+        int i = 1;
+        for (MilitaryUnit unit : units) {
+            output += "\n" + i + ": unit " + unit.getUnitType() + "with the number " + unit.getNumber()
+                    + "and the state: " + unit.getUnitState();
+            i++;
+        }
+        return output;
     }
 
     // drop unit chie aslan?????
@@ -143,6 +160,9 @@ public class GameController {
 
     public String nextTurn() {
         return null;
+    }
+    public void moveTroops() {
+
     }
     public void applyChangesOfTurn() {
 

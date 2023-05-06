@@ -10,7 +10,9 @@ import Enum.*;
 public class Menu {
     public static final Scanner scanner = new Scanner(System.in);
     protected String input;
+    protected String result;
     protected Matcher matcher;
+
 
     public void run() throws IOException, NoSuchAlgorithmException {
 
@@ -41,6 +43,10 @@ public class Menu {
         }
         output = output.replaceFirst("\\+$", "*");
         return output;
+    }
+
+    public int getInt(Matcher matcher, String regex) {
+        return Integer.parseInt(matcher.group(regex));
     }
 
 }

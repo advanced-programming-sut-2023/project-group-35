@@ -1,23 +1,22 @@
 package Enum;
 
 public enum FieldType {
-    Ground(null , true),
-    Ground_With_Stone(null, false), //same as ground
-    stoneGround(null, false),
-    Stone(null, true), // for stone production
-    Iron(null, true), // for iron production
-    Rock(null, false), // unpassable
-    Grass(null, true),
-    Savanna(null, true), // can't build farm
-    OilGround(null, false),
-    Swamp(null , false), // kills
-    LittleLake(null, false), // can't pass or struct
-    BigLake(null, false), // can't pass or struct
-    River(null, false), // can't pass or struct
-    Beach(null , false), // can't pass or struct
-    Ocean(null, false), // can't pass or struct
-    plain(null , false),
-    moat(null , false); // can' struct but passable/unpassable
+    Ground(null , true, true),
+    //Ground_With_Stone(null, false, true), //same as ground
+    Stone(null, true, true), // for stone production
+    Iron(null, true, true), // for iron production
+    Rock(null, false, false), // unpassable
+    Grass(null, true, true),
+    Savanna(null, true, true), // can't build farm
+    OilGround(null, false , true),
+    Swamp(null , false, false), // kills ???????
+    LittleLake(null, false, false), // can't pass or struct
+    BigLake(null, false, false), // can't pass or struct
+    River(null, false, false), // can't pass or struct
+    Beach(null , false, false), // can't pass or struct
+    Ocean(null, false, false), // can't pass or struct
+    plain(null , false, true),
+    moat(null , false, false); // can' struct but unpassable
 
 //    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
 //    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
@@ -41,12 +40,13 @@ public enum FieldType {
     private String backGroundColor;
 
     public final boolean isSuitableForBuilding;
+    public final boolean canTroopPass;
     // ghabel sakht o saz
-    FieldType(String backGroundColor, boolean isSuitableForBuilding) {
+
+
+    FieldType(String backGroundColor, boolean isSuitableForBuilding, boolean canTroopPass) {
         this.backGroundColor = backGroundColor;
         this.isSuitableForBuilding = isSuitableForBuilding;
+        this.canTroopPass = canTroopPass;
     }
-
-
-
 }

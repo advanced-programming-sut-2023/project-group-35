@@ -2,7 +2,6 @@ package Enum;
 
 public enum Resource {
     WOOD(20 , 18, null, BuildingType.WOOD_CUTTER),
-//    GOLD(),
     STONE(20 , 20, null, BuildingType.STONE_MINE),
     WHEAT(0, 0, null, BuildingType.WHEAT_FARM),
     APPLE(0, 0, null, BuildingType.APPLE_GARDEN),
