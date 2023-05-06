@@ -19,7 +19,7 @@ public class BuildingMenu extends Menu{
                 return;
             } else if(input.matches("repair")) {
                 System.out.println(buildingController.repair());
-            } else if((matcher = getMatcher(input , Commands.CREATE_UNIT.regex)) != null) {
+            } else if((matcher = getRealMatcher(input , Commands.CREATE_UNIT,Commands.TYPE,Commands.COUNT)) != null) {
                 System.out.println(buildingController.createUnit(matcher));
             } else if((matcher = getMatcher(input , Commands.CHANGE_TAX_RATE.regex)) != null) {
                 int rate = Integer.parseInt(matcher.group("rate"));

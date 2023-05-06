@@ -63,7 +63,9 @@ public class GameController {
     public String dropStairs(Matcher matcher) {
         return null;
     }
-    public String selectBuilding(int x, int y) {
+    public String selectBuilding(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
         if(!areCoordinatesCorrect(x, y)) return "coordinates are not correct";
         Building building = map.getBlockByLocation(x, y).getBuilding();
         if(building == null) return "there is no building in this block";

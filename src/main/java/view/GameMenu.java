@@ -27,8 +27,8 @@ public class GameMenu extends Menu{
             } else if(input.matches("shop menu")) {
                 ShopMenu shopMenu = new ShopMenu(new ShopController(gameController.getGame()));
                 shopMenu.run();
-            } else if((matcher = getMatcher(input , Commands.SELECT_BUILDING.regex)) != null) {
-                String result = gameController.selectBuilding(Integer.parseInt(matcher.group("x")) , Integer.parseInt(matcher.group("y")));
+            } else if((matcher = getRealMatcher(input , Commands.SELECT_BUILDING, Commands.X,Commands.Y)) != null) {
+                String result = gameController.selectBuilding(matcher);
                 System.out.println(result);
                 if(result.equals("select building successful")) {
                     BuildingMenu buildingMenu = new BuildingMenu(new BuildingController(gameController.getGame()));

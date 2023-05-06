@@ -19,28 +19,23 @@ public class EditAndShowMapMenu extends Menu{
                 System.out.println(mapController.showMap(matcher));
 //            } else if((matcher = getMatcher(input , Commands.MOVE_MAP)) != null) {
 //                System.out.println(mapController.moveMap(matcher));
-            } else if((matcher = getMatcher(input , Commands.SHOW_MAP_DETAILS.regex)) != null) {
+            } else if((matcher = getRealMatcher(input , Commands.SHOW_MAP_DETAILS,Commands.X,Commands.Y)) != null) {
                 mapController.showDetail(matcher);
-            } else if((matcher = getMatcher(input , Commands.SET_TEXTURE.regex)) != null) {
-                int x = Integer.parseInt(matcher.group("x"));
-                int y = Integer.parseInt(matcher.group("y"));
+            } else if((matcher = getRealMatcher(input , Commands.SET_TEXTURE,Commands.X,Commands.Y)) != null) {
                 FieldType fieldType = null;
-                mapController.setTextureOfBlock(x, y , null);
-            } else if((matcher = getMatcher(input, Commands.DROP_ROCK.regex)) != null) {
+                mapController.setTextureOfBlock(matcher, fieldType);
+                //TODO get field type;
+            } else if((matcher = getRealMatcher(input, Commands.DROP_ROCK,Commands.DIRECTION,Commands.X,Commands.Y)) != null) {
                 System.out.println(mapController.dropRock(matcher));
-            } else if((matcher = getMatcher(input , Commands.CLEAR.regex)) != null) {
-                int x = Integer.parseInt(matcher.group("x"));
-                int y = Integer.parseInt(matcher.group("y"));
-                System.out.println(mapController.clearBlock(x , y));
-            } else if((matcher = getMatcher(input , Commands.DROP_ROCK.regex)) != null) {
-                System.out.println(mapController.dropRock(matcher));
-            } else if((matcher = getMatcher(input , Commands.DROP_TREE.regex)) != null) {
+            } else if((matcher = getRealMatcher(input , Commands.CLEAR,Commands.X,Commands.Y)) != null) {
+                System.out.println(mapController.clearBlock(matcher));
+            } else if((matcher = getRealMatcher(input , Commands.DROP_TREE,Commands.X,Commands.Y)) != null) {
                 System.out.println(mapController.dropTree(matcher));
-            } else if((matcher = getMatcher(input , Commands.SET_AREA_TEXTURE.regex)) != null) {
+            } else if((matcher = getRealMatcher(input , Commands.SET_AREA_TEXTURE,Commands.X,Commands.Y)) != null) {
                 System.out.println(mapController.setTextureOfArea(matcher));
-            } else if((matcher = getMatcher(input , Commands.DROP_BUILDING.regex)) != null) {
+            } else if((matcher = getRealMatcher(input , Commands.DROP_BUILDING,Commands.X,Commands.Y)) != null) {
                 System.out.println(mapController.dropBuilding(matcher));
-            } else if((matcher = getMatcher(input , Commands.DROP_UNIT.regex)) != null) {
+            } else if((matcher = getRealMatcher(input , Commands.DROP_UNIT,Commands.X,Commands.Y)) != null) {
                 System.out.println(mapController.dropUnit(matcher));
             }
         }

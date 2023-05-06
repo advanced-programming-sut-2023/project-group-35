@@ -14,9 +14,9 @@ public class ShopMenu extends Menu{
             input = scanner.nextLine();
             if(input.matches("show price list")) {
                 System.out.println(shopController.showPriceList());
-            } else if((matcher = getMatcher(input , Commands.PURCHASE.regex)) != null) {
+            } else if((matcher = getRealMatcher(input,Commands.PURCHASE,Commands.AMOUNT,Commands.ITEM)) != null) {
                 System.out.println(shopController.purchase(matcher));
-            } else if((matcher = getMatcher(input , Commands.SELL.regex)) != null) {
+            } else if((matcher = getRealMatcher(input,Commands.SELL,Commands.AMOUNT,Commands.ITEM)) != null) {
                 System.out.println(shopController.sell(matcher));
             } else if((input.matches(Commands.BACK.regex))) return;
             else System.out.println("invalid command");

@@ -14,7 +14,8 @@ public class TradeMenu extends Menu{
         System.out.println(tradeController.notification());
         while(true) {
             input = scanner.nextLine();
-            if((matcher = getMatcher(input , Commands.ADD_REQUEST.regex)) != null) {
+            if((matcher = getRealMatcher(input,Commands.ADD_REQUEST,Commands.AMOUNT,Commands.PRICE,Commands.TYPE,
+                    Commands.MESSAGE)) != null) {
                 System.out.println(tradeController.addRequest(matcher));
             } else if(input.matches("show list of Reigns")){
                 System.out.println(tradeController.showMembers());
@@ -25,9 +26,9 @@ public class TradeMenu extends Menu{
                 System.out.println(tradeController.showTradeList());
             } else if(input.matches("show my requests from others")) {
                 System.out.println(tradeController.showMyRequestsFromOthers());
-            } else if((matcher = getMatcher(input , Commands.DELETE_TRADE.regex)) != null) {
+            } else if((matcher = getRealMatcher(input,Commands.DELETE_TRADE,Commands.ID)) != null) {
                 System.out.println(tradeController.deleteTrade(matcher));
-            } else if((matcher = getMatcher(input, Commands.ACCEPT_REQUEST.regex)) != null) {
+            } else if((matcher = getRealMatcher(input,Commands.ACCEPT_REQUEST,Commands.ID,Commands.MESSAGE)) != null) {
                 System.out.println(tradeController.acceptTrade(matcher));
             } else if(input.matches("show trade history")) {
                 System.out.println(tradeController.showTradeHistory());

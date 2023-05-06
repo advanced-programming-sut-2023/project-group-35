@@ -26,7 +26,7 @@ public class StartGameMenu extends Menu{
                     System.out.println("you have exited start game menu");
                     return;
                 }
-            } else if((matcher = getMatcher(input , Commands.ADD_USER.regex)) != null) {
+            } else if((getRealMatcher(input,Commands.ADD_USER,Commands.USERNAME)) != null) {
                 String result = gameController.addUser(matcher);
                 System.out.println(result);
                 if(result.equals("user added successfully")) leftUsersToAdd--;

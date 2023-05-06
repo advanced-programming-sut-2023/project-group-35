@@ -13,18 +13,17 @@ public class ProfileMenu extends Menu{
     public void run() throws NoSuchAlgorithmException, IOException {
         while (true) {
             input = scanner.nextLine();
-            if ((matcher = Commands.getMatcher(input, Commands.CHANGE_USERNAME)) != null) {
-                System.out.println(profileMenu.usernameChange(extractUsername(input)));
-            } else if((matcher = Commands.getMatcher(input, Commands.CHANGE_PASSWORD)) != null) {
-                System.out.println(profileMenu.passwordChanger(extractPassword(input),extractPasswordConfirm(input)));
-                //TODO:new matcher
-            } else if ((matcher = Commands.getMatcher(input, Commands.CHANGE_EMAIL)) != null) {
-                System.out.println(profileMenu.emailChange(extractEmail(input)));
+            if ((matcher = getRealMatcher(input,Commands.CHANGE_USERNAME,Commands.USERNAME)) != null) {
+                System.out.println(profileMenu.usernameChange(matcher));
+            } else if((matcher = getRealMatcher(input,Commands.CHANGE_PASSWORD,Commands.PASSWORD_NOT_IN_LOGIN)) != null) {
+                System.out.println(profileMenu.passwordChanger(matcher));
+            } else if ((matcher = getRealMatcher(input,Commands.CHANGE_EMAIL,Commands.EMAIL)) != null) {
+                System.out.println(profileMenu.emailChange(matcher));
             }else if ((matcher = Commands.getMatcher(input, Commands.CHANGE_SLOGAN)) != null ||
                     (matcher = Commands.getMatcher(input, Commands.REMOVE_SLOGAN)) != null) {
                 System.out.println(profileMenu.changeOrRemoveSlogan(extractSlogan(input)));
-            }else if ((matcher = Commands.getMatcher(input, Commands.CHANGE_NICKNAME)) != null) {
-                System.out.println(profileMenu.nicknameChange(extractNickname(input)));
+            }else if ((matcher = getRealMatcher(input,Commands.CHANGE_NICKNAME,Commands.NICKNAME)) != null) {
+                System.out.println(profileMenu.nicknameChange(matcher));
             } else if ((matcher = Commands.getMatcher(input, Commands.SHOW_HIGHSCORE)) != null) {
                 System.out.println(profileMenu.displayHighScore());
             }else if ((matcher = Commands.getMatcher(input, Commands.SHOW_RANK)) != null) {

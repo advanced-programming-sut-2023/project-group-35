@@ -52,7 +52,9 @@ public class MapController {
         return map.getBlockByLocation(x, y).BlockInfo(true);
     }
 
-    public String setNewBase(int x, int y) {
+    public String setNewBase(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
         if(map.getBlockByLocation(x, y) == null) return ResponseToUser.INDEX.response;
         if(map.isABase(x , y)) return "this block already is a base";
         if(map.getBlockByLocation(x, y).isOccupied()) return "this block is occupied";
@@ -61,13 +63,15 @@ public class MapController {
         map.getBaseBlocks().add(map.getBlockByLocation(x, y));
         return "base was added successfully";
     }
-    public String removeBase(int x, int y) {
+    public String removeBase(Matcher matcher) {
         if(!map.isABase(x , y)) return "there is no base in this block";
         map.getBaseBlocks().remove(map.getBlockByLocation(x , y));
         return "the base was successfully removed";
     }
 
-    public String setTextureOfBlock(int x , int y , FieldType fieldType) {
+    public String setTextureOfBlock(Matcher matcher, FieldType fieldType) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
         if(isInTheGame) return "you can't change the texture of the blocks in the game";
         if(map.isABase(x, y)) return "there is a base here, you can't change the texture";
         map.getBlockByLocation(x, y).setFieldType(fieldType);
@@ -114,7 +118,9 @@ public class MapController {
         return "tree was dropped successfully";
     }
 
-    public String clearBlock(int x, int y) {
+    public String clearBlock(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
         if(!isInTheGame) {
             map.getBlocks().remove(map.getBlockByLocation(x, y));
             map.getBlocks().add(new Block(x ,y , FieldType.Ground));

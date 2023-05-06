@@ -35,9 +35,13 @@ public class UserController {
      public UserController() {
         loadTheData();
     }
-    public String register(Matcher matcher,String userName,String password,String email,String nickName,
-                           String slogan,String passwordConfirm) throws IOException, NoSuchAlgorithmException {
+    public String register(Matcher matcher, String slogan) throws IOException, NoSuchAlgorithmException {
         //TODO:empty checker and sum returns;
+        String password = matcher.group("password");
+        String passwordConfirm = matcher.group("passwordConfirm");
+        String nickName = matcher.group("nickName");
+        String email = matcher.group("email");
+        String userName = matcher.group("username");
         if(password.equals("Random")) {
             password = RegisterAndLoginMenu.getRandomPassword();
             if(RegisterAndLoginMenu.checkPassword(password))
@@ -73,7 +77,9 @@ public class UserController {
         User.addUser(userToBeAdded);
         return "Sign up was successful,we have "+userName+" on board now";
     }
-    public String login(String userName,String password,String command) throws NoSuchAlgorithmException, IOException {
+    public String login(Matcher matcher,String command) throws NoSuchAlgorithmException, IOException {
+        String userName = matcher.group("username");
+        String password = matcher.group("password");
         Boolean gonnaBeLoggedIn = null;
         Pattern stayLoggedIn = Pattern.compile("--stay-logged-in");
         Matcher matcherOfLogin = stayLoggedIn.matcher(command);
@@ -101,7 +107,9 @@ public class UserController {
 
         }
     }
-    public String forgotMyPassword(String userName,String password){
+    public String forgotMyPassword(Matcher matcher){
+        String userName = matcher.group("username");
+        String password = matcher.group("password");
         if(User.getUserByUsername(userName) == null)
             return "No such user exists!";
         else if(!RegisterAndLoginMenu.checkTheSecurityHitAndPass(User.getUserByUsername(userName)))
@@ -114,7 +122,8 @@ public class UserController {
         }
 
     }
-    public String usernameChange(String newUserName) {
+    public String usernameChange(Matcher matcher) {
+        String newUserName = matcher.group("username");
         if(!newUserName.matches("\\w+") || newUserName.length() < 1)
             return "Invalid username format!";
         else{
@@ -122,7 +131,8 @@ public class UserController {
             return "your username changed!";
         }
     }
-    public String nicknameChange(String newNickName) {
+    public String nicknameChange(Matcher matcher) {
+        String newNickName = matcher.group("nickName");
         if(!newNickName.matches("\\w+") || newNickName.length() < 1)
             return "Invalid username format!";
         else{
@@ -130,7 +140,9 @@ public class UserController {
             return "your nickname changed!";
         }
     }
-    public String passwordChanger(String oldPass , String newPass) throws NoSuchAlgorithmException, IOException {
+    public String passwordChanger(Matcher matcher) throws NoSuchAlgorithmException, IOException {
+        String oldPass = matcher.group("password");
+        String newPass = matcher.group("confirmPassword");
         if(!loggedInUser.getPassword().equals(turnPasswordToSha256(oldPass)))
             return "You entered wrong password!";
         else if(loggedInUser.getPassword().equals(turnPasswordToSha256(newPass)))
@@ -144,7 +156,8 @@ public class UserController {
             return "your password changed!";
         }
     }
-    public String emailChange(String email) {
+    public String emailChange(Matcher matcher) {
+        String email = matcher.group("email");
         if(User.getUserByEmail(email) != null)
             return "this email is already in database";
         else if(!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))

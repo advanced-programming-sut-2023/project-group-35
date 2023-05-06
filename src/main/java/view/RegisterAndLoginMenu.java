@@ -20,19 +20,19 @@ public class RegisterAndLoginMenu extends Menu{
     public void run() throws IOException, NoSuchAlgorithmException {
         while (true) {
             input = scanner.nextLine();
-            if ((matcher = Commands.getMatcher(input,Commands.CREATE_USER)) != null &&
-                    booleanErrorInCreateUser(matcher.group("contentText").trim())) {
-                System.out.println(userController.register(matcher,extractUsername(input),extractPassword(input),
-                        extractEmail(input),extractNickname(input),extractSlogan(input),extractPasswordConfirm(input)));
-            } else if((matcher = Commands.getMatcher(input,Commands.USER_LOGIN)) != null) {
-                String resOfLogin = userController.login(extractUsername(input),extractPasswordInLogin(input),input);
+            if ((matcher = getRealMatcher(input,Commands.CREATE_USER,Commands.USERNAME, Commands.PASSWORD_NOT_IN_LOGIN, Commands.EMAIL,
+                    Commands.NICKNAME)) != null && booleanErrorInCreateUser(matcher.group("contentText").trim())) {
+                System.out.println(userController.register(matcher,extractSlogan(input)));
+            } else if((matcher = getRealMatcher(input,Commands.USER_LOGIN,Commands.USERNAME,Commands.PASSWORD_USED_IN_LOGIN)) != null) {
+                String resOfLogin = userController.login(matcher,input);
                 System.out.println(resOfLogin);
                 if(resOfLogin.equals("logged in successfully")) {
                     MainMenu mainMenu = new MainMenu(this.userController);
                     mainMenu.run();
                 }
-            } else if ((matcher = Commands.getMatcher(input,Commands.FORGOT_MY_PASSWORD)) != null) {
-                System.out.println(userController.forgotMyPassword(extractUsername(input),extractPassword(input)));
+            } else if ((matcher = getRealMatcher(input,Commands.FORGOT_MY_PASSWORD,
+                    Commands.USERNAME,Commands.PASSWORD_USED_IN_LOGIN)) != null) {
+                System.out.println(userController.forgotMyPassword(matcher));
             } else {
                 System.out.println("Invalid commend!");
             }

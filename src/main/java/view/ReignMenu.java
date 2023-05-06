@@ -27,14 +27,14 @@ public class ReignMenu extends Menu{
                 System.out.println(reignController.showFoodRate());
             }else if ((matcher = Commands.getMatcher(input, Commands.TAX_RATE_SHOW)) != null) {
                 System.out.println(reignController.showTaxRate());
-            } else if ((matcher = Commands.getMatcher(input, Commands.FOOD_RATE)) != null) {
-                System.out.println(reignController.setFoodRate(Integer.parseInt(matcher.group("rate"))));
+            } else if ((matcher = getRealMatcher(input,Commands.FOOD_RATE,Commands.RATE)) != null) {
+                System.out.println(reignController.setFoodRate(matcher));
             }else if ((matcher = Commands.getMatcher(input, Commands.FEAR_RATE_SHOW)) != null) {
                 System.out.println(reignController.showFearRate());
-            } else if ((matcher = Commands.getMatcher(input, Commands.TAX_RATE)) != null) {
-                System.out.println(reignController.setTaxRate(Integer.parseInt(matcher.group("rate"))));
-            }else if ((matcher = Commands.getMatcher(input, Commands.FEAR_RATE)) != null) {
-                System.out.println(reignController.setFearRate(Integer.parseInt(matcher.group("rate"))));
+            } else if ((matcher = getRealMatcher(input, Commands.TAX_RATE,Commands.RATE)) != null) {
+                System.out.println(reignController.setTaxRate(matcher));
+            }else if ((matcher = getRealMatcher(input, Commands.TAX_RATE,Commands.RATE)) != null) {
+                System.out.println(reignController.setFearRate(matcher));
             }else if ((matcher = Commands.getMatcher(input, Commands.BACK)) != null) {
                 return;
             }else {
