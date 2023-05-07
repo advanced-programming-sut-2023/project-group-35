@@ -1,6 +1,5 @@
 package Enum;
 
-import Enum.*;
 public enum BuildingType {
     BASE(null, 0 , 0, 0, 0, 0, false), // مقر
     SMALL_STONE_GATE( null , 0, 0, 0 , 20, 0, false), // changble passsing
@@ -65,9 +64,9 @@ public enum BuildingType {
 
     public final int hp;
     private final int rateOrCapacity;
-    public final boolean passableForTroop;
+    public final boolean isPassableForTroop;
 
-    BuildingType(Resource resourceToBuild, int resourceAmount, int goldCost, int workersNumber, int hp, int rateOrCapacity, boolean passableForTroop) {
+    BuildingType(Resource resourceToBuild, int resourceAmount, int goldCost, int workersNumber, int hp, int rateOrCapacity, boolean isPassableForTroop) {
         //Group = group;
         this.resourceToBuild = resourceToBuild;
         this.resourceAmount = resourceAmount;
@@ -75,7 +74,7 @@ public enum BuildingType {
         this.workersNumber = workersNumber;
         this.hp = hp;
         this.rateOrCapacity = rateOrCapacity;
-        this.passableForTroop = passableForTroop;
+        this.isPassableForTroop = isPassableForTroop;
     }
 
     public String getName() {

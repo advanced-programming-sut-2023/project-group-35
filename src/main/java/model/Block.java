@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 
 public class Block {
-    int x;
-    int y;
+    public int x;
+    public int y;
 
     private Building building;
     private ArrayList<Structure> structures;
@@ -67,6 +67,10 @@ public class Block {
             if(!structure.getOwner().equals(reign)) return true;
         }
         return false;
+    }
+    public boolean isPassable() {
+        if (!this.building.buildingType.isPassableForTroop) return false;
+        return this.fieldType.canTroopPass;
     }
 
     public ArrayList<MilitaryUnit> getMilitaryUnits() {
