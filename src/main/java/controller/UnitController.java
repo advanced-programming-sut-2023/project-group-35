@@ -24,8 +24,22 @@ public class UnitController extends GameController{
         if (!(dest = checkTheDestination(x, y)).equals("correct")) return dest;
         ArrayList<Block> path = findAPath(selectedUnit.getBlock(), map.getBlockByLocation(x, y));
         if(path == null) return "there is no path to this block";
-        // if(unreachable) ???
-        return "move unit successful. the unit is going to the location";
+        selectedUnit.startMoving(map.getBlockByLocation(x, y));
+        String result = moveUnit(selectedUnit, path, game);
+        if(result.equals("killed")) return "the Military unit was killed by a trap";
+        if(result.equals("arrived")) return "move unit successful. the unit is in the dest block";
+        return "the unit is moving toward the destination block";
+    }
+    public static String moveUnit(MilitaryUnit unit, ArrayList<Block> path, Game game) {
+        for(int i = 1; i <= unit.unitType.speed; i++) {
+            unit.moveTo(path.get(i));
+            if(path.get(i).isATrapFor(unit)){
+                game.removeUnit(unit);
+                return "killed";
+            }
+            if(path.get(i).equals(unit.getDestBlock())) return "arrived";
+        }
+        return "moving";
     }
     public ArrayList<Block> findAPath(Block start, Block dest) {
         ArrayList<Block> closed = new ArrayList<>();
@@ -37,37 +51,40 @@ public class UnitController extends GameController{
         openList.put(0, start);
         while(true) {
             Block block = openList.firstEntry().getValue();
+            openList.remove(openList.firstEntry().getKey(), openList.firstEntry().getValue());
             closed.add(block);
             Block nextBlock;
             for (Direction value : Direction.values()) {
                 nextBlock = map.getNeighborBlock(block, value);
+                if(nextBlock == null) continue;
                 if (!nextBlock.isPassable()) continue;
+                if(closed.contains(nextBlock)) continue;
                 if (nextBlock.equals(dest)) {
                     father.put(nextBlock, block);
                     return arrayListMaker(father, dest);
                 }
-                int g = gOfBlocks.get(block);
+                int g = gOfBlocks.get(block) + 1;
                 int h = getH(nextBlock, dest);
                 // todo check the previous f
                 openList.put(h + g, nextBlock);
-                if(gOfBlocks.containsKey(nextBlock)) gOfBlocks.replace(nextBlock, g + h);
-                else gOfBlocks.put(nextBlock, g + h);
+                if(gOfBlocks.containsKey(nextBlock)) gOfBlocks.replace(nextBlock, g);
+                else gOfBlocks.put(nextBlock, g);
                 father.put(nextBlock, block);
             }
-
+            if(openList.size() == 0) return null;
         }
 
     }
-    public ArrayList<Block> arrayListMaker(HashMap<Block, Block> hierarchy, Block dest) {
+    public ArrayList<Block> arrayListMaker(HashMap<Block, Block> father, Block dest) {
         ArrayList<Block> output = new ArrayList<>();
         output.add(dest);
         Block currectBlock = dest;
-        Block father;
+        Block fatherB;
         while (true) {
-            father = hierarchy.get(currectBlock);
+            fatherB = father.get(currectBlock);
             if(father.equals(currectBlock)) break;
-            output.add(0, hierarchy.get(currectBlock));
-            currectBlock = father;
+            output.add(0, fatherB);
+            currectBlock = fatherB;
         }
         return output;
     }
@@ -136,8 +153,5 @@ public class UnitController extends GameController{
     }
     public String dPS(int x,int y){return null;}
 
-    public void deleteSelectedUnits() {
-        game.setSelectedUnit(null);
-    }
 
 }

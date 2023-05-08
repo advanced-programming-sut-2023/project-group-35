@@ -161,7 +161,7 @@ public class GameController {
     public String nextTurn() {
         return null;
     }
-    public void moveTroops() {
+    public void killUnit(MilitaryUnit unit) {
 
     }
     public void applyChangesOfTurn() {

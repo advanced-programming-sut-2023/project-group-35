@@ -11,9 +11,11 @@ public class MilitaryUnit {
     public UnitType unitType;
     private Reign owner;
     private Block block;
+    private Block destBlock;
     private int number;
     private int hp;
     private UnitState unitState;
+    private boolean isMoving;
 
     public UnitState getUnitState() {
         return unitState;
@@ -31,6 +33,11 @@ public class MilitaryUnit {
         this.unitState = UnitState.STABLE;
     }
 
+    public void moveTo(Block dest) {
+        this.getBlock().removeUnit(this);
+        this.block = dest;
+        dest.getMilitaryUnits().add(this);
+    }
     public int getNumber() {
         return number;
     }
@@ -57,5 +64,20 @@ public class MilitaryUnit {
 
     public UnitType getUnitType() {
         return unitType;
+    }
+    public void stopMoving() {
+        destBlock = null;
+        isMoving = false;
+    }
+    public void startMoving(Block dest) {
+        destBlock = dest;
+        isMoving = true;
+    }
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+    public Block getDestBlock() {
+        return destBlock;
     }
 }

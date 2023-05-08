@@ -89,4 +89,7 @@ public class Game {
     public MilitaryUnit getSelectedUnit() {
         return selectedUnit;
     }
+    public void removeUnit(MilitaryUnit unit) {
+
+    }
 }
