@@ -4,6 +4,7 @@ import model.Block;
 import model.Map;
 import Enum.*;
 import model.Reign;
+import model.buildings.Building;
 
 
 import java.util.HashMap;
@@ -27,11 +28,44 @@ public class MapController {
         this.x = Integer.parseInt(matcher.group("x"));
         this.y = Integer.parseInt(matcher.group("y"));
         if(x > map.dimensions || y > map.dimensions) return "not in the map";
-        return printMap();
+        return printMap(x,y);
     }
-    public String printMap() {
-        //todo how to print map
-        return null;
+    public String printMap(int i,int j) {
+        int underLimitX = i - 5;
+        int underLimitY = j - 5;
+        int upperLimitX = i + 5;
+        int upperLimitY = j + 5;
+
+        if(i < 5){underLimitX = 0;}
+        if(j < 5){underLimitY = 0;}
+        if(upperLimitX > map.dimensions){upperLimitX = map.dimensions;}
+        if(upperLimitY > map.dimensions){upperLimitY = map.dimensions;}
+        for(int x = underLimitX;x < upperLimitX;x++){
+            System.out.print("|");
+            for(int y = underLimitY;y < upperLimitY;y++){
+                Block block = map.getBlockByLocation(x,y);
+                if(block.getBuilding() != null){
+                    System.out.print("#");
+                    continue;
+                }
+                else if(!block.isOccupied()) {
+                    System.out.print("X");
+                    continue;
+                }
+                else if(map.isABase(x,y)) {
+                    System.out.print("@");
+                    continue;
+                }
+                else if(block.getFieldType().isSuitableForBuilding()){
+                    System.out.print("^");
+                }
+                else
+                    System.out.print("+");
+            }
+            System.out.println("|");
+        }
+
+        return "-map|shown-";
     }
     public String moveMap(Matcher matcher) {
         HashMap<Direction, Integer> move= new HashMap<>();
@@ -96,15 +130,29 @@ public class MapController {
     }
 
     public String dropBuilding(Matcher matcher) {
-        return null;
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(x < 0 &&  x > map.dimensions)
+        Block block = map.getBlockByLocation(x,y);
+        BuildingType buildingType = BuildingType.valueOf(matcher.group("buildingType"));
+        Building buildingToAdd = new Building(buildingType,reignPlaying,block);
+        return "building dropped with success!";
     }
     public String dropUnit(Matcher matcher) {
         return null;
     }
 
     public String dropRock(Matcher matcher) {
-        return null;
-        //todo direction???
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        Direction direction = Direction.valueOf(matcher.group("direction"));
+        Block block = map.getBlockByLocation(x,y);
+        if((block.getBuilding() != null) && (block.getMilitaryUnits() != null))
+            return "there are already some buildings and units in block!";
+        else{
+            block.setFieldType(FieldType.Rock);
+            return "an step toward new stone age!";
+        }
     }
 
     public String dropTree(Matcher matcher) {
