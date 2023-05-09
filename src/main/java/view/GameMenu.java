@@ -39,7 +39,7 @@ public class GameMenu extends Menu{
             } else if((matcher = getRealMatcher(input, Commands.SELECT_UNIT, Commands.X, Commands.Y)) != null) {
                 result = gameController.selectUnit(matcher);
                 if(result.equals("select units successful!")) {
-                    UnitSelectMenu menu = new UnitSelectMenu(new UnitController(gameController.getGame()));
+                    UnitSelectMenu menu = new UnitSelectMenu(gameController.getUnitController());
                     menu.run();
                 }
             }

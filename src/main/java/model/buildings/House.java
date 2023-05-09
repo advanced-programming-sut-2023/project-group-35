@@ -12,8 +12,5 @@ public class House extends Building{
         owner.changePopulation(buildingType.getRelatedInteger());
     }
 
-    @Override
-    public void nextTurn() {
 
-    }
 }

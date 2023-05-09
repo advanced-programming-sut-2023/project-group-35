@@ -11,7 +11,7 @@ import model.people.MilitaryUnit;
 import view.GameMenu;
 
 public class GameController {
-
+    private UnitController unitController;
     protected Reign playingReign;
     protected Game game;
     protected Map map;
@@ -20,6 +20,7 @@ public class GameController {
         this.game = game;
         this.map = game.getMap();
         this.playingReign = game.getPlayingReign();
+        this.unitController = new UnitController(game);
     }
 
     public String addUser(Matcher matcher) {
@@ -73,27 +74,34 @@ public class GameController {
             building = new BigTower(type, playingReign, block);
         } else if(type.checkForEquals(BuildingType.ARMOURY)) {
             building = new Armory(type, playingReign, block); // delete this class?
-        } else if(type.checkForEquals(BuildingType.ARMOURER)) { // what else? پست شکار و
-            building = new Converter(type, playingReign, block, Resource.IRON, Resource.ARMOR );
-        } else if(type.checkForEquals(BuildingType.MILL)) {
-            building = new Converter(type, playingReign, block, Resource.WHEAT, Resource.FLOUR);
-        } else if(type.checkForEquals(BuildingType.BLACK_SMITH)) {
-            building = new Converter(type, playingReign , block, Resource.IRON, Resource.SWORD);
-        } else if(type.checkForEquals(BuildingType.FLETCHER)) {
-            building = new Converter(type, playingReign, block , Resource.WOOD, Resource.BOW);
-        } else if(type.checkForEquals(BuildingType.POLE_TURNER)) {
-            building = new Converter(type, playingReign, block , Resource.WOOD, Resource.SPEAR);
-        } else if(type.checkForEquals(BuildingType.HUNTING_GROUND)) {
-            building = new Converter(type, playingReign, block , Resource.MEAT, Resource.PROCESSED_MEAT);
-        } else if(type.checkForEquals(BuildingType.BREWERY)) {
-            building = new Converter(type, playingReign, block , Resource.HOP, Resource.BEAR);
-        } else if(type.checkForEquals(BuildingType.INN)) {
+        }
+//        else if(type.checkForEquals(BuildingType.ARMOURER)) { // what else? پست شکار و
+//            building = new Converter(type, playingReign, block, Resource.IRON, Resource.ARMOR );
+//        } else if(type.checkForEquals(BuildingType.MILL)) {
+//            building = new Converter(type, playingReign, block, Resource.WHEAT, Resource.FLOUR);
+//        } else if(type.checkForEquals(BuildingType.BLACK_SMITH)) {
+//            building = new Converter(type, playingReign , block, Resource.IRON, Resource.SWORD);
+//        } else if(type.checkForEquals(BuildingType.FLETCHER)) {
+//            building = new Converter(type, playingReign, block , Resource.WOOD, Resource.BOW);
+//        } else if(type.checkForEquals(BuildingType.POLE_TURNER)) {
+//            building = new Converter(type, playingReign, block , Resource.WOOD, Resource.SPEAR);
+//        } else if(type.checkForEquals(BuildingType.HUNTING_GROUND)) {
+//            building = new Converter(type, playingReign, block , Resource.MEAT, Resource.PROCESSED_MEAT);
+//        } else if(type.checkForEquals(BuildingType.BREWERY)) {
+//            building = new Converter(type, playingReign, block , Resource.HOP, Resource.BEAR);
+//        }
+        else if(type.checkForEquals(BuildingType.ARMOURER, BuildingType.MILL, BuildingType.BLACK_SMITH,
+                BuildingType.FLETCHER, BuildingType.POLE_TURNER, BuildingType.HUNTING_GROUND, BuildingType.BREWERY)) {
+            building = new Converter(type, playingReign, block, Resource.getEntry(type), Resource.getProduct(type));
+        }
+        else if(type.checkForEquals(BuildingType.INN)) {
             building = new Inn(type, playingReign, block); // delete???
-        } else if(type.checkForEquals(BuildingType.PITCH_RIG)) {
+        }
+        else if(type.checkForEquals(BuildingType.PITCH_RIG)) {
             if(!block.getFieldType().equals(FieldType.plain)) return "you should drop a pitch rig on a plain";
             building = new Producer(type, playingReign, block, Resource.TAR);
         } else if(type.checkForEquals(BuildingType.STONE_MINE)) {
-            // todo check the ground
+            if(!block.getFieldType().equals(FieldType.Stone)) return "you should drop a stone mine on a Stone field";
             building = new Producer(type, playingReign, block , Resource.STONE);
         } else if(type.checkForEquals(BuildingType.STOCK_PILE)) {
             // todo check the near blocks
@@ -187,6 +195,9 @@ public class GameController {
     }
     public Map getMap() {
         return game.getMap();
+    }
+    public UnitController getUnitController() {
+        return unitController;
     }
     public boolean areCoordinatesCorrect(int x , int y) {
         int dimension = game.getMap().dimensions;

@@ -18,8 +18,5 @@ public class KillingDig extends Building{
         return visibility;
     }
 
-    @Override
-    public void nextTurn() {
 
-    }
 }

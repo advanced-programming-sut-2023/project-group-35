@@ -10,7 +10,5 @@ public class GateHouse extends House{
         super(buildingType, owner, block);
     }
 
-    public void nextTurn() {
 
-    }
 }

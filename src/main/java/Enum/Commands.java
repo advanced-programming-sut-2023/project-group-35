@@ -57,6 +57,9 @@ public enum Commands {
     RATE("-r\\s+\\d+"),
     // select unit menu
     MOVE_UNIT("\\s*move\\s+unit\\s+to\\s*"),
+    PATROL_UNIT("\\s*patrol\\s+unit\\s*"),
+    SET_UNIT_STATE("\\s*set\\s+state\\s+(?<state>\\S+)\\s+"),
+    ATTACK_ENEMY("\\s*attack\\s+enemy\\s*"),
 
     // TRADE MENU
     ADD_REQUEST("request -t (?<type>\\S+) -a (?<amount>\\d+) -p (?<price>\\d+) -m (?<message>.+)"),

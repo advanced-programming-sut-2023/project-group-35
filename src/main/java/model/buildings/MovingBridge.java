@@ -19,8 +19,5 @@ public class MovingBridge extends Building{
     public void ChangeBridgeState() {
 
     }
-    @Override
-    public void nextTurn() {
 
-    }
 }

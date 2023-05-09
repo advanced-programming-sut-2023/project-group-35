@@ -26,9 +26,6 @@ public class Armory extends Building{
         return capacity;
     }
 
-    @Override
-    public void nextTurn() {
 
-    }
 
 }
