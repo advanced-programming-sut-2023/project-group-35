@@ -11,6 +11,6 @@ public class GateHouse extends House{
     }
 
     public void nextTurn() {
-
+    return;
     }
 }

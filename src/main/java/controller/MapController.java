@@ -1,12 +1,16 @@
 package controller;
 
+import com.google.gson.Gson;
 import model.Block;
 import model.Map;
 import Enum.*;
 import model.Reign;
+import model.User;
 import model.buildings.Building;
 
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.regex.*;
 
@@ -77,7 +81,7 @@ public class MapController {
             this.x += move.get(direction) * direction.xChange;
             this.y += move.get(direction) * direction.yChange;
         }
-        return printMap();
+        return printMap(x,y);
     }
     public String showDetail(Matcher matcher) {
         this.x = Integer.parseInt(matcher.group("x"));
@@ -132,7 +136,8 @@ public class MapController {
     public String dropBuilding(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(x < 0 &&  x > map.dimensions)
+        if((x < 0 ||  x > map.dimensions)||(y < 0 || y > map.dimensions))
+            return "invalid point!";
         Block block = map.getBlockByLocation(x,y);
         BuildingType buildingType = BuildingType.valueOf(matcher.group("buildingType"));
         Building buildingToAdd = new Building(buildingType,reignPlaying,block);
@@ -185,6 +190,18 @@ public class MapController {
 
     public FieldType getTextureOfBlock(int x, int y) {
         return map.getBlockByLocation(x, y).getFieldType();
+    }
+    public void saveTheMap(Map map){
+        Gson gson = new Gson();
+        String json = gson.toJson(map);
+        String name = "Map"+Map.getMapList().length()+".json";
+        try {
+            FileWriter myWriter = new FileWriter(name);
+            myWriter.write(json);
+            myWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

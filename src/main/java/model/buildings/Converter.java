@@ -17,6 +17,15 @@ public class Converter extends Building{
 
     @Override
     public void nextTurn() {
-
+    if(super.getOwner().getResourceAmount(input) < rate){
+    }
+    else{
+        super.getOwner().changeResourceAmount(input,-rate);
+        super.getOwner().changeResourceAmount(output,1);
+    }
+        if(super.getOwner().getResourceCapacity(output)-super.getOwner().getResourceAmount(output) > 0){
+            super.getOwner().changeResourceAmount(output,-1*super.getOwner().getResourceCapacity(output)
+                    -super.getOwner().getResourceAmount(output));
+        }
     }
 }

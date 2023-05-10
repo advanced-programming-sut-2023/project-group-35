@@ -29,6 +29,6 @@ public class Tower extends Building{
 
     @Override
     public void nextTurn() {
-
+    return;
     }
 }

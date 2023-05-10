@@ -38,6 +38,8 @@ public class EditAndShowMapMenu extends Menu{
             } else if((matcher = getRealMatcher(input , Commands.DROP_UNIT,Commands.X,Commands.Y)) != null) {
                 System.out.println(mapController.dropUnit(matcher));
             }
+            else
+                System.out.println("invalid commend!");
         }
     }
 }

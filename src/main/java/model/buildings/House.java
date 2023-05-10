@@ -14,6 +14,6 @@ public class House extends Building{
 
     @Override
     public void nextTurn() {
-
+    return;
     }
 }

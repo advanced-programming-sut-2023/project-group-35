@@ -21,6 +21,10 @@ public class ProducerFromField extends Producer{
 
     @Override
     public void nextTurn(){
-
+        super.getOwner().changeResourceAmount(resource,rate);
+        if(super.getOwner().getResourceCapacity(resource)-super.getOwner().getResourceAmount(resource) > 0){
+            super.getOwner().changeResourceAmount(resource,-1*super.getOwner().getResourceCapacity(resource)
+                    -super.getOwner().getResourceAmount(resource));
+        }
     }
 }

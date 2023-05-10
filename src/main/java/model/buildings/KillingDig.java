@@ -20,6 +20,6 @@ public class KillingDig extends Building{
 
     @Override
     public void nextTurn() {
-
+    return;
     }
 }

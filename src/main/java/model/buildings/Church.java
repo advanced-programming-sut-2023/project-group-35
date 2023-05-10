@@ -16,9 +16,15 @@ public class Church extends Building{
     public UnitType getUnitType(UnitType unitType) {
         return null;
     }
+
+    @Override
+    public Reign getOwner() {
+        return super.getOwner();
+    }
+
     @Override
     public void nextTurn() {
-
+     this.getOwner().setPopularity(this.getOwner().getPopularity()+2);
     }
 
 }

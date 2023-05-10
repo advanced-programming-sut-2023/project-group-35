@@ -30,12 +30,12 @@ public enum Commands {
     // mapMenu
     MAP_MENU("enter map menu"),
     //SHOW_MAP("show map -x (?<x>\\d+) -y (?<y>\\d+)"),
-    SHOW_MAP("^\\s*show\\s+map\\s+"),
+    SHOW_MAP("\\s*show\\s+map\\s*"),
 
     MOVE_MAP("move map (up(?<up> \\d+)?)\\s+(down(?<down> \\d+)?)\\s+(left(?<left> \\d+)?)\\s+(right(?<right> \\d+)?)"),
-    SHOW_MAP_DETAILS("show details -x (?<x>\\d+) -y (?<y>\\d+)"),
-    SET_TEXTURE("set texture -x (?<x>\\d+) -y (?<y>\\d+) -t (?<type>\\S+)"),
-    SET_AREA_TEXTURE("set texture -x1 (?<x1>\\d+) -y1 (?<y1>\\d+) -x2 (?<x2>\\d+) -y2 (?<y2>\\d+) -t (?<type>\\S+)"),
+    SHOW_MAP_DETAILS("\\s*show\\s+details\\s*"),
+    SET_TEXTURE("\\s*set\\s+texture\\s*"),
+    SET_AREA_TEXTURE("\\s*set\\s+texture\\s*"),
     X1("-x1\\s+\\d+"),
     X2("-x2\\s+\\d+"),
     Y1("-y1\\s+\\d+"),

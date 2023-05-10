@@ -17,6 +17,6 @@ public class bigTower extends Tower{
 
     @Override
     public void nextTurn() {
-
+    return;
     }
 }

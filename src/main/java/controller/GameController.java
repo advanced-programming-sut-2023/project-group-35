@@ -89,7 +89,8 @@ public class GameController {
 
 
 
-    public static void populationChange(int number) {
+    public void populationChange(int number) {
+        playingReign.changePopulation(number);
     }
     public String nextTurn() {
         return null;
