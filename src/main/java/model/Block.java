@@ -55,6 +55,7 @@ public class Block {
         if(this.building != null) return true;
         if(this.getFieldType().equals(FieldType.Rock)) return true;
         if(this.getTree() != null) return true;
+        if(!this.getFieldType().isSuitableForBuilding()) return true;
         //todo what else?
         return false;
     }
@@ -95,4 +96,32 @@ public class Block {
     public void setTree(Tree tree) {
         this.tree = tree;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+    public void addNewStructure(Structure structure){
+        structures.add(structure);
+    }
+    public void removeStructure(Structure structure){
+        structures.remove(structure);
+    }
+    public ArrayList<Structure> getStructures() {
+        return structures;
+    }
+
+    public void removeUnit(MilitaryUnit militaryUnit) {
+        militaryUnits.remove(militaryUnit);
+    }
+    public void addUnit(MilitaryUnit militaryUnit){
+        militaryUnits.add(militaryUnit);
+    }
+    public void removeBuilding() {
+        building = null;
+    }
+
 }

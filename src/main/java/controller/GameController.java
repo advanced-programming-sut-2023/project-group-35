@@ -108,7 +108,17 @@ public class GameController {
 
     }
     public void leaveGame(){}
-    public void showTurnsPassed(){} //???
+    public void collectingGarbageUnits(){
+        for(MilitaryUnit militaryUnit:game.getAllOfTheUnits()){
+            if(militaryUnit.getNumber() < 1){
+                game.getAllOfTheUnits().remove(militaryUnit);
+                militaryUnit.getOwner().getMilitaryUnits().remove(militaryUnit);
+            }
+        }
+    }
+    public void showTurnsPassed(){
+        System.out.println(game.getTurnsPassed());
+    }
 
     public Game getGame () {
         return game;

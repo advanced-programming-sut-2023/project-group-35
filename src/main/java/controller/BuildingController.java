@@ -32,10 +32,13 @@ public class BuildingController extends GameController{
             return "you can't build " + unitType.name() + "s in a" + selectedBuilding.buildingType.getName();
         if(playingReign.getUnemployedPopulation() < count) return "you don't have enough unemployed population";
         MilitaryUnit unit = new MilitaryUnit(unitType , selectedBuilding.getOwner(),
-                selectedBuilding.getBlock(), count, unitType.getDefencePower());
+                selectedBuilding.getBlock(), count, unitType.getDefencePower(),unitType.getAttackPower(),
+                unitType.getRange());
         playingReign.changeUnemployedPopulation(-count);
         playingReign.spendGold(count * unitType.cost);
         playingReign.changeResourceAmount(unitType.resourceToBuild, count);
+        playingReign.getMilitaryUnits().add(unit);
+        game.getAllOfTheUnits().add(unit);
         return "create unit successful";
     }
     public String repair() {
@@ -58,7 +61,10 @@ public class BuildingController extends GameController{
         return "set tax rate successful"; // todo check
     }
     public String ChangeFoodDistribution (int rate) {
-        return null;
+        if(!(selectedBuilding instanceof GateHouse)) return "you can't change the food rate with this building";
+        if(rate <= 0) return "change food failed: rate amount not correct";
+        selectedBuilding.getOwner().setFoodRate(rate);
+        return "set food rate successful";
     }
     public void deleteSelectedBuilding() {
         game.setSelectedBuilding(null);

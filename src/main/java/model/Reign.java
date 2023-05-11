@@ -38,6 +38,14 @@ public class Reign {
 
     }
 
+    public void setUnemployedPopulation(int unemployedPopulation) {
+        this.unemployedPopulation = unemployedPopulation;
+    }
+
+    public ArrayList<MilitaryUnit> getMilitaryUnits() {
+        return militaryUnits;
+    }
+
     public void addToResource(Resource resource, int number) {
 
     }

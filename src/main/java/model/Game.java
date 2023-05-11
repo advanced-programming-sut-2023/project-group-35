@@ -12,6 +12,8 @@ public class Game {
 
     private Building selectedBuilding;
     private ArrayList<MilitaryUnit> selectedUnits; // people nabayad bashe?
+    private MilitaryUnit selectedSingleUnit;
+    private final ArrayList<MilitaryUnit> allOfTheUnits = new ArrayList<>();
     //private Block selectedBlock;
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Reign> reigns = new ArrayList<>();
@@ -23,6 +25,10 @@ public class Game {
         addReign(starter);
     }
 
+    public MilitaryUnit getSelectedSingleUnit() {
+        return selectedSingleUnit;
+    }
+
     public String showReigns() {
         String output = "REIGNS IN THE GAME:";
         int i = 1;
@@ -31,6 +37,14 @@ public class Game {
                     + "Nick Name: " + reign.getNickName();
         }
         return output;
+    }
+
+    public ArrayList<MilitaryUnit> getAllOfTheUnits() {
+        return allOfTheUnits;
+    }
+
+    public ArrayList<MilitaryUnit> getSelectedUnits() {
+        return selectedUnits;
     }
 
     public Reign getPlayingReign() {
@@ -86,4 +100,8 @@ public class Game {
         return selectedBuilding;
     }
 
+    public int getTurnsPassed() {
+        return turnsPassed;
+    }
 }
+
