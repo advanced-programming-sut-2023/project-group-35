@@ -1,8 +1,10 @@
 package Enum;
 
-public enum UnitType {
-    ARCHER( BuildingType.SMALL_STONE_GATE , Resource.BOW, 5, 10 , 10 ,5 , 10 );
+import model.people.LadderMen;
 
+public enum UnitType {
+    ARCHER( BuildingType.SMALL_STONE_GATE , Resource.BOW, 5, 10 , 10 ,5 , 10 ),
+    LADDERMAN(null,null,0,2,5,3,1);
     //public final String name;
     public final BuildingType buildingProducedIn;
     public final Resource resourceToBuild;
@@ -39,4 +41,10 @@ public enum UnitType {
     }
 
 
+    public int getAttackPower() {
+        return attackPower;
+    }
+    public int getRange(){
+        return range;
+    }
 }

@@ -10,10 +10,11 @@ public class Structure {
     private int hp;
     private boolean moving;
     private int speed;
-    private Engineer mover;
+    private MilitaryUnit mover;
 
 
-    public Structure(int hp, boolean moving, int speed, Engineer mover) {
+
+    public Structure(int hp, boolean moving, int speed, MilitaryUnit mover) {
         this.hp = hp;
         this.moving = moving;
         this.speed = speed;

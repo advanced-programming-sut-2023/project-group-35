@@ -4,9 +4,9 @@ import Enum.*;
 import model.*;
 import model.buildings.Building;
 import model.buildings.Wall;
+import model.buildings.bigTower;
 import model.people.*;
-import model.structures.Ladder;
-import model.structures.Structure;
+import model.structures.*;
 
 public class UnitController extends GameController{
     public UnitController(Game game) {
@@ -91,8 +91,137 @@ public class UnitController extends GameController{
         int outage = (int) Math.floor(out);
         return outage;
     }
-    public String buildEquipment(StructuresType equipmentType) {
-        return null;
+    public String buildEquipment(StructuresType equipmentType,int amount) {
+        if(!(game.getSelectedSingleUnit() instanceof Engineer))
+            return "You must choose bunch of engineers!";
+        switch (equipmentType){
+            case LADDER{
+                if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
+                        amount*equipmentType.getAmountOfMaterial()){
+                    return "You don't have enough matrials!";
+                }
+                else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
+                    return "You don't have enough engineers!";
+                }
+                else{
+                    game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber() - amount);
+                    LadderMen ladderMen = new LadderMen(UnitType.LADDERMAN,game.getPlayingReign(),
+                            game.getSelectedSingleUnit().getBlock(),amount,UnitType.LADDERMAN.getDefencePower());
+                    ladderMen.getBlock().addUnit(ladderMen);
+                    ladderMen.getOwner().getMilitaryUnits().add(ladderMen);
+                    ladderMen.getOwner().removeFromResources(Resource.WOOD,amount*equipmentType.getAmountOfMaterial());
+                    return "ladder was created succesfully";
+                }
+            }
+            case STAIRS{
+                if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
+                        amount*equipmentType.getAmountOfMaterial()){
+                    return "You don't have enough matrials!";
+                }
+                else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
+                    return "You don't have enough engineers!";
+                }
+                else if(!(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Wall
+                        || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower)){
+                    return "You can't build stairs here!";
+                }
+                else{
+                    game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
+                    game.getSelectedSingleUnit().getBlock().addNewStructure(new Ladder(equipmentType.getHp(),equipmentType.isMoving(),0,null));
+                    return "Stair was put down!";
+                }
+            }
+            case MOVING_SHIELD -> {
+                if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
+                        amount*equipmentType.getAmountOfMaterial()){
+                    return "You don't have enough matrials!";
+                }
+                else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
+                    return "You don't have enough engineers!";
+                }
+                else{
+                    game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
+                    for(int i = 0; i < amount;i++)
+                    game.getSelectedSingleUnit().getBlock().addNewStructure(new MovingShield(null));
+                    return "you have put the moving shields down successfully";
+                }
+            }
+            case WALL_BREAKER -> {
+                if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
+                        amount*equipmentType.getAmountOfMaterial()){
+                    return "You don't have enough matrials!";
+                }
+                else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
+                    return "You don't have enough engineers!";
+                }
+                else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null)){
+                    return "You can't build wall breaker here!";
+                }
+                else{
+                    game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
+                    game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
+                    game.getSelectedSingleUnit().getBlock().addNewStructure(new BatteringRam(/*new Engineer*/));
+                    return "wall breaker was put down!";
+                }
+            }
+            case SIEGE_TOWER -> {
+            }
+                case CATAPULT -> {
+                    if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
+                            amount*equipmentType.getAmountOfMaterial()){
+                        return "You don't have enough matrials!";
+                    }
+                    else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
+                        return "You don't have enough engineers!";
+                    }
+                    else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null)){
+                        return "You can't build catapult here!";
+                    }
+                    else{
+                        game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
+                        game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
+                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(/*new Engineer*/));
+                        return "catapult was put down!";
+                }}
+                case TREBUCHET -> {
+                    if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
+                            amount*equipmentType.getAmountOfMaterial()){
+                        return "You don't have enough matrials!";
+                    }
+                    else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
+                        return "You don't have enough engineers!";
+                    }
+                    else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
+                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower))){
+                        return "You can't build trebuchet here!";
+                    }
+                    else{
+                        game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
+                        game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
+                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(/*new Engineer*/));
+                        return "trebuchet was put down!";
+                    }
+                }
+                case FLAME_THROWER -> {
+                    if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
+                            amount*equipmentType.getAmountOfMaterial()){
+                        return "You don't have enough matrials!";
+                    }
+                    else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
+                        return "You don't have enough engineers!";
+                    }
+                    else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
+                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower))){
+                        return "You can't build ballista here!";
+                    }
+                    else{
+                        game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
+                        game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
+                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(/*new Engineer*/));
+                        return "ballista was put down!";
+                    }
+                }
+        }
     }
     public String digMoat(int x, int y) {
         if(!areCoordinatesCorrect(x,y))

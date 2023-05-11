@@ -9,6 +9,7 @@ import javax.swing.text.BadLocationException;
 public class MilitaryUnit {
 
     public UnitType unitType;
+    public int speed;
     private Reign owner;
     private Block block;
     private int number;
@@ -24,7 +25,7 @@ public class MilitaryUnit {
         this.unitState = unitState;
     }
 
-    public MilitaryUnit(UnitType unitType, Reign owner, Block block, int number, int hp,int range,int damage) {
+    public MilitaryUnit(UnitType unitType, Reign owner, Block block, int number, int hp,int range,int damage,int speed) {
         this.unitType = unitType;
         this.damage = damage;
         this.owner = owner;
@@ -33,6 +34,7 @@ public class MilitaryUnit {
         this.hp = hp;
         this.unitState = UnitState.STABLE;
         this.range = range;
+        this.speed = speed;
     }
 
     public int getNumber() {
@@ -76,5 +78,9 @@ public class MilitaryUnit {
 
     public void setBlock(Block block) {
         this.block = block;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 }
