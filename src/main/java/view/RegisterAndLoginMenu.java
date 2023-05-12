@@ -67,7 +67,7 @@ public class RegisterAndLoginMenu extends Menu{
         while (true) {
             lastLine = scn.nextLine();
             if(!Commands.getMatcher(lastLine,Commands.ISNUMERIC).matches()) {
-                System.out.println("Wtf,we asked you for a number!");
+                System.out.println("Wtf, we asked you for a number!");
                 continue;
             }
             numberChosen = Integer.parseInt(lastLine);

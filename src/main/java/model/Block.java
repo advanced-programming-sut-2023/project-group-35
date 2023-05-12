@@ -114,4 +114,7 @@ public class Block {
     public boolean isATrapFor(MilitaryUnit unit) {
         return false; //todo complete
     }
+    public boolean hasABuilding() {
+        return building != null;
+    }
 }

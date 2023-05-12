@@ -11,14 +11,14 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+//import com.google.gson.JsonArray;
+//import com.google.gson.JsonElement;
 import model.*;
 import Enum.*;
 import view.MainMenu;
 import view.RegisterAndLoginMenu;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+//import com.google.gson.Gson;
+//import com.google.gson.JsonSyntaxException;
 
 
 
@@ -32,9 +32,9 @@ public class UserController {
             return text.substring(1,text.length()-1);
         return text;
     }
-     public UserController() {
-        loadTheData();
-    }
+//     public UserController() {
+//        loadTheData();
+//    }
     public String register(Matcher matcher,String userName,String password,String email,String nickName,
                            String slogan,String passwordConfirm) throws IOException, NoSuchAlgorithmException {
         //TODO:empty checker and sum returns;
@@ -226,27 +226,27 @@ public class UserController {
         String hex = String.format("%064x", new BigInteger(1, digest));
         return hex;
     }
-    public static void saveTheData(){
-        Gson gson = new Gson();
-        String json = gson.toJson(User.getUsers());
-        try {
-            FileWriter myWriter = new FileWriter("dataBase.json");
-            myWriter.write(json);
-            myWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void loadTheData() {
-        Reader reader;
-        try {
-            reader = new FileReader("dataBase.json");
-        } catch (FileNotFoundException e) {
-            return;
-        }
-        Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
-        for (JsonElement jsonElement : jsonArray)
-            User.getUsers().add(gson.fromJson(jsonElement, User.class));
-    }
+//    public static void saveTheData(){
+//        Gson gson = new Gson();
+//        String json = gson.toJson(User.getUsers());
+//        try {
+//            FileWriter myWriter = new FileWriter("dataBase.json");
+//            myWriter.write(json);
+//            myWriter.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    } //todo can't find gson
+//    public static void loadTheData() {
+//        Reader reader;
+//        try {
+//            reader = new FileReader("dataBase.json");
+//        } catch (FileNotFoundException e) {
+//            return;
+//        }
+//        Gson gson = new Gson();
+//        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+//        for (JsonElement jsonElement : jsonArray)
+//            User.getUsers().add(gson.fromJson(jsonElement, User.class));
+//    }
 }

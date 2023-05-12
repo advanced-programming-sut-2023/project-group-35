@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import Enum.*;
+import model.buildings.Building;
 import model.people.*;
 
 public class Reign {
@@ -22,6 +23,7 @@ public class Reign {
     private final HashMap<Resource, Integer> resources = new HashMap<>();
     private final HashMap<Resource ,Integer> resourceCapacity = new HashMap<>();
     private ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
+    private ArrayList<Building> buildings = new ArrayList<>();
 
     private ArrayList<TradeItem> tradeHistory = new ArrayList<>();
     private ArrayList<TradeItem> notification = new ArrayList<>();
@@ -39,21 +41,24 @@ public class Reign {
     }
 
     public void addToResource(Resource resource, int number) {
-
+        resources.replace(resource, resources.get(resource) + number);
     }
     public void removeFromResources(Resource resource, int number) {
-
+        resources.replace(resource, resources.get(resource) - number);
     }
     public int getResourceAmount(Resource resource) {
         return resources.get(resource);
     }
+
     public int getResourceCapacity(Resource resource) {
         return resourceCapacity.get(resource);
     }
 
-    public void changeResourceCapacity(Resource resource , int amount) {
-        int former = resourceCapacity.get(resource);
-        resourceCapacity.replace(resource, former + amount);
+    public void addToResourcesCapacity(BuildingType buildingType , int amount) {
+        for (Resource value : Resource.values()) {
+            if(value.getStoredInBuilding().equals(buildingType))
+                resourceCapacity.replace(value, resourceCapacity.get(value) + amount);
+        }
     }
 
     public String showTradeList() {

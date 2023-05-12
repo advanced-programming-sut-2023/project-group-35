@@ -24,7 +24,6 @@ public enum BuildingType {
     OX_TETHER(Resource.WOOD, 5 , 0, 1 ,0, 0, false),
     PITCH_RIG(Resource.WOOD, 20 , 0 , 1 , 0, 0, false),
     STONE_MINE(Resource.WOOD, 20 , 0 ,3 , 0, 0, true),
-    STOCK_PILE(null , 0 , 0 , 0  ,0, 0, false),
     WOOD_CUTTER(Resource.WOOD, 3 , 0 , 1 , 0, 0, false),
     HOVEL(Resource.WOOD, 6 , 0 , 0 , 20, 0, false),
     CHURCH(null , 0 , 250 , 0 , 20, 0, false),
@@ -43,6 +42,7 @@ public enum BuildingType {
     WHEAT_FARM(Resource.WOOD, 15, 0, 1, 0, 0, true),
     BAKERY(Resource.WOOD, 10, 0 , 1, 0, 0, false),
     BREWERY(Resource.WOOD, 10 , 0, 1, 0, 0, false),
+    STOCK_PILE(null , 0 , 0 , 0  ,0, 0, false),
     FOOD_STOCK_PILE(Resource.WOOD, 5, 0, 0, 0, 0, false);
 
 //    TUNNEL(),
