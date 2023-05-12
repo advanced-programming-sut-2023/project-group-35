@@ -60,7 +60,7 @@ public class MapController {
                     System.out.print("@");
                     continue;
                 }
-                else if(block.getFieldType().isSuitableForBuilding()){
+                else if(block.getFieldType().isSuitableForBuilding){
                     System.out.print("^");
                 }
                 else

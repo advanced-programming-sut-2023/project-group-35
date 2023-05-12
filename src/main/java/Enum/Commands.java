@@ -81,6 +81,7 @@ public enum Commands {
 
     // back
     BACK("\\s*back\\s*"),
+    EXIT("\\S*exit\\s*"),
     //reign menu
     SHOW_POPULARITY_FACTORS("\\s*show\\s+popularity\\s+factors\\s*"),
     SHOW_POPULARITY("\\s*show\\s+popularity\\s*"),

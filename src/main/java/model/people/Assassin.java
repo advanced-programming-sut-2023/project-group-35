@@ -7,8 +7,8 @@ public class Assassin extends MilitaryUnit{
 
     private boolean isVisible;
 
-    public Assassin(UnitType unitType, Reign owner, Block block, int number, int hp, boolean isVisible) {
-        super(unitType, owner, block, number, hp);
+    public Assassin(UnitType unitType, Reign owner, Block block, int number, boolean isVisible) {
+        super(unitType, owner, block, number);
         this.isVisible = isVisible;
     }
 

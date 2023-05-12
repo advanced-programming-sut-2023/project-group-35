@@ -7,7 +7,7 @@ import javax.swing.plaf.synth.Region;
 
 public class LadderMen extends MilitaryUnit{
 
-    public LadderMen(UnitType unitType, Reign owner, Block block, int number, int hp) {
-        super(unitType, owner, block, number, hp);
+    public LadderMen(UnitType unitType, Reign owner, Block block, int number) {
+        super(unitType, owner, block, number);
     }
 }

@@ -30,16 +30,16 @@ public class MilitaryUnit {
         this.unitState = unitState;
     }
 
-    public MilitaryUnit(UnitType unitType, Reign owner, Block block, int number, int hp,int range,int damage,int speed) {
+    public MilitaryUnit(UnitType unitType, Reign owner, Block block, int number) {
         this.unitType = unitType;
-        this.damage = damage;
+        this.damage = unitType.getAttackPower();
         this.owner = owner;
         this.block = block;
         this.number = number;
-        this.hp = hp;
+        this.hp = unitType.getDefencePower();
         this.unitState = UnitState.STABLE;
-        this.range = range;
-        this.speed = speed;
+        this.range = unitType.getRange();
+        this.speed = unitType.speed;
     }
 
     public void moveTo(Block dest) {

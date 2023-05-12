@@ -2,9 +2,8 @@ package controller;
 
 import Enum.*;
 import model.*;
-import model.buildings.Building;
 import model.buildings.Wall;
-import model.buildings.bigTower;
+import model.buildings.BigTower;
 import model.people.*;
 import model.structures.*;
 import model.people.MilitaryUnit;
@@ -140,18 +139,6 @@ public class UnitController extends GameController{
         if(unitState.equals(selectedUnit.getUnitState())) return "the unit is already in this state";
         selectedUnit.setUnitState(unitState);
         return "the unit state is selected to" + state;
-        if(state.equals("offensive")) {
-            game.getSelectedSingleUnit().setUnitState(UnitState.OFFENSIVE);
-            return "state changed!";
-        }
-        else if(state.equals("stable")) {
-            game.getSelectedSingleUnit().setUnitState(UnitState.STABLE);
-            return "state changed!";
-        }
-        else if(state.equals("defensive")){
-            game.getSelectedSingleUnit().setUnitState(UnitState.DEFENSIVE);return "state changed!";
-        }
-            return "your state was not valid!";
     }
 
     public UnitState getUnitState() {
@@ -235,7 +222,7 @@ public class UnitController extends GameController{
                 else{
                     game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber() - amount);
                     LadderMen ladderMen = new LadderMen(UnitType.LADDERMAN,game.getPlayingReign(),
-                            game.getSelectedSingleUnit().getBlock(),amount,UnitType.LADDERMAN.getDefencePower());
+                            game.getSelectedSingleUnit().getBlock(),amount);
                     ladderMen.getBlock().addUnit(ladderMen);
                     ladderMen.getOwner().getMilitaryUnits().add(ladderMen);
                     ladderMen.getOwner().removeFromResources(Resource.WOOD,amount*equipmentType.getAmountOfMaterial());
@@ -251,7 +238,7 @@ public class UnitController extends GameController{
                     return "You don't have enough engineers!";
                 }
                 else if(!(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Wall
-                        || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower)){
+                        || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower)){
                     return "You can't build stairs here!";
                 }
                 else{
@@ -321,7 +308,7 @@ public class UnitController extends GameController{
                         return "You don't have enough engineers!";
                     }
                     else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
-                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower))){
+                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
                         return "You can't build trebuchet here!";
                     }
                     else{
@@ -340,7 +327,7 @@ public class UnitController extends GameController{
                         return "You don't have enough engineers!";
                     }
                     else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
-                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower))){
+                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
                         return "You can't build ballista here!";
                     }
                     else{
@@ -475,7 +462,7 @@ public class UnitController extends GameController{
         game.getSelectedSingleUnit().setNumber(0);
         game.getSelectedSingleUnit().getOwner().setUnemployedPopulation(game.getSelectedSingleUnit().getOwner().
                 getUnemployedPopulation()+numberOfSoliders);
-        game.setSelectedUnits(null);
+        game.setSelectedUnit(null);
         collectingGarbageUnits();
         return "the unit was disbanded!";
     }
@@ -486,6 +473,6 @@ public class UnitController extends GameController{
     public String dPS(int x,int y){return null;}
 
     public void deleteSelectedUnits() {
-        game.setSelectedUnits(null);
+        game.setSelectedUnit(null);
     }
 }

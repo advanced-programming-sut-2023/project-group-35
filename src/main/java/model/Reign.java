@@ -48,7 +48,7 @@ public class Reign {
         return militaryUnits;
     }
 
-    public void addToResource(Resource resource, int number) {
+
 
     public void addToResource(Resource resource, int change) {
         int now = resources.get(resource);
@@ -191,4 +191,6 @@ public class Reign {
     public void changeUnemployedPopulation(int change) {
         this.unemployedPopulation = change;
     }
+
+
 }

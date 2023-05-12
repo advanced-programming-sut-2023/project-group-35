@@ -18,6 +18,7 @@ public class Game {
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Reign> reigns = new ArrayList<>();
     int turnsPassed;
+    private MilitaryUnit selectedUnit;
 
     public Game(User starter, Map map) {
         this.starter = starter;

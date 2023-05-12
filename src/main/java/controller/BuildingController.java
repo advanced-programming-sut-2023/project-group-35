@@ -32,8 +32,7 @@ public class BuildingController extends GameController{
             return "you can't build " + unitType.name() + "s in a" + selectedBuilding.buildingType.getName();
         if(playingReign.getUnemployedPopulation() < count) return "you don't have enough unemployed population";
         MilitaryUnit unit = new MilitaryUnit(unitType , selectedBuilding.getOwner(),
-                selectedBuilding.getBlock(), count, unitType.getDefencePower(),unitType.getAttackPower(),
-                unitType.getRange());
+                selectedBuilding.getBlock(), count);
         playingReign.changeUnemployedPopulation(-count);
         playingReign.spendGold(count * unitType.cost);
         playingReign.changeResourceAmount(unitType.resourceToBuild, count);

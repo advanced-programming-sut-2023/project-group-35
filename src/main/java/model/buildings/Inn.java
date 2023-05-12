@@ -21,16 +21,16 @@ public class Inn extends Building {
 
     @Override
     public void nextTurn() {
-        if(super.getOwner().getResourceAmount(Resource.WINE) < 1){
+        if(super.getOwner().getResourceAmount(Resource.BEAR) < 1){
             return;
         }
-    else if(super.getOwner().getResourceAmount(Resource.WINE) < wineRateUsage){
-            super.getOwner().setPopularity(super.getOwner().getPopularity()+super.getOwner().getResourceAmount(Resource.WINE)*2);
-            super.getOwner().changeResourceAmount(Resource.WINE,-super.getOwner().getResourceAmount(Resource.WINE));
+    else if(super.getOwner().getResourceAmount(Resource.BEAR) < wineUsageRate){
+            super.getOwner().changePopularity(super.getOwner().getResourceAmount(Resource.BEAR)*2);
+            super.getOwner().changeResourceAmount(Resource.BEAR,-super.getOwner().getResourceAmount(Resource.BEAR));
     }
     else{
-        super.getOwner().changeResourceAmount(Resource.WINE,-wineRateUsage);
-        super.getOwner().setPopularity(super.getOwner().getPopularity()+wineRateUsage*2);
+        super.getOwner().changeResourceAmount(Resource.BEAR,-wineUsageRate);
+        super.getOwner().changePopularity(wineUsageRate*2);
     }
     }
 }

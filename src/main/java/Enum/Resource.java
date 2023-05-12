@@ -18,7 +18,8 @@ public enum Resource {
     BOW(100,50, WOOD, BuildingType.FLETCHER, BuildingType.ARMOURY), //wood
     SPEAR(0, 0, WOOD, BuildingType.POLE_TURNER, BuildingType.ARMOURER), //نیزه// wood
     ARMOR(0, 0, IRON, BuildingType.ARMOURER, BuildingType.ARMOURY), //iron
-    SWORD(0, 0, IRON, BuildingType.BLACK_SMITH, BuildingType.ARMOURY); //iron
+    SWORD(0, 0, IRON, BuildingType.BLACK_SMITH, BuildingType.ARMOURY);
+
 
 
 

@@ -37,12 +37,19 @@ public class UserController {
     }
     public String register(Matcher matcher, String slogan) throws IOException, NoSuchAlgorithmException {
         //TODO:empty checker and sum returns;
-        String password = matcher.group("password");
+        String password = null;
+        if(matcher.group("random") == null) {
+             password = matcher.group("password");
+        }
+        else{
+            password = matcher.group("random");
+        }
         String passwordConfirm = matcher.group("passwordConfirm");
         String nickName = matcher.group("nickName");
         String email = matcher.group("email");
         String userName = matcher.group("username");
-        if(password.equals("Random")) {
+
+        if(password.equals("random")) {
             password = RegisterAndLoginMenu.getRandomPassword();
             if(RegisterAndLoginMenu.checkPassword(password))
                 System.out.println("It was entered correctly.");

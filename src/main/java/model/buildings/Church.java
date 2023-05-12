@@ -24,7 +24,7 @@ public class Church extends Building{
 
     @Override
     public void nextTurn() {
-     this.getOwner().setPopularity(this.getOwner().getPopularity()+2);
+     this.getOwner().changePopularity(2);
     }
 
 }

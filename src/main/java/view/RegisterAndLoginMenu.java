@@ -18,10 +18,11 @@ public class RegisterAndLoginMenu extends Menu{
 
 
     public void run() throws IOException, NoSuchAlgorithmException {
+        System.out.println("welcome to crusaders!\n please login or sign up if you don't have an account.");
         while (true) {
             input = scanner.nextLine();
             if ((matcher = getRealMatcher(input,Commands.CREATE_USER,Commands.USERNAME, Commands.PASSWORD_NOT_IN_LOGIN, Commands.EMAIL,
-                    Commands.NICKNAME)) != null && booleanErrorInCreateUser(matcher.group("contentText").trim())) {
+                    Commands.NICKNAME)) != null) {
                 System.out.println(userController.register(matcher,extractSlogan(input)));
             } else if((matcher = getRealMatcher(input,Commands.USER_LOGIN,Commands.USERNAME,Commands.PASSWORD_USED_IN_LOGIN)) != null) {
                 String resOfLogin = userController.login(matcher,input);
@@ -35,8 +36,12 @@ public class RegisterAndLoginMenu extends Menu{
                     Commands.USERNAME,Commands.PASSWORD_USED_IN_LOGIN)) != null) {
                 System.out.println(userController.forgotMyPassword(matcher));
             }
-            else if((matcher = getRealMatcher(input,Commands.BACK))!= null){
-                UserController.saveTheData();
+            else if((matcher = getRealMatcher(input,Commands.EXIT))!= null){
+                if(isUserSureToExit()) {
+                    UserController.saveTheData();
+                    System.out.println("game is now finished");
+                    return;
+                }
             }
             else {
                 System.out.println("Invalid commend!");
@@ -182,6 +187,14 @@ public class RegisterAndLoginMenu extends Menu{
             return slogan;
         }
         return null;
+    }
+    public boolean isUserSureToExit() {
+        while (true) {
+            System.out.println("are you sure you want to exit the game?");
+            if (scanner.nextLine().matches("yes")) return true;
+            if (scanner.nextLine().matches("no")) return false;
+            System.out.println("please try again");
+        }
     }
 
 }

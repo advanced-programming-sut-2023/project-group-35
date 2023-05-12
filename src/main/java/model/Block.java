@@ -55,7 +55,7 @@ public class Block {
         if(this.building != null) return true;
         if(this.getFieldType().equals(FieldType.Rock)) return true;
         if(this.getTree() != null) return true;
-        if(!this.getFieldType().isSuitableForBuilding()) return true;
+        if(!this.getFieldType().isSuitableForBuilding) return true;
         //todo what else?
         return false;
     }
@@ -70,13 +70,6 @@ public class Block {
         return false;
     }
 
-    public boolean removeUnit(MilitaryUnit unit) {
-        if(militaryUnits.contains(unit)){
-            militaryUnits.remove(unit);
-            return true;
-        }
-        return false;
-    }
     public boolean isPassable() {
         if (!this.building.buildingType.isPassableForTroop) return false;
         return this.fieldType.canTroopPass;
@@ -109,9 +102,7 @@ public class Block {
         this.tree = tree;
     }
 
-    public ArrayList<Structure> getStructures() {
-        return structures;
-    }
+
     public boolean isATrapFor(MilitaryUnit unit) {
         return false; //todo complete
     }

@@ -191,7 +191,7 @@ public class GameController {
     public void showTurnsPassed(){
         System.out.println(game.getTurnsPassed());
     }
-    public void showTurnsPassed(){} //???
+
     public boolean foundTheSameBuildingAround(Block block, BuildingType type) {
         for (Direction value : Direction.values()) {
             Block block1 = map.getNeighborBlock(block, value);
