@@ -13,10 +13,11 @@ public class MainMenu extends Menu{
     private User loggedInUser;
     public MainMenu(UserController userController) {
         this.userController = userController;
+        loggedInUser = userController.getLoggedInUser();
     }
     public void run() throws NoSuchAlgorithmException, IOException {
+        System.out.println("choose the menu you want to enter");
         while(true) {
-            System.out.println("choose the menu you want to enter");
             this.input = scanner.nextLine();
             if(input.matches(Commands.MAP_MENU.regex)) {
                 if(mapQuestion().equals("notChosen")) continue;

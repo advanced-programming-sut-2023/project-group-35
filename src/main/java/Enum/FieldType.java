@@ -1,22 +1,22 @@
 package Enum;
 
 public enum FieldType {
-    Ground(null , true, true),
+    Ground(null , true, true,false),
     //Ground_With_Stone(null, false, true), //same as ground
-    Stone(null, true, true), // for stone production
-    Iron(null, true, true), // for iron production
-    Rock(null, false, false), // unpassable
-    Grass(null, true, true),
-    Savanna(null, true, true), // can't build farm
-    OilGround(null, false , true),
-    Swamp(null , false, false), // kills ???????
-    LittleLake(null, false, false), // can't pass or struct
-    BigLake(null, false, false), // can't pass or struct
-    River(null, false, false), // can't pass or struct
-    Beach(null , false, false), // can't pass or struct
-    Ocean(null, false, false), // can't pass or struct
-    plain(null , false, true),
-    moat(null , false, false); // can' struct but unpassable
+    Stone(null, true, true,false), // for stone production
+    Iron(null, true, true,false), // for iron production
+    Rock(null, false, false,false), // unpassable
+    Grass(null, true, true,false),
+    Savanna(null, true, true,false), // can't build farm
+    OilGround(null, false , true,false),
+    Swamp(null , false, false,true), // kills ???????
+    LittleLake(null, false, false,true), // can't pass or struct
+    BigLake(null, false, false,true), // can't pass or struct
+    River(null, false, false,true), // can't pass or struct
+    Beach(null , false, false,true), // can't pass or struct
+    Ocean(null, false, false,true), // can't pass or struct
+    plain(null , false, true,false),
+    moat(null , false, false,false); // can' struct but unpassable
 
 //    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
 //    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
@@ -41,12 +41,14 @@ public enum FieldType {
 
     public final boolean isSuitableForBuilding;
     public final boolean canTroopPass;
+    public final boolean isAquatic;
     // ghabel sakht o saz
 
 
-    FieldType(String backGroundColor, boolean isSuitableForBuilding, boolean canTroopPass) {
+    FieldType(String backGroundColor, boolean isSuitableForBuilding, boolean canTroopPass,boolean isAquatic) {
         this.backGroundColor = backGroundColor;
         this.isSuitableForBuilding = isSuitableForBuilding;
         this.canTroopPass = canTroopPass;
+        this.isAquatic = isAquatic;
     }
 }

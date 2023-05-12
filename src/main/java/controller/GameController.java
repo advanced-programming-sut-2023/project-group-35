@@ -71,7 +71,7 @@ public class GameController {
         } else if(type.checkForEquals(BuildingType.LOOKOUT_TOWER, BuildingType.PERIMETER_TOWER, BuildingType.DEFENCE_TURRET)) {
             building = new Tower(type, playingReign, block);
         } else if(type.checkForEquals(BuildingType.SQUARE_TOWER, BuildingType.CIRCLE_TOWER)) {
-            building = new BigTower(type, playingReign, block);
+            building = new bigTower(type, playingReign, block);
         } else if(type.checkForEquals(BuildingType.ARMOURY)) {
             building = new StoreHouse(type, playingReign, block); // delete this class?
         }

@@ -28,7 +28,7 @@ public class User implements Comparable {
         this.sloganOfUser = slogan;
         this.highScore = 0;
         this.attemptsNumber = 0;
-        this.lastAttemptForLogin = 0;
+        this.lastAttemptForLogin = System.currentTimeMillis();
     }
 
     public int getHighScore() {

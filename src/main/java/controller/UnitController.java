@@ -3,7 +3,7 @@ package controller;
 import Enum.*;
 import model.*;
 import model.buildings.Wall;
-import model.buildings.BigTower;
+import model.buildings.bigTower;
 import model.people.*;
 import model.structures.*;
 import model.people.MilitaryUnit;
@@ -238,7 +238,7 @@ public class UnitController extends GameController{
                     return "You don't have enough engineers!";
                 }
                 else if(!(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Wall
-                        || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower)){
+                        || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower)){
                     return "You can't build stairs here!";
                 }
                 else{
@@ -308,7 +308,7 @@ public class UnitController extends GameController{
                         return "You don't have enough engineers!";
                     }
                     else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
-                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
+                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower))){
                         return "You can't build trebuchet here!";
                     }
                     else{
@@ -327,7 +327,7 @@ public class UnitController extends GameController{
                         return "You don't have enough engineers!";
                     }
                     else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
-                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
+                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof bigTower))){
                         return "You can't build ballista here!";
                     }
                     else{

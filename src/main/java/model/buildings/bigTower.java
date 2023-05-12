@@ -7,10 +7,10 @@ import model.structures.Structure;
 
 import java.util.ArrayList;
 
-public class BigTower extends Tower{
+public class bigTower extends Tower{
 
     ArrayList<Structure> structures = new ArrayList<>();
-    public BigTower(BuildingType buildingType, Reign owner, Block block) {
+    public bigTower(BuildingType buildingType, Reign owner, Block block) {
         super(buildingType, owner , block);
 
     }

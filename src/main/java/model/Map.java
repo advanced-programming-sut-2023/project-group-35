@@ -43,6 +43,9 @@ public class Map {
         return null;
         // ??????
     }
+    public static ArrayList<Map> getTemplateMaps(){
+        return templateMaps;
+    }
     public Block getBlockByLocation(int x , int y) {
         for (Block block : blocks) {
             if(block.x == x && block.y == y) return block;

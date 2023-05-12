@@ -32,7 +32,12 @@ public class UserController {
             return text.substring(1,text.length()-1);
         return text;
     }
-     public UserController() {
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public UserController() {
         loadTheData();
     }
     public String register(Matcher matcher, String slogan) throws IOException, NoSuchAlgorithmException {
@@ -80,7 +85,8 @@ public class UserController {
             return "Invalid Email format";
         securityQuestion = RegisterAndLoginMenu.getSafetyQuestion();
         answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
-        User userToBeAdded = new User(userName,password,nickName,email,securityQuestion,answerToSecurity,slogan);
+        User userToBeAdded = new User(userName,turnPasswordToSha256(password),
+                nickName,email,securityQuestion,answerToSecurity,slogan);
         User.addUser(userToBeAdded);
         return "Sign up was successful,we have "+userName+" on board now";
     }
@@ -94,7 +100,7 @@ public class UserController {
         else gonnaBeLoggedIn = false;
         if(User.getUserByUsername(userName) == null)
             return "No such user found!";
-        else if((User.getUserByUsername(userName).getLastAttemptForLogin() - System.currentTimeMillis()) <=
+        else if((-1*User.getUserByUsername(userName).getLastAttemptForLogin()+System.currentTimeMillis()) <=
                 User.getUserByUsername(userName).getAttemptsNumber()*1000)
             return "wait few seconds before another try";
         else if(!turnPasswordToSha256(password).equals(User.getUserByUsername(userName).getPassword())) {
@@ -114,7 +120,7 @@ public class UserController {
 
         }
     }
-    public String forgotMyPassword(Matcher matcher){
+    public String forgotMyPassword(Matcher matcher) throws NoSuchAlgorithmException, IOException {
         String userName = matcher.group("username");
         String password = matcher.group("password");
         if(User.getUserByUsername(userName) == null)
@@ -124,7 +130,7 @@ public class UserController {
         else if(!RegisterAndLoginMenu.checkPasswordErrors(password))
             return "you get the error...";
         else{
-            User.getUserByUsername(userName).setPassword(password);
+            User.getUserByUsername(userName).setPassword(turnPasswordToSha256(password));
             return "password changed successfully";
         }
 
@@ -159,7 +165,7 @@ public class UserController {
         else if(!RegisterAndLoginMenu.checkPassword(newPass))
             return "try the command again!";
         else{
-            loggedInUser.setPassword(newPass);
+            loggedInUser.setPassword(turnPasswordToSha256(newPass));
             return "your password changed!";
         }
     }
@@ -176,7 +182,7 @@ public class UserController {
     }
     public String generateRandomSlogan(){
         Random randomNumber = new Random();
-        int numberChosen = randomNumber.nextInt(4);
+        int numberChosen = randomNumber.nextInt(3);
         int counter = 0;
         for (Slogans slogan : Slogans.values()) {
             if(counter < numberChosen+1 && counter > numberChosen) {
@@ -232,13 +238,6 @@ public class UserController {
             }
         }
     }
-    public static void fileCreator(User user) throws IOException, NoSuchAlgorithmException {
-        FileWriter fileWriter = new FileWriter(user.getUserName()+".json");
-
-        fileWriter.write(user.getUserName()+"\n"+user.getNickName()+"\n"+turnPasswordToSha256(user.getPassword())
-                +"\n"+user.getEmail()+"\n"+user.getSecurityAnswer()+"\n"+user.getSecurityQuestion()+"\n"+user.highScore);
-        fileWriter.close();
-    } //todo change to json
     public static String turnPasswordToSha256(String password) throws NoSuchAlgorithmException,IOException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");;
         md.update(password.getBytes(StandardCharsets.UTF_8));

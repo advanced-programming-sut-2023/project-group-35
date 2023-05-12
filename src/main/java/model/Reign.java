@@ -192,5 +192,6 @@ public class Reign {
         this.unemployedPopulation = change;
     }
 
+    public void addBuilding(Building building){buildings.add(building);}
 
 }
