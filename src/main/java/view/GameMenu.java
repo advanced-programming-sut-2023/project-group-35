@@ -36,7 +36,23 @@ public class GameMenu extends Menu{
                 }
             } else if((matcher = getRealMatcher(input , Commands.DROP_BUILDING, Commands.X, Commands.Y, Commands.TYPE)) != null) {
                 System.out.println(gameController.dropBuilding(matcher));
+            } else if((matcher = getRealMatcher(input, Commands.SELECT_UNIT, Commands.X, Commands.Y)) != null) {
+                result = gameController.selectUnit(matcher);
+                if(result.equals("select units successful!")) {
+                    UnitSelectMenu menu = new UnitSelectMenu(gameController.getUnitController());
+                    menu.run();
+                }
             }
+
+
+
         }
+    }
+
+    public static Integer askUserTheUnitToSelect(String units) {
+        System.out.println("you have more than one unit in this block!");
+        System.out.println("which one do you want to select?");
+        System.out.println(units);
+        return scanner.nextInt();
     }
 }

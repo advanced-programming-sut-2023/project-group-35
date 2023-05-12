@@ -74,8 +74,8 @@ public class Game {
         this.selectedBuilding = building;
     }
 
-    public void setSelectedUnits(ArrayList<MilitaryUnit> selectedUnits) {
-        this.selectedUnits = selectedUnits;
+    public void setSelectedUnit(MilitaryUnit selectedUnit) {
+        this.selectedUnit = selectedUnit;
     }
 
     public Map getMap() {
@@ -96,12 +96,20 @@ public class Game {
         return units;
     }
 
+
+
     public Building getSelectedBuilding() {
         return selectedBuilding;
     }
 
     public int getTurnsPassed() {
         return turnsPassed;
+    }
+    public MilitaryUnit getSelectedUnit() {
+        return selectedUnit;
+    }
+    public void removeUnit(MilitaryUnit unit) {
+
     }
 }
 

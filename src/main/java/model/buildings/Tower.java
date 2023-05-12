@@ -16,10 +16,10 @@ public class Tower extends Building{
     private ArrayList<RangedUnit> rangedUnits = new ArrayList<>();
 
 
-    public Tower(BuildingType type, Reign owner, Block block, int fireRange, int defendRange) {
+    public Tower(BuildingType type, Reign owner, Block block) {
         super(type, owner, block);
-        this.fireRange = fireRange;
-        this.defendRange = defendRange;
+        this.fireRange = type.getRelatedInteger();
+        this.defendRange = 2 * type.getRelatedInteger(); // what's the difference?
         //this.militaryUnit = unit;
     }
 
@@ -27,8 +27,5 @@ public class Tower extends Building{
         return rangedUnits;
     }
 
-    @Override
-    public void nextTurn() {
-    return;
-    }
+
 }

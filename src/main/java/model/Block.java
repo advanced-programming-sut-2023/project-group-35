@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 
 public class Block {
-    int x;
-    int y;
+    public int x;
+    public int y;
 
     private Building building;
     private ArrayList<Structure> structures;
@@ -70,6 +70,18 @@ public class Block {
         return false;
     }
 
+    public boolean removeUnit(MilitaryUnit unit) {
+        if(militaryUnits.contains(unit)){
+            militaryUnits.remove(unit);
+            return true;
+        }
+        return false;
+    }
+    public boolean isPassable() {
+        if (!this.building.buildingType.isPassableForTroop) return false;
+        return this.fieldType.canTroopPass;
+    }
+
     public ArrayList<MilitaryUnit> getMilitaryUnits() {
         return militaryUnits;
     }
@@ -95,6 +107,16 @@ public class Block {
 
     public void setTree(Tree tree) {
         this.tree = tree;
+    }
+
+    public ArrayList<Structure> getStructures() {
+        return structures;
+    }
+    public boolean isATrapFor(MilitaryUnit unit) {
+        return false; //todo complete
+    }
+    public boolean hasABuilding() {
+        return building != null;
     }
 
     public int getX() {

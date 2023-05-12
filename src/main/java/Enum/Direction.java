@@ -1,6 +1,10 @@
 package Enum;
 
 public enum Direction {
+    up_right(1, 1),
+    up_left(-1, 1),
+    down_left(-1, -1),
+    down_right(1, -1),
     up(0 , 1),
     down(0, -1),
     right(1 , 0),

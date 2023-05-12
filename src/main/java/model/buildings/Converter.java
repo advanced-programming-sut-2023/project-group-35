@@ -8,9 +8,9 @@ public class Converter extends Building{
     Resource input;
     Resource output;
 
-    public Converter(Reign owner, BuildingType buildingType, Block block, int rate, Resource input, Resource output) {
+    public Converter(BuildingType buildingType, Reign owner, Block block, Resource input, Resource output) {
         super(buildingType, owner, block);
-        this.rate = rate;
+        this.rate = buildingType.getRelatedInteger();
         this.input = input;
         this.output = output;
     }

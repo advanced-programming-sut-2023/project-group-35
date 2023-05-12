@@ -7,9 +7,9 @@ import model.Reign;
 import java.util.ArrayList;
 
 public class Church extends Building{
-    public Church(Reign owner, BuildingType buildingType, Block block) {
+    public Church( BuildingType buildingType, Reign owner, Block block) {
         super(buildingType, owner, block);
-        owner.changePopulation(2);
+        owner.changePopulation(+2);
     }
 
 

@@ -22,6 +22,9 @@ public class Building {
     public void nextTurn() {
 
     }
+    public void isDestroyed() {
+
+    }
     public void getDamaged(int amountOfDamage){}
     public Reign getOwner() {
         return owner;
@@ -42,4 +45,6 @@ public class Building {
     public void setHp(int hp) {
         this.hp = hp;
     }
+
+
 }

@@ -10,43 +10,58 @@ import Enum.*;
 public class Menu {
     public static final Scanner scanner = new Scanner(System.in);
     protected String input;
+    protected String result;
     protected Matcher matcher;
+
 
     public void run() throws IOException, NoSuchAlgorithmException {
 
     }
     public static Matcher getMatcher(String input , String regex){
         Matcher matcher = Pattern.compile(regex).matcher(input);
-        return matcher.matches()? matcher: null;
+        return matcher.matches()? matcher : null;
     }
-    public static boolean findRegex(String input , Commands command) {
+    public static Matcher findRegex(String input , Commands command) {
         Matcher matcher = Pattern.compile(command.regex).matcher(input);
-        System.out.println(command.regex);
-        return matcher.find();
+        System.out.println("input: " + input + "  \ncommands: " + command.regex);
+        return matcher.find()? matcher : null;
     }
     public static Matcher getRealMatcher(String input, Commands starter, Commands... groups) {
-        if(!findRegex(input , starter)) {
-            System.out.println("1");
+
+        if( findRegex(input , starter) == null) {
+            //System.out.println("find regex did not work");
             return null;
-        } else {
-            System.out.println("found");
         }
-        String newInput = input;
-        newInput = newInput.replaceFirst(starter.regex , "");
+        input = input.replaceFirst(starter.regex , "");
+        //System.out.println("new input; " + input);
+        String orderedInput = "";
+        Matcher matcher1;
         for (Commands group : groups) {
-            if(!findRegex(input , group)) return null;
-            newInput = newInput.replaceFirst(group.regex, "");
+            if((matcher1 = findRegex(input , group)) == null){
+                //System.out.println("group" + group + "not found");
+                return null;
+            }
+            input = input.replaceFirst(group.regex, "");
+            orderedInput += " " + matcher1.group();
+            System.out.println(input);
         }
-        if (!newInput.matches("\\s*")) return null;
-        return getMatcher(input , appendGroups(groups));
+        //System.out.println("at last: " + input);
+        if (!input.matches("\\s*")) return null;
+        //System.out.println("regex group: " + appendGroups(groups));
+        //System.out.println(orderedInput);
+        return getMatcher(orderedInput , appendGroups(groups));
     }
     public static String appendGroups(Commands[] groups) {
-        String output = "\\" + "\\" + "s*";
+        String output = "\\" + "s*";
         for (Commands group : groups) {
-            output += group + "\\" + "\\" + "s+";
+            output += group.regex + "\\" + "s+";
         }
         output = output.replaceFirst("\\+$", "*");
         return output;
+    }
+
+    public int getInt(Matcher matcher, String regex) {
+        return Integer.parseInt(matcher.group(regex));
     }
 
 }

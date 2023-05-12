@@ -16,9 +16,9 @@ public class Producer extends Building{
 //    }
 
 
-    public Producer(BuildingType buildingType, Reign owner, Block block, int rate, Resource resource) {
+    public Producer(BuildingType buildingType, Reign owner, Block block, Resource resource) {
         super(buildingType, owner, block);
-        this.rate = rate;
+        this.rate = buildingType.getRelatedInteger();
         this.resource = resource;
     }
 
@@ -28,6 +28,6 @@ public class Producer extends Building{
 
     @Override
     public void nextTurn() {
-
+        getOwner().addToResource(resource, rate);
     }
 }
