@@ -28,12 +28,17 @@ public class RegisterAndLoginMenu extends Menu{
                 System.out.println(resOfLogin);
                 if(resOfLogin.equals("logged in successfully")) {
                     MainMenu mainMenu = new MainMenu(this.userController);
+                    UserController.saveTheData();
                     mainMenu.run();
                 }
             } else if ((matcher = getRealMatcher(input,Commands.FORGOT_MY_PASSWORD,
                     Commands.USERNAME,Commands.PASSWORD_USED_IN_LOGIN)) != null) {
                 System.out.println(userController.forgotMyPassword(matcher));
-            } else {
+            }
+            else if((matcher = getRealMatcher(input,Commands.BACK))!= null){
+                UserController.saveTheData();
+            }
+            else {
                 System.out.println("Invalid commend!");
             }
 
@@ -164,36 +169,6 @@ public class RegisterAndLoginMenu extends Menu{
             return true;
         return false;
     }
-    private String extractUsername(String text) {
-        Matcher userNameMatcher = Commands.getMatcher(text, Commands.USERNAME);
-        String username = userController.checkForQuotation(userNameMatcher.group("username"));
-        return username;
-    }
-
-    private String extractPasswordConfirm(String text) {
-        Matcher passwordMatcher =  Commands.getMatcher(input, Commands.PASSWORD_NOT_IN_LOGIN);
-        if (passwordMatcher.group("passwordConfirm") == null) return "random";
-        else return userController.checkForQuotation(passwordMatcher.group("passwordConfirm"));
-    }
-
-    private String extractPassword(String text) {
-        Matcher passwordMatcher = Commands.getMatcher(text, Commands.PASSWORD_NOT_IN_LOGIN);
-        String password = userController.checkForQuotation(passwordMatcher.group("password"));
-        return password;
-
-    }
-
-    private String extractNickname(String text) {
-        Matcher nickNameMatcher = Commands.getMatcher(text, Commands.NICKNAME);
-        String password = userController.checkForQuotation(nickNameMatcher.group("nickName"));
-        return password;
-    }
-
-    private String extractEmail(String text) {
-        Matcher emailMatcher = Commands.getMatcher(text, Commands.EMAIL);
-        String password = userController.checkForQuotation(emailMatcher.group("email"));
-        return password;
-    }
 
     private String extractSlogan(String text) {
         String slogan = null;
@@ -207,11 +182,6 @@ public class RegisterAndLoginMenu extends Menu{
             return slogan;
         }
         return null;
-    }
-    private String extractPasswordInLogin(String text){
-        Matcher passwordMatcher = Commands.getMatcher(text, Commands.PASSWORD_USED_IN_LOGIN);
-        String password = userController.checkForQuotation(passwordMatcher.group("password"));
-        return password;
     }
 
 }

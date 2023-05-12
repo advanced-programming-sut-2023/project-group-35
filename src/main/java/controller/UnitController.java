@@ -55,8 +55,10 @@ public class UnitController extends GameController{
         else{
             int amountOfDamage = game.getSelectedSingleUnit().getDamage()*game.getSelectedSingleUnit().getNumber();
             game.getMap().getBlockByLocation(x,y).getMilitaryUnits().get(0).getDamaged(amountOfDamage);
+            collectingGarbageUnits();
             return "attack successfully!";
         }
+
     }
 
     public String pourOil(Direction direction) {
@@ -95,7 +97,7 @@ public class UnitController extends GameController{
         if(!(game.getSelectedSingleUnit() instanceof Engineer))
             return "You must choose bunch of engineers!";
         switch (equipmentType){
-            case LADDER{
+            case LADDER->{
                 if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
                         amount*equipmentType.getAmountOfMaterial()){
                     return "You don't have enough matrials!";
@@ -113,7 +115,7 @@ public class UnitController extends GameController{
                     return "ladder was created succesfully";
                 }
             }
-            case STAIRS{
+            case STAIRS ->{
                 if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
                         amount*equipmentType.getAmountOfMaterial()){
                     return "You don't have enough matrials!";
@@ -180,7 +182,7 @@ public class UnitController extends GameController{
                     else{
                         game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
                         game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
-                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(/*new Engineer*/));
+                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(equipmentType.getHp(),equipmentType.isMoving(),equipmentType.getDamage(),null));
                         return "catapult was put down!";
                 }}
                 case TREBUCHET -> {
@@ -198,7 +200,7 @@ public class UnitController extends GameController{
                     else{
                         game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
                         game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
-                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(/*new Engineer*/));
+                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(equipmentType.getHp(),equipmentType.isMoving(),equipmentType.getDamage(),null));
                         return "trebuchet was put down!";
                     }
                 }
@@ -217,11 +219,15 @@ public class UnitController extends GameController{
                     else{
                         game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
                         game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
-                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(/*new Engineer*/));
+                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(equipmentType.getHp(),equipmentType.isMoving(),equipmentType.getDamage(),null));
                         return "ballista was put down!";
                     }
                 }
+                default->{
+                return "invalid commend!";
+                }
         }
+        return "invalid type!";
     }
     public String digMoat(int x, int y) {
         if(!areCoordinatesCorrect(x,y))
@@ -343,6 +349,7 @@ public class UnitController extends GameController{
         game.getSelectedSingleUnit().getOwner().setUnemployedPopulation(game.getSelectedSingleUnit().getOwner().
                 getUnemployedPopulation()+numberOfSoliders);
         game.setSelectedUnits(null);
+        collectingGarbageUnits();
         return "the unit was disbanded!";
     }
 
