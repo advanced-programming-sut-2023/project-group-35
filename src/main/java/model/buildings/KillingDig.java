@@ -10,8 +10,8 @@ public class KillingDig extends Building{
         super(buildingType, owner, block);
     }
 
-    public void setVisibility(boolean visibility) {
-        this.visibility = this.visibility;
+    public void changeVisibility() {
+        visibility = !visibility;
     }
 
     public boolean isVisibility() {

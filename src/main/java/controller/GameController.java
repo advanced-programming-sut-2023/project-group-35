@@ -59,10 +59,10 @@ public class GameController {
     }
     public String BuildTheBuilding(BuildingType type, Block block) {
         Building building; //todo check for the buildings that need the same building around them
-        if(type.checkForEquals(BuildingType.SHOP)) {
+        if(type.checkForEquals(BuildingType.SHOP, BuildingType.BARRACK, BuildingType.MERCENARY_CAMP, BuildingType.ENGINEER_GUILD)) {
             building = new Building(type, playingReign, block);
         }
-        if(type.checkForEquals(BuildingType.SMALL_STONE_GATE, BuildingType.BIG_STONE_GATEHOUSE)) {
+        else if(type.checkForEquals(BuildingType.SMALL_STONE_GATE, BuildingType.BIG_STONE_GATEHOUSE)) {
              building = new GateHouse(type, playingReign, block);
         } else if(type.checkForEquals(BuildingType.HOVEL)) {
             building = new House(type, playingReign, block);
@@ -75,21 +75,7 @@ public class GameController {
         } else if(type.checkForEquals(BuildingType.ARMOURY)) {
             building = new StoreHouse(type, playingReign, block); // delete this class?
         }
-//        else if(type.checkForEquals(BuildingType.ARMOURER)) { // what else? پست شکار و
-//            building = new Converter(type, playingReign, block, Resource.IRON, Resource.ARMOR );
-//        } else if(type.checkForEquals(BuildingType.MILL)) {
-//            building = new Converter(type, playingReign, block, Resource.WHEAT, Resource.FLOUR);
-//        } else if(type.checkForEquals(BuildingType.BLACK_SMITH)) {
-//            building = new Converter(type, playingReign , block, Resource.IRON, Resource.SWORD);
-//        } else if(type.checkForEquals(BuildingType.FLETCHER)) {
-//            building = new Converter(type, playingReign, block , Resource.WOOD, Resource.BOW);
-//        } else if(type.checkForEquals(BuildingType.POLE_TURNER)) {
-//            building = new Converter(type, playingReign, block , Resource.WOOD, Resource.SPEAR);
-//        } else if(type.checkForEquals(BuildingType.HUNTING_GROUND)) {
-//            building = new Converter(type, playingReign, block , Resource.MEAT, Resource.PROCESSED_MEAT);
-//        } else if(type.checkForEquals(BuildingType.BREWERY)) {
-//            building = new Converter(type, playingReign, block , Resource.HOP, Resource.BEAR);
-//        }
+
         else if(type.checkForEquals(BuildingType.ARMOURER, BuildingType.MILL, BuildingType.BLACK_SMITH,
                 BuildingType.FLETCHER, BuildingType.POLE_TURNER, BuildingType.HUNTING_GROUND, BuildingType.BREWERY)) {
             building = new Converter(type, playingReign, block, Resource.getEntry(type), Resource.getProduct(type));
@@ -103,19 +89,18 @@ public class GameController {
         } else if(type.checkForEquals(BuildingType.STONE_MINE)) {
             if(!block.getFieldType().equals(FieldType.Stone)) return "you should drop a stone mine on a Stone field";
             building = new Producer(type, playingReign, block , Resource.STONE);
-        } else if(type.checkForEquals(BuildingType.STOCK_PILE, BuildingType.FOOD_STOCK_PILE)) {
+        } else if(type.checkForEquals(BuildingType.IRON_MINE)) {
+            if(!block.getFieldType().equals(FieldType.Iron)) return "you should drop an Iron Mine on an Iron field";
+            building = new Producer(type, playingReign, block, Resource.IRON);
+        }
+        else if(type.checkForEquals(BuildingType.STOCK_PILE, BuildingType.FOOD_STOCK_PILE)) {
             if(!foundTheSameBuildingAround(block, type)) return "you should place a this building around a building of its type";
             building = new StoreHouse(type, playingReign, block);
         }
-//        else if(type.checkForEquals(BuildingType.APPLE_GARDEN)) {
-//            building = new Producer(type, playingReign, block, Resource.APPLE);
-//        } else if(type.checkForEquals(BuildingType.WHEAT_FARM)) {
-//            building = new Producer(type, playingReign, block, Resource.WHEAT);
-//        } else if(type.checkForEquals(BuildingType.BAKERY)) {
-//            building = new Producer(type, playingReign, block, Resource.BREAD);
-//        } else if(type.checkForEquals(BuildingType.DAIRY_FARM)) {
-//            building = new Producer(type, playingReign, block , Resource.CHEESE);
-//        }
+        else if(type.checkForEquals(BuildingType.CHURCH, BuildingType.CATHEDRAL)) {
+            building = new Church(type, playingReign , block);
+        }
+
         else if(type.checkForEquals(BuildingType.APPLE_GARDEN, BuildingType.WHEAT_FARM, BuildingType.BAKERY, BuildingType.DAIRY_FARM)) {
             building = new Producer(type, playingReign, block, Resource.getProduct(type));
         }

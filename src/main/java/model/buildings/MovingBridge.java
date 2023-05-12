@@ -5,7 +5,7 @@ import model.Reign;
 
 public class MovingBridge extends Building{
 
-    boolean isBridgePassable;
+    private boolean isBridgePassable;
 
     public MovingBridge(BuildingType buildingType, Reign owner, Block block) {
         super(buildingType, owner, block);
@@ -17,7 +17,7 @@ public class MovingBridge extends Building{
     }
 
     public void ChangeBridgeState() {
-
+        isBridgePassable = !isBridgePassable;
     }
 
 }

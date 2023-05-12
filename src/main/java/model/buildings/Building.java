@@ -46,4 +46,5 @@ public class Building {
         this.hp = hp;
     }
 
+
 }

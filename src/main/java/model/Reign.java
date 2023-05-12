@@ -40,8 +40,13 @@ public class Reign {
 
     }
 
-    public void addToResource(Resource resource, int number) {
-        resources.replace(resource, resources.get(resource) + number);
+    public void addToResource(Resource resource, int change) {
+        int now = resources.get(resource);
+        int newAmount = now + change;
+        if(now + change > resourceCapacity.get(resource)){
+            newAmount = resourceCapacity.get(resource);
+        }
+        resources.replace(resource, newAmount);
     }
     public void removeFromResources(Resource resource, int number) {
         resources.replace(resource, resources.get(resource) - number);
@@ -54,7 +59,7 @@ public class Reign {
         return resourceCapacity.get(resource);
     }
 
-    public void addToResourcesCapacity(BuildingType buildingType , int amount) {
+    public void changeResourcesCapacity(BuildingType buildingType , int amount) {
         for (Resource value : Resource.values()) {
             if(value.getStoredInBuilding().equals(buildingType))
                 resourceCapacity.replace(value, resourceCapacity.get(value) + amount);

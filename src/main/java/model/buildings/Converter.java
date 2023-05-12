@@ -17,6 +17,7 @@ public class Converter extends Building{
 
     @Override
     public void nextTurn() {
-
+        getOwner().removeFromResources(input, rate);
+        getOwner().addToResource(output, 1);
     }
 }

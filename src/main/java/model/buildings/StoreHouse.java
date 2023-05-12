@@ -8,7 +8,11 @@ public class StoreHouse extends Building{
 
     public StoreHouse(BuildingType buildingType, Reign owner, Block block) {
         super(buildingType, owner, block);
-        owner.addToResourcesCapacity(buildingType, buildingType.getRelatedInteger());
+        owner.changeResourcesCapacity(buildingType, buildingType.getRelatedInteger());
     }
 
+    @Override
+    public void isDestroyed() {
+        getOwner().changeResourcesCapacity(buildingType, buildingType.getRelatedInteger());
+    }
 }

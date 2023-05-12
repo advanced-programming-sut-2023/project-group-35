@@ -28,6 +28,6 @@ public class Producer extends Building{
 
     @Override
     public void nextTurn() {
-
+        getOwner().addToResource(resource, rate);
     }
 }

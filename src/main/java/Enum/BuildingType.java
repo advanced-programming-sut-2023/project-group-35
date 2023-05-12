@@ -30,7 +30,7 @@ public enum BuildingType {
     CATHEDRAL(null , 0 , 1000 , 0 , 20, 0, false),
     BLACK_SMITH(Resource.WOOD , 20 , 100 , 0 , 20, 0, false),
     FLETCHER(Resource.WOOD, 20 , 100 ,0 , 0, 0, false),
-    POLE_TURNER(Resource.WOOD, 10 , 100, 0 , 0, 0, false),
+    POLE_TURNER(Resource.WOOD, 10 , 100, 0 , 0, 0, false), // نیزه سازی
     OIL_SMELTER(Resource.IRON, 100 , 0, 100 , 0, 0, false),
     CAGED_WAR_DOGS(Resource.WOOD, 10, 0, 100, 0, 0, false),
     //SIEGE_TENT(),
