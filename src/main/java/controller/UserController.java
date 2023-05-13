@@ -39,9 +39,9 @@ public class UserController {
 
     public UserController() {
         loadTheData();
+        Map.loadTheMap();
     }
     public String register(Matcher matcher, String slogan) throws IOException, NoSuchAlgorithmException {
-        //TODO:empty checker and sum returns;
         String password = null;
         if(matcher.group("random") == null) {
              password = matcher.group("password");
@@ -65,7 +65,7 @@ public class UserController {
         }
         if(slogan != null && slogan.length() < 1)
             return "there is an empty field!";
-        String securityQuestion = null;
+        SecurityQuestion securityQuestion = null;
         String answerToSecurity = null;
         if(userName.length() < 1 || password.length() < 1 || email.length() < 1 || nickName.length() < 1)
             return "There is some field empty!";

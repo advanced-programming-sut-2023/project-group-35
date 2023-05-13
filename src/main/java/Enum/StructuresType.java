@@ -22,6 +22,7 @@ public enum StructuresType {
 
     StructuresType(int damage, int hp, boolean isMoving, int range, int amountOfMaterial,
                    int amountOfEngineer, Resource resource) {
+
     }
 
     public int getDamage() {

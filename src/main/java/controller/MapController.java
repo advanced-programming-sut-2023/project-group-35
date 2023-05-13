@@ -60,20 +60,20 @@ public class MapController {
             for (int y = underLimitY; y < upperLimitY; y++) {
                 Block block = map.getBlockByLocation(x, y);
                 if (block.getBuilding() != null) {
-                    System.out.print("#");
+                    System.out.print(FieldType.getFieldTypeColor(block)+"#"+FieldType.ANSI_WHITE_BACKGROUND);
                     continue;
                 } else if (block.getFieldType().isAquatic) {
-                    System.out.print("~");
+                    System.out.print(FieldType.getFieldTypeColor(block)+"~"+FieldType.ANSI_WHITE_BACKGROUND);
                 } else if (!block.isOccupied()) {
-                    System.out.print("X");
+                    System.out.print(FieldType.getFieldTypeColor(block)+"X"+FieldType.ANSI_WHITE_BACKGROUND);
                     continue;
                 } else if (map.isABase(x, y)) {
-                    System.out.print("@");
+                    System.out.print(FieldType.getFieldTypeColor(block)+"@"+FieldType.ANSI_WHITE_BACKGROUND);
                     continue;
                 } else if (block.getFieldType().isSuitableForBuilding) {
-                    System.out.print("^");
+                    System.out.print(FieldType.getFieldTypeColor(block)+"^"+FieldType.ANSI_WHITE_BACKGROUND);
                 } else
-                    System.out.print("+");
+                    System.out.print(FieldType.getFieldTypeColor(block)+"+"+FieldType.ANSI_WHITE_BACKGROUND);
             }
             System.out.println("|");
         }
