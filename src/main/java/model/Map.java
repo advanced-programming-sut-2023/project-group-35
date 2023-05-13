@@ -1,10 +1,16 @@
 package model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import model.*;
 import Enum.*;
 import model.buildings.Building;
 
 import javax.swing.plaf.synth.Region;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.ArrayList;
 
 public class Map {
@@ -42,6 +48,9 @@ public class Map {
     public static String getMapList() {
         return null;
         // ??????
+    }
+    public static ArrayList<Map> getTemplateMaps(){
+        return templateMaps;
     }
     public Block getBlockByLocation(int x , int y) {
         for (Block block : blocks) {
@@ -85,5 +94,20 @@ public class Map {
     public int getNumberOfBases() {
         return baseBlocks.size();
     }
+    public static void addTemplateMap(Map map){
+        templateMaps.add(map);
+    }
+    public static void loadTheMap(){
+        Reader reader;
+        try {
+            reader = new FileReader("dataBaseMap.json");
+        } catch (FileNotFoundException e) {
+            return;
+        }
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+        for (JsonElement jsonElement : jsonArray)
+            Map.addTemplateMap(gson.fromJson(jsonElement, Map.class));
 
+    }
 }

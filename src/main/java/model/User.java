@@ -1,5 +1,5 @@
 package model;
-
+import Enum.*;
 import java.util.*;
 
 public class User implements Comparable {
@@ -7,7 +7,7 @@ public class User implements Comparable {
     private String password;
     public String nickName;
     private String email;
-    private String securityQuestion;
+    private SecurityQuestion securityQuestion;
     private String securityAnswer;
     public int highScore;
     public int totalScore;
@@ -18,7 +18,7 @@ public class User implements Comparable {
     private static final ArrayList<User> users = new ArrayList<>();
 
     public User(String userName, String password, String nickName,
-                String email, String securityQuestion, String securityAnswer,String slogan) {
+                String email, SecurityQuestion securityQuestion, String securityAnswer, String slogan) {
         this.userName = userName;
         this.password = password;
         this.nickName = nickName;
@@ -28,7 +28,7 @@ public class User implements Comparable {
         this.sloganOfUser = slogan;
         this.highScore = 0;
         this.attemptsNumber = 0;
-        this.lastAttemptForLogin = 0;
+        this.lastAttemptForLogin = System.currentTimeMillis();
     }
 
     public int getHighScore() {
@@ -48,10 +48,15 @@ public class User implements Comparable {
     }
 
     public static User getUserByUsername(String userName){
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        int counter = 0;
         for(User user: users){
+            counter++;
             if(userName.equals(user.getUserName()))
-                return user;
+                arrayList.add(counter);
         }
+        if(arrayList.size() > 0)
+            return users.get(arrayList.size()-1);
         return null;
     }
     public static User getUserByEmail(String email){
@@ -101,10 +106,10 @@ public class User implements Comparable {
     }
 
     public String getSecurityQuestion() {
-        return securityQuestion;
+        return securityQuestion.toString();
     }
 
-    public void setSecurityQuestion(String securityQuestion) {
+    public void setSecurityQuestion(SecurityQuestion securityQuestion) {
         this.securityQuestion = securityQuestion;
     }
 

@@ -24,13 +24,13 @@ public class ProfileMenu extends Menu{
                 System.out.println(profileMenu.changeOrRemoveSlogan(extractSlogan(input)));
             }else if ((matcher = getRealMatcher(input,Commands.CHANGE_NICKNAME,Commands.NICKNAME)) != null) {
                 System.out.println(profileMenu.nicknameChange(matcher));
-            } else if ((matcher = Commands.getMatcher(input, Commands.SHOW_HIGHSCORE)) != null) {
+            } else if ((matcher = getRealMatcher(input, Commands.SHOW_HIGHSCORE)) != null) {
                 System.out.println(profileMenu.displayHighScore());
-            }else if ((matcher = Commands.getMatcher(input, Commands.SHOW_RANK)) != null) {
+            }else if ((matcher = getRealMatcher(input, Commands.SHOW_RANK)) != null) {
                 System.out.println(profileMenu.displayRank());
-            }else if ((matcher = Commands.getMatcher(input, Commands.SHOW_SLOGAN)) != null) {
+            }else if ((matcher = getRealMatcher(input, Commands.SHOW_SLOGAN)) != null) {
                 System.out.println(profileMenu.displaySlogan());
-            }else if ((matcher = Commands.getMatcher(input, Commands.SHOW_INFO)) != null) {
+            }else if ((matcher = getRealMatcher(input, Commands.SHOW_INFO)) != null) {
                 System.out.println(profileMenu.displayProfile());
             }else if ((matcher = Commands.getMatcher(input, Commands.BACK)) != null) {
                 return;

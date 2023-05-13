@@ -8,6 +8,7 @@ public enum Commands {
     START_GAME("\\s*start\\s+a\\s+new\\s+game\\s*"),
     // start game menu
     ADD_USER("\\s*add\\s*"),
+    SAVE("\\s*save\\s*"),
 
     //login and register commands
     CREATE_USER("^\\s*create\\s+user\\s*"),
@@ -122,7 +123,8 @@ public enum Commands {
     /// groups
     X("-x\\s+(?<x>\\d+)"),
     Y("-y\\s+(?<y>\\d+)"),
-    ITEM("-t\\s+(?<item>\\S+|(\"[^\"]+\"))");
+    ITEM("-t\\s+(?<item>\\S+|(\"[^\"]+\"))"),
+    REMOVE_BASE("\\s*remove\\s+base\\s*");
 
     public String regex;
     private Commands(String regex){

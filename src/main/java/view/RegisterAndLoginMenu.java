@@ -64,10 +64,10 @@ public class RegisterAndLoginMenu extends Menu{
         return true;
     }
 
-    public static String getSafetyQuestion() {
+    public static SecurityQuestion getSafetyQuestion() {
         int counter = 1;
         String lastLine;
-        String question = null;
+        SecurityQuestion question = null;
         Scanner scn = new Scanner(System.in);
         System.out.println("pick one question :");
         for (SecurityQuestion questionSecurity : SecurityQuestion.values()) {
@@ -89,7 +89,7 @@ public class RegisterAndLoginMenu extends Menu{
         for (SecurityQuestion securityQuestion : SecurityQuestion.values()) {
             counter++;
             if (counter == numberChosen) {
-                question = securityQuestion.question;
+                question = securityQuestion;
                 break;
             }
         }

@@ -39,7 +39,7 @@ public class GameController {
         BuildingType type = BuildingType.getBuildingTypeByName(matcher.group("type"));
         if(type == null) return "wrong building type";
         Block block = map.getBlockByLocation(x, y);
-        if (!block.getFieldType().isSuitableForBuildingAndStructure)
+        if (!block.getFieldType().isSuitableForBuilding)
             return "the filed type is not suitable to drop building";
         if(map.getBlockByLocation(x, y).getBuilding() != null) return "there is already a building in this block";
         if(map.getBlockByLocation(x, y).getStructures().size() > 0) {
@@ -72,7 +72,7 @@ public class GameController {
         } else if(type.checkForEquals(BuildingType.LOOKOUT_TOWER, BuildingType.PERIMETER_TOWER, BuildingType.DEFENCE_TURRET)) {
             building = new Tower(type, playingReign, block);
         } else if(type.checkForEquals(BuildingType.SQUARE_TOWER, BuildingType.CIRCLE_TOWER)) {
-            building = new BigTower(type, playingReign, block);
+            building = new Tower(type, playingReign, block);
         } else if(type.checkForEquals(BuildingType.ARMOURY)) {
             building = new StoreHouse(type, playingReign, block); // delete this class?
         }

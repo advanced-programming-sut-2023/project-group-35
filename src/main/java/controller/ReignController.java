@@ -11,9 +11,7 @@ public class ReignController extends GameController{
     }
 
     public String showPopularityFactors() {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(showFoodList()+"\n"+showFoodRate()+"\n"+showTaxRate()+"\n"+showFearRate());
-    return stringBuilder.toString();
+        return showFoodList() + "\n" + showFoodRate() + "\n" + showTaxRate() + "\n" + showFearRate();
     }
 
     public String showFearRate() {
@@ -25,12 +23,11 @@ public class ReignController extends GameController{
         return "Your popularity is: "+game.getPlayingReign().getPopularity();
     }
     public String showFoodList() {
-        StringBuilder stringBuilder = new StringBuilder("Your food situation: \n");
-        /*stringBuilder.append("Bread : "+game.getPlayingReign().getResourceAmount(Resource.BREAD));
-        stringBuilder.append("\nApple : "+game.getPlayingReign().getResourceAmount(Resource.APPLE));
-        stringBuilder.append("\nCheese : "+game.getPlayingReign().getResourceAmount(Resource.CHEESE));
-        stringBuilder.append("\nMeat : "+game.getPlayingReign().getResourceAmount(Resource.MEAT));*/
-        return stringBuilder.toString();
+        String stringBuilder = "Your food situation: \n" + "Bread : " + game.getPlayingReign().getResourceAmount(Resource.BREAD) +
+                "\nApple : " + game.getPlayingReign().getResourceAmount(Resource.APPLE) +
+                "\nCheese : " + game.getPlayingReign().getResourceAmount(Resource.CHEESE) +
+                "\nMeat : " + game.getPlayingReign().getResourceAmount(Resource.MEAT);
+        return stringBuilder;
 
     }
     public String setFoodRate(Matcher matcher) {

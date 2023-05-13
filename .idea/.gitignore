@@ -5,3 +5,4 @@
 .github/
 out/
 *.json
+*.class

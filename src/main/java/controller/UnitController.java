@@ -4,11 +4,10 @@ import Enum.*;
 import model.*;
 import model.buildings.Building;
 import model.buildings.Wall;
-import model.buildings.BigTower;
 import model.people.*;
 import model.structures.*;
 import model.people.MilitaryUnit;
-
+import model.buildings.Tower;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -283,7 +282,7 @@ public class UnitController extends GameController{
             return "ladder was created successfully";
         } else if(type.equals(StructuresType.STAIRS)){
             if(!(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Wall
-                    || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower)){
+                    || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Tower)){
                 return "You can't build stairs here!";
             }
         } else if(type.equals(StructuresType.MOVING_SHIELD)) {
@@ -297,12 +296,12 @@ public class UnitController extends GameController{
             }
         } else if(type.equals(StructuresType.TREBUCHET)) {
             if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
-                    !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
+                    !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Tower))){
                 return "You can't build trebuchet here!";
             }
         } else if(type.equals(StructuresType.FLAME_THROWER)) {
             if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
-                    !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
+                    !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Tower))){
                 return "You can't build ballista here!";
             }
         }

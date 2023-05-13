@@ -43,7 +43,7 @@ public class Menu {
             }
             input = input.replaceFirst(group.regex, "");
             orderedInput += " " + matcher1.group();
-            System.out.println(input);
+            //System.out.println(input);
         }
         //System.out.println("at last: " + input);
         if (!input.matches("\\s*")) return null;
