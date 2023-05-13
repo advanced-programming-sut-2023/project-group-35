@@ -57,7 +57,7 @@ public class ReignController extends GameController{
         int rate = Integer.parseInt(matcher.group("rate"));
         if(rate > 6|| rate < -6)
             return "rate not valid!";
-        game.getPlayingReign().setFearRate(rate);
+        playingReign.setFearRate(rate);
         return "fear rate set!";
     }
 }

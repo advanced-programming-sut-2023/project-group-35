@@ -2,6 +2,7 @@ package controller;
 
 import Enum.*;
 import model.*;
+import model.buildings.Building;
 import model.buildings.Wall;
 import model.buildings.BigTower;
 import model.people.*;
@@ -22,6 +23,10 @@ public class UnitController extends GameController{
 
     public String moveUnitCommand(int x, int y) {
         if (!areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.response;
+        if (selectedUnit instanceof Engineer) {
+            if(((Engineer)selectedUnit).hasStructure())
+                return "you can't move an engineering unit inside a structure\ntry moving the structure itself";
+        }
         if (x == selectedUnit.getBlock().x && y == selectedUnit.getBlock().y) return "troops are already in this block";
         String destMessage;
         if (!(destMessage = checkTheDestination(x, y)).equals("correct")) return destMessage;
@@ -78,7 +83,7 @@ public class UnitController extends GameController{
                     return arrayListMaker(father, dest);
                 }
                 int g = gOfBlocks.get(block) + 1;
-                int h = getH(nextBlock, dest);
+                int h = getMaxDistance(nextBlock, dest);
                 // todo check the previous f
                 openList.put(h + g, nextBlock);
                 if(gOfBlocks.containsKey(nextBlock)) gOfBlocks.replace(nextBlock, g);
@@ -94,14 +99,19 @@ public class UnitController extends GameController{
         ArrayList<Block> path = findAPath(unit.getBlock(), unit.getDestBlock());
         if(path == null) return "no path";
         for(int i = 1; i<= unit.unitType.speed; i++) {
-            unit.moveTo(path.get(i));
+            moveTo(unit, path.get(i));
             if(path.get(i).isATrapFor(unit)){
-                game.removeUnit(unit);
+                game.removeUnitIfKilled(unit);
                 return "killed";
             }
             if(path.get(i).equals(unit.getDestBlock())) return "arrived";
         }
         return "still moving";
+    }
+    private void moveTo(MilitaryUnit unit, Block dest) {
+        unit.getBlock().removeUnit(unit);
+        unit.setBlock(dest);
+        dest.getMilitaryUnits().add(unit);
     }
 
     public ArrayList<Block> arrayListMaker(HashMap<Block, Block> father, Block dest) {
@@ -118,7 +128,7 @@ public class UnitController extends GameController{
         return output;
     }
 
-    public int getH(Block current, Block dest) {
+    public int getMaxDistance(Block current, Block dest) {
         int x = Math.abs(current.x - dest.x);
         int y = Math.abs(current.y - dest.y);
         if(x > y) return x;
@@ -136,22 +146,59 @@ public class UnitController extends GameController{
 
     public String setUnitState(String state) {
         UnitState unitState = UnitState.getUnitState(state);
+        if(unitState == null) return "please set a valid state for your selected unit";
         if(unitState.equals(selectedUnit.getUnitState())) return "the unit is already in this state";
         selectedUnit.setUnitState(unitState);
         return "the unit state is selected to" + state;
     }
 
-    public UnitState getUnitState() {
-        return game.getSelectedSingleUnit().getUnitState();
+    public String getUnitState() {
+        return "the selected unit state is: " + game.getSelectedSingleUnit().getUnitState();
     }
 
     public String attackEnemy(int x , int y) {
         Block block = map.getBlockByLocation(x, y);
         if (areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.response;
+        if (!selectedUnit.isBlockInRange(block)) return "you can't attack this block because its not in the units range";
+        if (block.findOpponentInBlock(playingReign)) return "there is no enemy in this block";
+        return attackBlock(selectedUnit, block, true);
 
-
-        return null;
     }
+    public String attackBlock(MilitaryUnit attacker , Block block, boolean isInTurn) {
+        if(!attacker.isBlockInRange(block)) return "not in range";
+        if(block.hasABuilding()){
+            Building building = block.getBuilding();
+            if(!building.getOwner().equals(attacker.getOwner())) {
+                building.getDamaged(selectedUnit.getDamage());
+                if (building.getHp() <= 0) {
+                   String result = super.removeBuilding(building);
+                   if(result.equals("endGame")) return "endGame";
+                }
+            }
+        }
+        for (MilitaryUnit unit : block.getMilitaryUnits()) {
+            boolean isAttackerKilled = militaryAttack(attacker, unit, isInTurn);
+            if(isAttackerKilled) return "attacker killed";
+        }
+        return "attack done";
+    }
+    public Boolean militaryAttack(MilitaryUnit first , MilitaryUnit second, boolean isInTurn) {
+        if (first.getOwner().equals(second.getOwner())) return false;
+        second.getDamaged(first.getDamage());
+        if (isInTurn) {
+            if (second.isBlockInRange(first.getBlock())) {
+                first.getDamaged(second.getDamage());
+            }
+        }
+        game.removeUnitIfKilled(second);
+        if (first.getHp() <= 0) {
+            game.removeUnitIfKilled(first);
+            return true;
+        }
+        return false;
+    }
+
+
 
     public String airAttack(int x, int y) {
         if(!areCoordinatesCorrect(x,y))
@@ -175,8 +222,20 @@ public class UnitController extends GameController{
 
     }
 
-    public String pourOil(Direction direction) {
-        return null;
+    public String pourOil(String dir) {
+        if(!selectedUnit.unitType.equals(UnitType.ENGINEER)) return "only an engineer can pour oil";
+        Direction direction = Direction.getDirectionByName(dir);
+        if(direction == null) return "you have entered the wrong direction";
+        if(!((Engineer) selectedUnit).hasOilToPour()) return "the Engineer doesn't have oil to pour";
+        Block block = selectedUnit.getBlock();
+        for(int i = 0; i < 3; i++) {
+            block= map.getNeighborBlock(block, direction);
+            for (MilitaryUnit unit : block.getMilitaryUnits()) {
+                unit.getDamaged(10);
+                game.removeUnitIfKilled(unit);
+            }
+        }
+        return "pour oil successful";
     }
     public String digTunnel(int x , int y) {
         if(!areCoordinatesCorrect(x,y))
@@ -207,142 +266,51 @@ public class UnitController extends GameController{
         int outage = (int) Math.floor(out);
         return outage;
     }
-    public String buildEquipment(StructuresType equipmentType,int amount) {
-        if(!(game.getSelectedSingleUnit() instanceof Engineer))
+    public String buildStructure(String structureType) {
+        StructuresType type = StructuresType.getType(structureType);
+        if (!(selectedUnit instanceof Engineer))
             return "You must choose bunch of engineers!";
-        switch (equipmentType){
-            case LADDER->{
-                if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
-                        amount*equipmentType.getAmountOfMaterial()){
-                    return "You don't have enough matrials!";
-                }
-                else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
-                    return "You don't have enough engineers!";
-                }
-                else{
-                    game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber() - amount);
-                    LadderMen ladderMen = new LadderMen(UnitType.LADDERMAN,game.getPlayingReign(),
-                            game.getSelectedSingleUnit().getBlock(),amount);
-                    ladderMen.getBlock().addUnit(ladderMen);
-                    ladderMen.getOwner().getMilitaryUnits().add(ladderMen);
-                    ladderMen.getOwner().removeFromResources(Resource.WOOD,amount*equipmentType.getAmountOfMaterial());
-                    return "ladder was created succesfully";
-                }
+        if (playingReign.getResourceAmount(type.resource) < type.getAmountOfMaterial())
+            return "You don't have enough material to build this structure";
+        if (selectedUnit.getNumber() < type.getAmountOfEngineer()) return "You don't have enough engineers!";
+        if(selectedUnit.getBlock().canPutStructure(type)) return "you can't put a " + type.name() + "in this block";
+        if(type.equals(StructuresType.LADDER)) {
+            game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber());
+            LadderMen ladderMen = new LadderMen(UnitType.LADDERMAN,game.getPlayingReign(),
+                    game.getSelectedSingleUnit().getBlock(),1);
+            ladderMen.getBlock().addUnit(ladderMen);
+            ladderMen.getOwner().getMilitaryUnits().add(ladderMen);
+            return "ladder was created successfully";
+        } else if(type.equals(StructuresType.STAIRS)){
+            if(!(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Wall
+                    || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower)){
+                return "You can't build stairs here!";
             }
-            case STAIRS ->{
-                if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
-                        amount*equipmentType.getAmountOfMaterial()){
-                    return "You don't have enough matrials!";
-                }
-                else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
-                    return "You don't have enough engineers!";
-                }
-                else if(!(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Wall
-                        || game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower)){
-                    return "You can't build stairs here!";
-                }
-                else{
-                    game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
-                    game.getSelectedSingleUnit().getBlock().addNewStructure(new Ladder(equipmentType.getHp(),equipmentType.isMoving(),0,null));
-                    return "Stair was put down!";
-                }
+        } else if(type.equals(StructuresType.MOVING_SHIELD)) {
+        } else if(type.equals(StructuresType.WALL_BREAKER)) {
+             if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null)) return "You can't build wall breaker here!";
+
+        } else if(type.equals(StructuresType.SIEGE_TOWER)) {
+        } else if(type.equals(StructuresType.CATAPULT)) {
+            if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null)){
+                return "You can't build catapult here!";
             }
-            case MOVING_SHIELD -> {
-                if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
-                        amount*equipmentType.getAmountOfMaterial()){
-                    return "You don't have enough matrials!";
-                }
-                else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
-                    return "You don't have enough engineers!";
-                }
-                else{
-                    game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
-                    for(int i = 0; i < amount;i++)
-                    game.getSelectedSingleUnit().getBlock().addNewStructure(new MovingShield(null));
-                    return "you have put the moving shields down successfully";
-                }
+        } else if(type.equals(StructuresType.TREBUCHET)) {
+            if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
+                    !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
+                return "You can't build trebuchet here!";
             }
-            case WALL_BREAKER -> {
-                if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
-                        amount*equipmentType.getAmountOfMaterial()){
-                    return "You don't have enough matrials!";
-                }
-                else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
-                    return "You don't have enough engineers!";
-                }
-                else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null)){
-                    return "You can't build wall breaker here!";
-                }
-                else{
-                    game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
-                    game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
-                    game.getSelectedSingleUnit().getBlock().addNewStructure(new BatteringRam(/*new Engineer*/));
-                    return "wall breaker was put down!";
-                }
+        } else if(type.equals(StructuresType.FLAME_THROWER)) {
+            if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
+                    !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
+                return "You can't build ballista here!";
             }
-            case SIEGE_TOWER -> {
-            }
-                case CATAPULT -> {
-                    if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
-                            amount*equipmentType.getAmountOfMaterial()){
-                        return "You don't have enough matrials!";
-                    }
-                    else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
-                        return "You don't have enough engineers!";
-                    }
-                    else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null)){
-                        return "You can't build catapult here!";
-                    }
-                    else{
-                        game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
-                        game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
-                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(equipmentType.getHp(),equipmentType.isMoving(),equipmentType.getDamage(),null));
-                        return "catapult was put down!";
-                }}
-                case TREBUCHET -> {
-                    if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
-                            amount*equipmentType.getAmountOfMaterial()){
-                        return "You don't have enough matrials!";
-                    }
-                    else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
-                        return "You don't have enough engineers!";
-                    }
-                    else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
-                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
-                        return "You can't build trebuchet here!";
-                    }
-                    else{
-                        game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
-                        game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
-                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(equipmentType.getHp(),equipmentType.isMoving(),equipmentType.getDamage(),null));
-                        return "trebuchet was put down!";
-                    }
-                }
-                case FLAME_THROWER -> {
-                    if(game.getPlayingReign().getResourceAmount(equipmentType.getResource()) <
-                            amount*equipmentType.getAmountOfMaterial()){
-                        return "You don't have enough matrials!";
-                    }
-                    else if(game.getSelectedSingleUnit().getNumber() < amount*equipmentType.getAmountOfEngineer()){
-                        return "You don't have enough engineers!";
-                    }
-                    else if(!(game.getSelectedSingleUnit().getBlock().getBuilding()==null &&
-                            !(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof BigTower))){
-                        return "You can't build ballista here!";
-                    }
-                    else{
-                        game.getPlayingReign().removeFromResources(equipmentType.getResource(),amount*equipmentType.getAmountOfMaterial());
-                        game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()-1);
-                        game.getSelectedSingleUnit().getBlock().addNewStructure(new Ballista(equipmentType.getHp(),equipmentType.isMoving(),equipmentType.getDamage(),null));
-                        return "ballista was put down!";
-                    }
-                }
-                default->{
-                return "invalid commend!";
-                }
         }
-        return "invalid type!";
+        selectedUnit.getBlock().addNewStructure(new Structure(type, playingReign, (Engineer) selectedUnit, selectedUnit.getBlock()));
+        game.getPlayingReign().spendResources(type.resource, type.getAmountOfMaterial());
+        return "structure was created successfully";
     }
+
     public String digMoat(int x, int y) {
         if(!areCoordinatesCorrect(x,y))
             return "location is not valid!";
@@ -393,7 +361,7 @@ public class UnitController extends GameController{
             return "you can't lay the ladder on nothing or that thing!";
         }
         else{
-            Ladder ladder = new Ladder(999,false,0,null);
+            Ladder ladder = new Ladder(StructuresType.LADDER, playingReign ,(Engineer) selectedUnit, selectedUnit.getBlock());
             game.getSelectedSingleUnit().setNumber((game.getSelectedSingleUnit()).getNumber()+-1);
             map.getBlockByLocation(x,y).addNewStructure(ladder);
             return "ladder was put on with success!";
@@ -421,56 +389,31 @@ public class UnitController extends GameController{
             return "ladder was successfully removed!";
         }
     }
-    public String climbUp(int x,int y){
-        if(!areCoordinatesCorrect(x,y))
-            return "location is not valid!";
-        else if(getDistance(map.getBlockByLocation(x,y),game.getSelectedSingleUnit().getBlock()) >= 2)
-            return "your are too far away,try to move toward the aim!";
-        boolean hasLadder = false;
-        for(Structure structure : map.getBlockByLocation(x,y).getStructures()){
-            if(structure instanceof Ladder){
-                hasLadder = true;
-            }
-        }
-        if(game.getSelectedSingleUnit().getBlock().getBuilding() instanceof Wall &
-                map.getBlockByLocation(x,y).getBuilding() instanceof Wall){
-            MilitaryUnit unitToChange = game.getSelectedSingleUnit();
-            Block lastBlock = game.getSelectedSingleUnit().getBlock();
-            unitToChange.setBlock(map.getBlockByLocation(x,y));
-            lastBlock.removeUnit(unitToChange);
-            map.getBlockByLocation(x,y).addUnit(unitToChange);
-            return "units just walked over!";
-        }
-        else if(!hasLadder & !(game.getSelectedSingleUnit() instanceof Assassin)){
-            return "you can't climb!!!";
-        }
-        else if(!map.getBlockByLocation(x,y).getBuilding().buildingType.equals(BuildingType.DEFENCE_TURRET) &
-        !(map.getBlockByLocation(x,y).getBuilding() instanceof Wall)){
-            return "the tower is too tall!";
-        }
-        else {
-            MilitaryUnit unitToChange = game.getSelectedSingleUnit();
-            Block lastBlock = game.getSelectedSingleUnit().getBlock();
-            unitToChange.setBlock(map.getBlockByLocation(x,y));
-            lastBlock.removeUnit(unitToChange);
-            map.getBlockByLocation(x,y).addUnit(unitToChange);
-            return "Units climbed up!";
-        }
-    }
+
     public String disbandUnit() {
-        int numberOfSoliders = game.getSelectedSingleUnit().getNumber();
+        int numberOfSolider = game.getSelectedSingleUnit().getNumber();
         game.getSelectedSingleUnit().setNumber(0);
-        game.getSelectedSingleUnit().getOwner().setUnemployedPopulation(game.getSelectedSingleUnit().getOwner().
-                getUnemployedPopulation()+numberOfSoliders);
+        game.getSelectedSingleUnit().getOwner().changeUnemployedPopulation(+numberOfSolider);
         game.setSelectedUnit(null);
         collectingGarbageUnits();
         return "the unit was disbanded!";
     }
 
-    public String moveStructure() {
-        return null;
+    public String moveStructure(int x, int y) {
+        if(!areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.response;
+        if(!selectedUnit.unitType.equals(UnitType.ENGINEER)) return "you should select an engineer unit to move a structure";
+        Engineer engineer = (Engineer) selectedUnit;
+        if(!engineer.hasStructure()) return "this unit has no structure to move";
+        if(!map.getBlockByLocation(x, y).canPutStructure(engineer.getStructure().getType()))
+            return "you can't move structure to this location";
+        engineer.setDestination(map.getBlockByLocation(x, y));
+        String result = move(engineer);
+        if(result.equals("no path")) return "there is no path to this block";
+        if(result.equals("killed")) return "the Military unit was killed by a trap";
+        if(result.equals("arrived")) return "moving structure successful. the structure is in the dest block";
+        return "the unit is moving toward the destination block";
     }
-    public String dPS(int x,int y){return null;}
+
 
     public void deleteSelectedUnits() {
         game.setSelectedUnit(null);

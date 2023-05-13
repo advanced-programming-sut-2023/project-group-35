@@ -1,6 +1,7 @@
 package model;
 
 
+import model.buildings.BigTower;
 import model.buildings.Building;
 import model.people.MilitaryUnit;
 import model.structures.Structure;
@@ -14,9 +15,9 @@ public class Block {
     public int y;
 
     private Building building;
-    private ArrayList<Structure> structures;
+    private ArrayList<Structure> structures = new ArrayList<>();
 
-    private ArrayList<MilitaryUnit> militaryUnits;
+    private ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
 
     private Tree tree;
 
@@ -55,7 +56,7 @@ public class Block {
         if(this.building != null) return true;
         if(this.getFieldType().equals(FieldType.Rock)) return true;
         if(this.getTree() != null) return true;
-        if(!this.getFieldType().isSuitableForBuilding) return true;
+        if(!this.getFieldType().isSuitableForBuildingAndStructure) return true;
         //todo what else?
         return false;
     }
@@ -74,6 +75,17 @@ public class Block {
         if (!this.building.buildingType.isPassableForTroop) return false;
         return this.fieldType.canTroopPass;
     }
+
+    public boolean canPutStructure(StructuresType type) {
+        if (!this.fieldType.isSuitableForBuildingAndStructure) return false;
+        if (this.hasABuilding()) {
+            if(type.checkForEquals(StructuresType.MOVING_SHIELD, StructuresType.WALL_BREAKER, StructuresType.SIEGE_TOWER)) return false;
+            if(!(this.building instanceof BigTower)) return false;
+        }
+        return true;
+    }
+
+
 
     public ArrayList<MilitaryUnit> getMilitaryUnits() {
         return militaryUnits;
@@ -136,5 +148,6 @@ public class Block {
     public void removeBuilding() {
         building = null;
     }
+
 
 }

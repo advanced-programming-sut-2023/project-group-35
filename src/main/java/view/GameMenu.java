@@ -2,8 +2,7 @@ package view;
 
 import controller.*;
 import Enum.*;
-
-import java.util.concurrent.ConcurrentMap;
+import model.Reign;
 
 public class GameMenu extends Menu{
     private final GameController gameController;
@@ -42,10 +41,20 @@ public class GameMenu extends Menu{
                     UnitSelectMenu menu = new UnitSelectMenu(gameController.getUnitController());
                     menu.run();
                 }
+            } else if(input.matches("\\s*next\\s+turn\\s*")) {
+                if(isUserSureToFinishTurn()) {
+                    result = gameController.nextReign();
+                    if(result.equals("endGame")) System.out.println(gameController.endGame());
+                    else System.out.println(result);
+                }
+
+            } else if(input.matches(Commands.SHOW_TURNS_PASSED.regex)) {
+                System.out.println(gameController.showTurnsPassed());
+            } else if(input.matches("\\s*quit\\s+game\\s*")) {
+                if(isUserSureToQuitGame()){
+                    System.out.println(gameController.quitGame(gameController.getPlayingReign()));
+                }
             }
-
-
-
         }
     }
 
@@ -54,5 +63,29 @@ public class GameMenu extends Menu{
         System.out.println("which one do you want to select?");
         System.out.println(units);
         return scanner.nextInt();
+    }
+    public boolean isUserSureToFinishTurn() {
+        while(true) {
+            System.out.println("are you sure you want to finish your turn?");
+            input = scanner.nextLine();
+            if(input.matches("\\s*yes\\s*")) return true;
+            if(input.matches("\\s*no\\s*")) return false;
+            System.out.println("please try again");
+        }
+    }
+    public boolean isUserSureToQuitGame() {
+        while (true) {
+            System.out.println("are you sure you want to quit the game?");
+            System.out.println("remember if you quit the game you don't get any scores");
+            input = scanner.nextLine();
+            if(input.matches("\\s*yes\\s*")) return true;
+            if(input.matches("\\s*no\\s*")) return false;
+            System.out.println("I couldn't understand, please try again.");
+        }
+    }
+
+    public static void announceDeadReign(Reign reign, int score) {
+        System.out.println("reign " + reign.getNickName() + "is now dead and out of the game!");
+        System.out.println("they could collect " + score + "scores!");
     }
 }

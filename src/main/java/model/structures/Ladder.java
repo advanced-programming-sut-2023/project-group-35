@@ -1,9 +1,12 @@
 package model.structures;
 
+import model.Block;
+import model.Reign;
+import Enum.*;
 import model.people.Engineer;
 
 public class Ladder extends Structure{
-    public Ladder(int hp, boolean moving, int speed, Engineer mover) {
-        super(999, false, 0, null);
+    public Ladder(StructuresType type, Reign owner, Engineer mover, Block block) {
+        super(type, owner, mover, block);
     }
 }

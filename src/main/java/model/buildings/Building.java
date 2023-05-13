@@ -10,22 +10,32 @@ public class Building {
     private Block block;
     private Reign owner;
     private int hp;
-    public static ArrayList<Building> allBuildings = new ArrayList<>();
 
     public Building(BuildingType buildingType, Reign owner, Block block) {
         this.buildingType = buildingType;
         this.block = block;
         this.owner = owner;
         this.hp = buildingType.hp;
+        owner.getBuildings().add(this);
+        block.setBuilding(this);
     }
 
     public void nextTurn() {
 
     }
-    public void isDestroyed() {
+    public void iFDestroyed() {
+        // to override
+    }
+    public void destroy() {
+        iFDestroyed();
+        this.getBlock().removeBuilding();
+        this.getOwner().getBuildings().remove(this);
 
     }
-    public void getDamaged(int amountOfDamage){}
+    public void getDamaged(int amountOfDamage){
+        hp -= amountOfDamage;
+        if(hp <= 0) destroy();
+    }
     public Reign getOwner() {
         return owner;
     }
@@ -33,7 +43,6 @@ public class Building {
         if (this.owner.equals(reign)) return true;
         return false;
     }
-
     public Block getBlock() {
         return block;
     }

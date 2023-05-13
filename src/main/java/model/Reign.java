@@ -6,24 +6,29 @@ import Enum.*;
 import model.buildings.Building;
 import model.people.*;
 
-public class Reign {
+public class
+Reign {
 
 
     private String nickName;
-    private int gold;
     private User user;
-
+    private double gold;
     private int population;
     private int unemployedPopulation;
     private int popularity;
     private int taxRate;
-    private int foodRate;
+    private int currentTaxRate;
+    private double foodRate;
+    private double currentFoodRate;
     private int fearRate;
+    private int foodVariety;
 
     private final HashMap<Resource, Integer> resources = new HashMap<>();
     private final HashMap<Resource ,Integer> resourceCapacity = new HashMap<>();
     private ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
-    private ArrayList<Building> buildings = new ArrayList<>();
+
+    private ArrayList<Building> buildings = new ArrayList<>(); // is this nessesary?
+    private ArrayList<MilitaryUnit> units = new ArrayList<>(); // is this nessesary?
 
     private ArrayList<TradeItem> tradeHistory = new ArrayList<>();
     private ArrayList<TradeItem> notification = new ArrayList<>();
@@ -40,15 +45,37 @@ public class Reign {
 
     }
 
-    public void setUnemployedPopulation(int unemployedPopulation) {
-        this.unemployedPopulation = unemployedPopulation;
-    }
-
     public ArrayList<MilitaryUnit> getMilitaryUnits() {
         return militaryUnits;
     }
 
-
+    public void calculatePopularityRate() {
+        popularity += fearRate;
+        if(currentTaxRate <= 0) popularity += (currentTaxRate * 2) - 1;
+        if(currentTaxRate > 0) popularity -= currentTaxRate * 2;
+        popularity += currentFoodRate * 4;
+        popularity += foodVariety - 1;
+    }
+    public void distributeFood(Resource...resources) {
+        int i = 0;
+        for(Resource resource: resources) {
+            if(getResourceAmount(resource) < population * foodRate) continue;
+            spendResources(resource, (int) (population * foodRate));
+            i++;
+        }
+        foodVariety = i;
+        if(i == 0) currentTaxRate = 0;
+    }
+    public void getTaxFromPeople() {
+        double tax = (Math.abs(taxRate) * 0.2 + 0.4) * population;
+        if(taxRate < 0 && gold - tax < 0) {
+            currentTaxRate = 0;
+            return;
+        }
+        if(taxRate < 0) gold -= tax;
+        if(taxRate > 0) gold += (taxRate * 0.2 + 0.4) * population;
+        currentTaxRate = taxRate;
+    }
 
     public void addToResource(Resource resource, int change) {
         int now = resources.get(resource);
@@ -58,7 +85,7 @@ public class Reign {
         }
         resources.replace(resource, newAmount);
     }
-    public void removeFromResources(Resource resource, int number) {
+    public void spendResources(Resource resource, int number) {
         resources.replace(resource, resources.get(resource) - number);
     }
     public int getResourceAmount(Resource resource) {
@@ -130,7 +157,7 @@ public class Reign {
         return nickName;
     }
 
-    public int getGold() {
+    public double getGold() {
         return gold;
     }
 
@@ -157,7 +184,7 @@ public class Reign {
         return taxRate;
     }
 
-    public int getFoodRate() {
+    public double getFoodRate() {
         return foodRate;
     }
 
@@ -191,6 +218,11 @@ public class Reign {
     public void changeUnemployedPopulation(int change) {
         this.unemployedPopulation = change;
     }
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
+
+
 
 
 }

@@ -19,6 +19,7 @@ public class MilitaryUnit {
     private int hp;
     private UnitState unitState;
     private int range;
+
     private int damage;
     private boolean isMoving;
     private boolean isPatrolling;
@@ -42,11 +43,7 @@ public class MilitaryUnit {
         this.speed = unitType.speed;
     }
 
-    public void moveTo(Block dest) {
-        this.getBlock().removeUnit(this);
-        this.block = dest;
-        dest.getMilitaryUnits().add(this);
-    }
+
     public int getNumber() {
         return number;
     }
@@ -121,6 +118,11 @@ public class MilitaryUnit {
         secondDestBlock = tmp;
         return true;
     }
+    public boolean isBlockInRange(Block block) {
+        if(Math.abs(block.x - this.getBlock().x) > range) return false;
+        if(Math.abs(block.y - this.getBlock().y) > range) return false;
+        return true;
+    }
 
     public boolean isMoving() {
         return isMoving;
@@ -132,5 +134,13 @@ public class MilitaryUnit {
 
     public boolean isPatrolling() {
         return isPatrolling;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 }

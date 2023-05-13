@@ -1,27 +1,32 @@
 package Enum;
 
-import model.Reign;
-import model.people.MilitaryUnit;
-
 public enum StructuresType {
     STAIRS(0,999,false,0,30,2,Resource.STONE),
     LADDER(0,999,false,0,10,1,Resource.WOOD),
-    MOVING_SHIELD(0,150,true,0,5,1,Resource.WOOD),
-    WALL_BREAKER(500,300,true,1,100,3,Resource.WOOD),
-    SIEGE_TOWER(0,250,true,0,50,2,Resource.WOOD),
-    CATAPULT(200,200,true,5,150,2,Resource.WOOD),
-    TREBUCHET(350,100,false,7,150,2,Resource.WOOD),
-    FLAME_THROWER(300,200,false,4,150,2,Resource.WOOD);
+    MOVING_SHIELD(0,150,true,0,5,1,Resource.WOOD), // سپر متحرک
+    WALL_BREAKER(500,300,true,1,100,3,Resource.WOOD), //دیوار شکن
+    SIEGE_TOWER(0,250,true,0,50,2,Resource.WOOD), // برج محاصره
+    CATAPULT(200,200,true,5,150,2,Resource.WOOD), // منجنیق کوچیک
+    TREBUCHET(350,100,false,7,150,2,Resource.WOOD), // منجنیق بزرگ
+    FLAME_THROWER(300,200,false,4,150,2,Resource.WOOD); // بالیستا نمیتونه حرکت کنه؟؟؟
     private int damage;
     private int hp;
-    private boolean isMoving;
+    private boolean canMove;
     private int range;
     private int amountOfMaterial;
     private int amountOfEngineer;
-    private Resource resource;
+    public Resource resource;
 
-    StructuresType(int damage, int hp, boolean isMoving, int range, int amountOfMaterial,
-                   int amountOfEngineer, Resource resource) {
+
+
+    StructuresType(int damage, int hp, boolean canMove, int range, int amountOfMaterial, int amountOfEngineer, Resource resource) {
+        this.damage = damage;
+        this.hp = hp;
+        this.canMove = canMove;
+        this.range = range;
+        this.amountOfMaterial = amountOfMaterial;
+        this.amountOfEngineer = amountOfEngineer;
+        this.resource = resource;
     }
 
     public int getDamage() {
@@ -40,12 +45,12 @@ public enum StructuresType {
         this.hp = hp;
     }
 
-    public boolean isMoving() {
-        return isMoving;
+    public boolean CanMove() {
+        return canMove;
     }
 
-    public void setMoving(boolean moving) {
-        isMoving = moving;
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
     }
 
     public int getRange() {
@@ -72,11 +77,20 @@ public enum StructuresType {
         this.amountOfEngineer = amountOfEngineer;
     }
 
-    public Resource getResource() {
-        return resource;
-    }
 
     public void setResource(Resource resource) {
         this.resource = resource;
+    }
+    public boolean checkForEquals(StructuresType... types) {
+        for (StructuresType type : types) {
+            if(type.equals(this)) return true;
+        }
+        return false;
+    }
+    public static StructuresType getType(String type) {
+        for (StructuresType value : StructuresType.values()) {
+            if(value.name().equals(type)) return value;
+        }
+        return null;
     }
 }

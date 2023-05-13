@@ -18,4 +18,8 @@ public enum Direction {
         this.xChange = xChange;
         this.yChange = yChange;
     }
+    public static Direction getDirectionByName(String name) {
+        return null;
+    }
+
 }

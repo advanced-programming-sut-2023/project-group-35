@@ -39,14 +39,14 @@ public enum FieldType {
 
     private String backGroundColor;
 
-    public final boolean isSuitableForBuilding;
+    public final boolean isSuitableForBuildingAndStructure;
     public final boolean canTroopPass;
     // ghabel sakht o saz
 
 
-    FieldType(String backGroundColor, boolean isSuitableForBuilding, boolean canTroopPass) {
+    FieldType(String backGroundColor, boolean isSuitableForBuildingAndStructure, boolean canTroopPass) {
         this.backGroundColor = backGroundColor;
-        this.isSuitableForBuilding = isSuitableForBuilding;
+        this.isSuitableForBuildingAndStructure = isSuitableForBuildingAndStructure;
         this.canTroopPass = canTroopPass;
     }
 }

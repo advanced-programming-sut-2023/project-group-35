@@ -8,16 +8,20 @@ import java.util.*;
 public class Game {
     private User starter;
     private Map map;
-    private Reign playingReign;
+    protected Reign playingReign;
 
     private Building selectedBuilding;
     private ArrayList<MilitaryUnit> selectedUnits; // people nabayad bashe?
     private MilitaryUnit selectedSingleUnit;
     private final ArrayList<MilitaryUnit> allOfTheUnits = new ArrayList<>();
+    private final ArrayList<Building> allTheBuildings = new ArrayList<>();
+
     //private Block selectedBlock;
+    private int numberOfPlayers = 0;
     private final ArrayList<User> users = new ArrayList<>();
+
     private final ArrayList<Reign> reigns = new ArrayList<>();
-    int turnsPassed;
+    private int turnsPassed;
     private MilitaryUnit selectedUnit;
 
     public Game(User starter, Map map) {
@@ -70,6 +74,7 @@ public class Game {
         reigns.add(reign);
         if(reigns.size() == 1) playingReign = reign;
         map.addRegin(reign);
+        numberOfPlayers++;
     }
     public void setSelectedBuilding(Building building) {
         this.selectedBuilding = building;
@@ -106,11 +111,36 @@ public class Game {
     public int getTurnsPassed() {
         return turnsPassed;
     }
+    public void oneTurnPassed() {
+        turnsPassed++;
+    }
     public MilitaryUnit getSelectedUnit() {
         return selectedUnit;
     }
-    public void removeUnit(MilitaryUnit unit) {
+    public void removeUnitIfKilled(MilitaryUnit unit) {
+        if(unit.getHp() > 0) return;
+        allOfTheUnits.remove(unit);
+        unit.getBlock().getMilitaryUnits().remove(unit);
+        unit.getOwner().getMilitaryUnits().remove(unit);
+    }
+    public void addBuilding(Building building) {
+        allTheBuildings.add(building);
+    }
 
+    public ArrayList<Building> getAllTheBuildings() {
+        return allTheBuildings;
+    }
+    public ArrayList<Reign> getReigns() {
+        return reigns;
+    }
+    public Reign getNextReign() {
+        int turn = reigns.indexOf(playingReign);
+        if(turn == reigns.size()-1) return reigns.get(0);
+        return reigns.get(turn + 1);
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
     }
 }
 

@@ -35,10 +35,6 @@ public class User implements Comparable {
         return highScore;
     }
 
-    public void setHighScore(int highScore) {
-        this.highScore = highScore;
-    }
-
     public void setAttemptsNumber(int attemptsNumber) {
         this.attemptsNumber = attemptsNumber;
     }
@@ -143,6 +139,9 @@ public class User implements Comparable {
 
     public void setSloganOfUser(String sloganOfUser) {
         this.sloganOfUser = sloganOfUser;
+    }
+    public void addScore(int score) {
+        if(score > highScore) highScore = score;
     }
 
     @Override

@@ -1,29 +1,49 @@
 package model.structures;
 
-import model.people.Engineer;
-import model.people.MilitaryUnit;
-import model.Reign;
-
+import model.*;
+import model.people.*;
+import Enum.*;
 public class Structure {
-
+    private StructuresType type;
     private Reign owner;
+    private Engineer engineer;
     private int hp;
+
+    private Block block;
     private boolean moving;
-    private int speed;
-    private MilitaryUnit mover;
 
 
 
-    public Structure(int hp, boolean moving, int speed, MilitaryUnit mover) {
-        this.hp = hp;
-        this.moving = moving;
-        this.speed = speed;
-        this.mover = mover;
+    public Structure(StructuresType type, Reign owner, Engineer mover, Block block) {
+        this.type = type;
+        this.owner = owner;
+        this.engineer = mover;
+        this.hp = type.getHp();
+        this.block = block;
+    }
+
+    public StructuresType getType() {
+        return type;
+    }
+
+    public Engineer getEngineer() {
+        return engineer;
+    }
+
+    public int getHp() {
+        return hp;
     }
 
     public Reign getOwner() {
         return owner;
     }
+//    public void getDamagedAndDestroy(int damage) {
+//        this.hp -= damage;
+//        if(hp <= 0) {
+//            this.block.removeStructure(this);
+//        }
+//    } // todo delete structure methods
+
 
 
 }

@@ -1,11 +1,14 @@
 package model.structures;
 
+import model.Block;
+import model.Reign;
 import model.people.Engineer;
 import model.people.MilitaryUnit;
+import Enum.*;
 
 public class MovingShield extends Structure{
 
-    public MovingShield(MilitaryUnit unit) {
-        super(150, true, unit.getSpeed(),unit);
+    public MovingShield(StructuresType type, Reign owner, Engineer mover, Block block) {
+        super(type, owner, mover, block);
     }
 }

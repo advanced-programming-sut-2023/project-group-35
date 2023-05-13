@@ -5,7 +5,6 @@ import model.Block;
 import model.Map;
 import Enum.*;
 import model.Reign;
-import model.User;
 import model.buildings.Building;
 
 
@@ -60,7 +59,7 @@ public class MapController {
                     System.out.print("@");
                     continue;
                 }
-                else if(block.getFieldType().isSuitableForBuilding){
+                else if(block.getFieldType().isSuitableForBuildingAndStructure){
                     System.out.print("^");
                 }
                 else

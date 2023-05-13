@@ -21,8 +21,31 @@ public class UnitSelectMenu extends Menu{
                         getInt(matcher, "y1"), getInt(matcher, "y2"));
             } else if((matcher = getMatcher(input, Commands.SET_UNIT_STATE.regex)) != null) {
                 System.out.println(unitController.setUnitState(matcher.group("state")));
+            } else if(input.matches(Commands.GET_UNIT_STATE.regex)) {
+                System.out.println(unitController.getUnitState());
             } else if((matcher = getRealMatcher(input, Commands.ATTACK_ENEMY, Commands.X, Commands.Y)) != null) {
-                System.out.println(unitController.attackEnemy(getInt(matcher, "x"), getInt(matcher, "y")));
+                result =unitController.attackEnemy(getInt(matcher, "x"), getInt(matcher, "y"));
+                if(result.equals("endGame")) System.out.println(unitController.endGame());
+                return;
+            } else if((matcher = getRealMatcher(input, Commands.DIG_MOAT, Commands.X, Commands.Y)) != null) {
+                System.out.println(unitController.digMoat(getInt(matcher, "x"), getInt(matcher, "y")));
+            } else if((matcher = getRealMatcher(input, Commands.FILL_MOAT, Commands.Y, Commands.X)) != null) {
+                System.out.println(unitController.fillMoat(getInt(matcher, "x"), getInt(matcher, "y")));
+            } else if((matcher = getRealMatcher(input, Commands.PUT_ON_LADDER, Commands.X, Commands.Y)) != null) {
+                System.out.println(unitController.putOnLadder(getInt(matcher, "x"), getInt(matcher, "y")));
+            } else if((matcher = getRealMatcher(input, Commands.PUSH_OFF_LADDER, Commands.X, Commands.Y)) != null) {
+                System.out.println(unitController.pushOffLadder(getInt(matcher, "x"), getInt(matcher, "y")));
+            } else if((matcher = getRealMatcher(input, Commands.POUR_OIL, Commands.DIRECTION)) != null) {
+                System.out.println(unitController.pourOil(matcher.group("direction")));
+            } else if((matcher = getRealMatcher(input, Commands.DIG_TUNNEL, Commands.X, Commands.Y)) != null) {
+                System.out.println(unitController.digTunnel(getInt(matcher, "x"), getInt(matcher, "y")));
+            } else if((matcher = getRealMatcher(input, Commands.BUILD_STRUCTURE, Commands.EQUIPMENT)) != null) {
+                //System.out.println(unitController.buildStructure(matcher.group("equipment"), getInt(matcher, )));
+            } else if((matcher = getRealMatcher(input, Commands.MOVE_STRUCTURE)) != null) {
+                System.out.println(unitController.moveStructure(getInt(matcher , "x"), getInt(matcher, "y")));
+            }
+            else if(input.matches(Commands.DISBAND_UNIT.regex)) {
+                System.out.println(unitController.disbandUnit());
             }
         }
     }

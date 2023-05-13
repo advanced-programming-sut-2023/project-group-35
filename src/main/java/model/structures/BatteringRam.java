@@ -1,9 +1,12 @@
 package model.structures;
 
+import model.Block;
+import model.Reign;
 import model.people.Engineer;
+import Enum.*;
 
 public class BatteringRam extends Structure{
-    public BatteringRam() {
-        super(300, true, 3, null);
+    public BatteringRam(StructuresType type, Reign owner, Engineer mover, Block block) {
+        super(type, owner, mover, block);
     }
 }
