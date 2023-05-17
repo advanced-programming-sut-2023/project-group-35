@@ -45,9 +45,33 @@ assignees: Arman17Babaei
 
 ## تسک‌های نفر اول
 
-  **نام و نام خانوادگی:**
+  **نام و نام خانوادگی:علیرضا ملک حسینی
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>پیاده سازی ساختمان ها و سرباز های بازی</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+<details>
+  <summary>حرکت اجزا درون مپ بازی</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شد
+<details>
+  <summary>پیاده سازی منو های شاپ و ترید</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+    <details>
+  <summary>پیاده سازی منطق کلی بازی و کنترلر منوی بازی</summary>
 
   <div dir="ltr" align='right'>
 
