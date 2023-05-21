@@ -14,7 +14,7 @@ public enum Commands {
     CREATE_USER("^\\s*create\\s+user\\s*"),
     USER_LOGIN("^\\s*user\\s+login\\s*"),
     FORGOT_MY_PASSWORD("\\s*forgot\\s+my\\s+password\\s*"),
-    USER_LOGOUT("\\s*user\\s+logout\\s*"),
+    LOGOUT("\\s*logout\\s*"),
 
 
     //login and register factors
@@ -33,7 +33,8 @@ public enum Commands {
     //SHOW_MAP("show map -x (?<x>\\d+) -y (?<y>\\d+)"),
     SHOW_MAP("^\\s*show\\s+map\\s*"),
 
-    MOVE_MAP("move map (up(?<up> \\d+)?)\\s+(down(?<down> \\d+)?)\\s+(left(?<left> \\d+)?)\\s+(right(?<right> \\d+)?)"),
+    //MOVE_MAP("move map (up(?<up> \\d+)?)\\s+(down(?<down> \\d+)?)\\s+(left(?<left> \\d+)?)\\s+(right(?<right> \\d+)?)"),
+    MOVE_MAP("\\s*move\\s+map.+"),
     SHOW_MAP_DETAILS("^\\s*show\\s+details\\s*"),
     SET_TEXTURE("^\\s*set\\s+texture\\s*"),
     SET_AREA_TEXTURE("^\\s*set\\s+texture\\s*"),
@@ -117,7 +118,7 @@ public enum Commands {
     CHANGE_SLOGAN("\\s*profile\\s+change\\s+slogan\\s*"),
     REMOVE_SLOGAN("\\s*Profile\\s+remove\\s+slogan\\s*"),
     SHOW_HIGHSCORE("\\s*profile\\s+display\\s+high\\*score\\s*"),
-    SHOW_RANK("\\s*profile\\s+display\\s+high\\s*score\\s*$"),
+    SHOW_RANK("\\s*profile\\s+display\\s+rank\\s*$"),
     SHOW_SLOGAN("\\s*profile\\s+display\\s+slogan\\s*"),
     SHOW_INFO("\\s*profile\\s+display\\s*"),
     /// groups

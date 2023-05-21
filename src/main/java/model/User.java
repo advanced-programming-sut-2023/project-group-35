@@ -51,12 +51,12 @@ public class User implements Comparable {
         ArrayList<Integer> arrayList = new ArrayList<>();
         int counter = 0;
         for(User user: users){
-            counter++;
             if(userName.equals(user.getUserName()))
                 arrayList.add(counter);
+            counter++;
         }
         if(arrayList.size() > 0)
-            return users.get(arrayList.size()-1);
+            return users.get(arrayList.get(arrayList.size()-1));
         return null;
     }
     public static User getUserByEmail(String email){

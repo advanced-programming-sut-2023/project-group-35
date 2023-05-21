@@ -5,6 +5,7 @@ import controller.MapController;
 import controller.UserController;
 import model.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
@@ -14,6 +15,8 @@ public class MainMenu extends Menu{
     public MainMenu(UserController userController) {
         this.userController = userController;
         loggedInUser = userController.getLoggedInUser();
+        if(loggedInUser == null)
+            System.out.println("null");
     }
     public void run() throws NoSuchAlgorithmException, IOException {
         System.out.println("choose the menu you want to enter");
@@ -30,6 +33,19 @@ public class MainMenu extends Menu{
             else if(input.matches(Commands.PROFILE_MENU.regex)) {
                 ProfileMenu profileMenu = new ProfileMenu(loggedInUser);
                 profileMenu.run();
+            }
+            else if(input.matches(Commands.LOGOUT.regex)){
+                if(isUserSureToLogout()){
+                    File tempFile = new File("loggedIn.txt");
+                    boolean exists = tempFile.exists();
+                    if(exists){
+                        tempFile.delete();
+                    }
+                    System.out.println("logout successful!");
+                    return;
+                }
+            } else{
+                System.out.println("invalid commend!");
             }
         }
     }
@@ -50,5 +66,14 @@ public class MainMenu extends Menu{
         System.out.println("choose one of these template maps");
         System.out.println(mapList);
         return scanner.nextLine();
+    }
+    public boolean isUserSureToLogout() {
+        while (true) {
+            System.out.println("Are you sure you want to logout?");
+            input = scanner.nextLine();
+            if(input.matches("\\s*yes\\s*")) return true;
+            if(input.matches("\\s*no\\s*")) return false;
+            System.out.println("sorry i did not understand!");
+        }
     }
 }

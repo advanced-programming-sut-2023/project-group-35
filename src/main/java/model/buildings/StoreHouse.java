@@ -11,7 +11,6 @@ public class StoreHouse extends Building{
         owner.changeResourcesCapacity(buildingType, buildingType.getRelatedInteger());
     }
 
-    @Override
     public void isDestroyed() {
         getOwner().changeResourcesCapacity(buildingType, buildingType.getRelatedInteger());
     }

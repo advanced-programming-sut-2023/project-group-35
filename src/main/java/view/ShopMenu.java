@@ -10,6 +10,7 @@ public class ShopMenu extends Menu{
     }
 
     public void run() {
+        System.out.println("You are in the shop menu now!");
         while (true) {
             input = scanner.nextLine();
             if(input.matches("show price list")) {
@@ -18,8 +19,11 @@ public class ShopMenu extends Menu{
                 System.out.println(shopController.purchase(matcher));
             } else if((matcher = getRealMatcher(input,Commands.SELL,Commands.AMOUNT,Commands.ITEM)) != null) {
                 System.out.println(shopController.sell(matcher));
-            } else if((input.matches(Commands.BACK.regex))) return;
-            else System.out.println("invalid command");
+            } else if((input.matches(Commands.BACK.regex))){
+                System.out.println("exiting shop menu...");
+                return;
+            }
+            else System.out.println(ResponseToUser.INVALID_COMMAND);
         }
     }
 }

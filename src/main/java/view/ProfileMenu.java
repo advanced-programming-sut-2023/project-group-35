@@ -10,6 +10,7 @@ import Enum.*;
 public class ProfileMenu extends Menu{
     private UserController profileMenu = new UserController();
     private User loggedInUser;
+
     public void run() throws NoSuchAlgorithmException, IOException {
         while (true) {
             input = scanner.nextLine();
@@ -33,9 +34,10 @@ public class ProfileMenu extends Menu{
             }else if ((matcher = getRealMatcher(input, Commands.SHOW_INFO)) != null) {
                 System.out.println(profileMenu.displayProfile());
             }else if ((matcher = Commands.getMatcher(input, Commands.BACK)) != null) {
+                System.out.println("exiting profile menu...");
                 return;
             }else {
-                System.out.println("Invalid commend!");
+                System.out.println(ResponseToUser.INVALID_COMMAND);
             }
 
         }
@@ -44,24 +46,9 @@ public class ProfileMenu extends Menu{
 
     public ProfileMenu(User loggedInUser) {
         this.loggedInUser = loggedInUser;
+        profileMenu.setLoggedInUser(loggedInUser);
     }
 
-    private String extractUsername(String text) {
-        Matcher userNameMatcher = Commands.getMatcher(text, Commands.USERNAME);
-        String username = profileMenu.checkForQuotation(userNameMatcher.group("username"));
-        return username;
-    }
-    private String extractPassword(String text) {
-        Matcher passwordMatcher = Commands.getMatcher(text, Commands.PASSWORD_NOT_IN_LOGIN);
-        String password = profileMenu.checkForQuotation(passwordMatcher.group("password"));
-        return password;
-
-    }
-    private String extractEmail(String text) {
-        Matcher emailMatcher = Commands.getMatcher(text, Commands.EMAIL);
-        String password = profileMenu.checkForQuotation(emailMatcher.group("email"));
-        return password;
-    }
 
     private String extractSlogan(String text) {
         String slogan = null;
@@ -73,16 +60,7 @@ public class ProfileMenu extends Menu{
         }
         return slogan;
     }
-    private String extractPasswordConfirm(String text) {
-        Matcher passwordMatcher =  Commands.getMatcher(text, Commands.PASSWORD_NOT_IN_LOGIN);
-        if (passwordMatcher.group("notPassword") != null) return "random";
-        else return profileMenu.checkForQuotation(passwordMatcher.group("passwordConfirm"));
-    }
-    private String extractNickname(String text) {
-        Matcher nickNameMatcher = Commands.getMatcher(text, Commands.NICKNAME);
-        String password = profileMenu.checkForQuotation(nickNameMatcher.group("nickName"));
-        return password;
-    }
+
 
 
 

@@ -12,6 +12,7 @@ public class GameMenu extends Menu{
     }
 
     public void run() {
+        System.out.println("welcome to another game of crusaders!\n You are in the game menu now!\nwrite down your command!");
         while (true) {
             input = scanner.nextLine();
             if(input.matches("map menu")) {
@@ -54,7 +55,7 @@ public class GameMenu extends Menu{
                 if(isUserSureToQuitGame()){
                     System.out.println(gameController.quitGame(gameController.getPlayingReign()));
                 }
-            }
+            } else System.out.println(ResponseToUser.INVALID_COMMAND);
         }
     }
 

@@ -11,6 +11,7 @@ public class TradeMenu extends Menu{
     }
 
     public void run() {
+        System.out.println("You are in the trade menu now!");
         System.out.println(tradeController.notification());
         while(true) {
             input = scanner.nextLine();
@@ -33,10 +34,11 @@ public class TradeMenu extends Menu{
             } else if(input.matches("show trade history")) {
                 System.out.println(tradeController.showTradeHistory());
             } else if(input.matches("back")) {
+                System.out.println("exiting trade menu...");
                 tradeController.clearNotification();
                 return;
             }
-            else System.out.println("invalid command");
+            else System.out.println(ResponseToUser.INVALID_COMMAND);
         }
     }
 

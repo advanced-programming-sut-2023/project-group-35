@@ -3,6 +3,7 @@ package view;
 import controller.ReignController;
 import controller.UserController;
 import model.Game;
+import model.Reign;
 import model.User;
 
 import java.util.regex.Matcher;
@@ -15,6 +16,7 @@ public class ReignMenu extends Menu{
     }
 
     public void run() {
+        System.out.println("You are in the reign menu now!");
         while (true) {
             input = scanner.nextLine();
             if ((matcher = Commands.getMatcher(input, Commands.SHOW_POPULARITY_FACTORS)) != null) {
@@ -36,9 +38,10 @@ public class ReignMenu extends Menu{
             }else if ((matcher = getRealMatcher(input, Commands.TAX_RATE,Commands.RATE)) != null) {
                 System.out.println(reignController.setFearRate(matcher));
             }else if ((matcher = Commands.getMatcher(input, Commands.BACK)) != null) {
+                System.out.println("exiting reign menu");
                 return;
             }else {
-                System.out.println("Invalid commend!");
+                System.out.println(ResponseToUser.INVALID_COMMAND);
             }
 
         }

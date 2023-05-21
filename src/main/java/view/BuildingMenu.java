@@ -15,6 +15,7 @@ public class BuildingMenu extends Menu{
         while (true) {
             input = scanner.nextLine();
             if(input.matches("back")) {
+                System.out.println("exiting building menu...");
                 buildingController.deleteSelectedBuilding();
                 return;
             } else if(input.matches("repair")) {
@@ -24,7 +25,7 @@ public class BuildingMenu extends Menu{
             } else if((matcher = getMatcher(input , Commands.CHANGE_TAX_RATE.regex)) != null) {
                 int rate = Integer.parseInt(matcher.group("rate"));
                 System.out.println(buildingController.changeTaxRate(rate));
-            }
+            } else System.out.println(ResponseToUser.INVALID_COMMAND);
         }
 
     }

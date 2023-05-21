@@ -46,6 +46,10 @@ public class UnitSelectMenu extends Menu{
             }
             else if(input.matches(Commands.DISBAND_UNIT.regex)) {
                 System.out.println(unitController.disbandUnit());
+            } else if(input.matches(Commands.BACK.regex)) {
+                System.out.println("unit deselected!\nexiting unit menu...");
+                unitController.deleteSelectedUnits();
+                return;
             }
         }
     }

@@ -23,7 +23,7 @@ public class StartGameMenu extends Menu{
             input = scanner.nextLine();
             if(input.matches(Commands.BACK.regex)) {
                 if(isUserSureToExit()) {
-                    System.out.println("you have exited start game menu");
+                    System.out.println("exiting start game menu...");
                     return;
                 }
             } else if((getRealMatcher(input,Commands.ADD_USER,Commands.USERNAME)) != null) {
@@ -35,7 +35,7 @@ public class StartGameMenu extends Menu{
                     GameMenu gameMenu = new GameMenu(gameController);
                     gameMenu.run();
                 }
-            } else System.out.println("invalid command");
+            } else System.out.println(ResponseToUser.INVALID_COMMAND);
         }
     }
     public void printLeftUsersToEnter() {

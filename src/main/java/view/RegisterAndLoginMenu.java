@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 
 
 public class RegisterAndLoginMenu extends Menu{
-    private UserController userController = new UserController();
+    private UserController userController;
 
 
     public void run() throws IOException, NoSuchAlgorithmException {
@@ -42,9 +42,8 @@ public class RegisterAndLoginMenu extends Menu{
                     System.out.println("game is now finished");
                     return;
                 }
-            }
-            else {
-                System.out.println("Invalid commend!");
+            } else {
+                System.out.println(ResponseToUser.INVALID_COMMAND);
             }
 
         }

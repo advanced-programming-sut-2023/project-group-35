@@ -1,7 +1,6 @@
 package model;
 
 
-import model.buildings.BigTower;
 import model.buildings.Building;
 import model.people.MilitaryUnit;
 import model.structures.Structure;
@@ -56,7 +55,7 @@ public class Block {
         if(this.building != null) return true;
         if(this.getFieldType().equals(FieldType.Rock)) return true;
         if(this.getTree() != null) return true;
-        if(!this.getFieldType().isSuitableForBuildingAndStructure) return true;
+        if(!this.getFieldType().isSuitableForBuilding) return true;
         //todo what else?
         return false;
     }
@@ -77,10 +76,11 @@ public class Block {
     }
 
     public boolean canPutStructure(StructuresType type) {
-        if (!this.fieldType.isSuitableForBuildingAndStructure) return false;
+        if (!this.fieldType.isSuitableForBuilding) return false;
         if (this.hasABuilding()) {
             if(type.checkForEquals(StructuresType.MOVING_SHIELD, StructuresType.WALL_BREAKER, StructuresType.SIEGE_TOWER)) return false;
-            if(!(this.building instanceof BigTower)) return false;
+            if(!(this.building.buildingType.equals(BuildingType.CIRCLE_TOWER) ||
+                    this.building.buildingType.equals(BuildingType.SQUARE_TOWER))) return false;
         }
         return true;
     }

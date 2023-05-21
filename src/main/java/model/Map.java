@@ -27,10 +27,19 @@ public class Map {
     public static final ArrayList<Map> templateMaps = new ArrayList<>();
 
 
-    public Map(User owner , int dimensions) {
+    public Map(User owner , int dimensions,String name) {
         this.owner = owner;
         this.dimensions= dimensions;
         addBlocks(dimensions);
+        this.name = name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void turnUnnamedMapIntoNamed(Map map,String name){
+        map.setName(name);
     }
     public void addBlocks(int dim) {
         for(int i = 1; i < dim; i++) {
