@@ -8,6 +8,7 @@ import model.Map;
 import Enum.*;
 import model.Reign;
 import model.User;
+import model.buildings.Base;
 import model.buildings.Building;
 import model.people.MilitaryUnit;
 
@@ -60,20 +61,20 @@ public class MapController {
             for (int y = underLimitY; y < upperLimitY; y++) {
                 Block block = map.getBlockByLocation(x, y);
                 if (block.getBuilding() != null) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"#"+FieldType.ANSI_WHITE_BACKGROUND);
+                    System.out.print(FieldType.getFieldTypeColor(block)+"#"+FieldType.ANSI_BLACK_BACKGROUND);
                     continue;
                 } else if (block.getFieldType().isAquatic) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"~"+FieldType.ANSI_WHITE_BACKGROUND);
+                    System.out.print(FieldType.getFieldTypeColor(block)+"~"+FieldType.ANSI_BLACK_BACKGROUND);
                 } else if (!block.isOccupied()) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"X"+FieldType.ANSI_WHITE_BACKGROUND);
+                    System.out.print(FieldType.getFieldTypeColor(block)+"X"+FieldType.ANSI_BLACK_BACKGROUND);
                     continue;
                 } else if (map.isABase(x, y)) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"@"+FieldType.ANSI_WHITE_BACKGROUND);
+                    System.out.print(FieldType.getFieldTypeColor(block)+"@"+FieldType.ANSI_BLACK_BACKGROUND);
                     continue;
                 } else if (block.getFieldType().isSuitableForBuilding) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"^"+FieldType.ANSI_WHITE_BACKGROUND);
+                    System.out.print(FieldType.getFieldTypeColor(block)+"^"+FieldType.ANSI_BLACK_BACKGROUND);
                 } else
-                    System.out.print(FieldType.getFieldTypeColor(block)+"+"+FieldType.ANSI_WHITE_BACKGROUND);
+                    System.out.print(FieldType.getFieldTypeColor(block)+"+"+FieldType.ANSI_BLACK_BACKGROUND);
             }
             System.out.println("|");
         }
@@ -81,13 +82,9 @@ public class MapController {
         return "-map|shown-";
     }
 
-    public String moveMap(Matcher matcher) {
-        HashMap<Direction, Integer> move = new HashMap<>();
-        move.put(Direction.up, Integer.parseInt(matcher.group("up")));
-        move.put(Direction.down, Integer.parseInt(matcher.group("down")));
-        move.put(Direction.left, Integer.parseInt(matcher.group("left")));
-        move.put(Direction.right, Integer.parseInt(matcher.group("right")));
+    public String moveMap(HashMap<Direction, Integer> move) {
         for (Direction direction : Direction.values()) {
+            if(!direction.isMajor) continue;
             this.x += move.get(direction) * direction.xChange;
             this.y += move.get(direction) * direction.yChange;
         }
@@ -110,10 +107,12 @@ public class MapController {
         if (map.getBlockByLocation(x, y) == null) return ResponseToUser.INDEX.response;
         if (map.isABase(x, y)) return "this block already is a base";
         if (map.getBlockByLocation(x, y).isOccupied()) return "this block is occupied";
-        if (map.getBaseBlocks().size() == 8) return "you have 8 bases you can't add more";
+        if (map.getBaseBlocks().size() > 7) return "you have 8 bases you can't add more";
         if (map.getBlockByLocation(x, y).isOccupied())
             return "not good location for base!";
+
         map.getBaseBlocks().add(map.getBlockByLocation(x, y));
+        map.getBlockByLocation(x,y).setHasBase(true);
         return "base was added successfully";
     }
 

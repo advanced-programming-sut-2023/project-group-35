@@ -14,7 +14,7 @@ public enum Resource {
     FLOUR(0, 0, WHEAT, BuildingType.MILL, BuildingType.FOOD_STOCK_PILE), // wheat
     BREAD(0, 0, FLOUR, BuildingType.BAKERY, BuildingType.FOOD_STOCK_PILE), //
     HORSE(0, 0, null, BuildingType.STABLE, null), //
-    TAR(0, 0, null, BuildingType.PITCH_RIG, null), //قیر
+    TAR(0, 0, null, BuildingType.PITCH_RIG, BuildingType.STOCK_PILE), //قیر
     BOW(100,50, WOOD, BuildingType.FLETCHER, BuildingType.ARMOURY), //wood
     SPEAR(0, 0, WOOD, BuildingType.POLE_TURNER, BuildingType.ARMOURER), //نیزه// wood
     ARMOR(0, 0, IRON, BuildingType.ARMOURER, BuildingType.ARMOURY), //iron
@@ -38,7 +38,8 @@ public enum Resource {
     }
 
     public BuildingType getStoredInBuilding() {
-        return storedInBuilding;
+        if(this.equals(SWORD)) System.out.println(this.storedInBuilding);
+        return this.storedInBuilding;
     }
 
     public static Resource getResourceByName(String name) {

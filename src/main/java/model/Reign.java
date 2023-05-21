@@ -43,12 +43,14 @@ Reign {
 
     public void initializeResources(){
         for (Resource value : Resource.values()) {
-            resources.put(value, 0);
-            if(value.getStoredInBuilding() == null) continue;
-            if (value.getStoredInBuilding().equals(BuildingType.STOCK_PILE)) {
-                resourceCapacity.put(value, 1000);
-            }
+            this.resources.put(value, 0);
+            if(value.getStoredInBuilding() == null) this.resourceCapacity.put(value, 0);
+            else if (value.getStoredInBuilding().equals(BuildingType.STOCK_PILE)) this.resourceCapacity.put(value, 1000);
             else resourceCapacity.put(value, 100);
+            if(value.equals(Resource.SWORD)) {
+                System.out.println("initialized");
+                System.out.println(value.getStoredInBuilding());
+            }
         }
     }
 
@@ -100,7 +102,10 @@ Reign {
     }
 
     public int getResourceCapacity(Resource resource) {
-        return resourceCapacity.get(resource);
+        System.out.println(resource);
+        int x = resourceCapacity.get(resource);
+        System.out.println(x);
+        return x;
     }
 
     public void changeResourcesCapacity(BuildingType buildingType , int amount) {
