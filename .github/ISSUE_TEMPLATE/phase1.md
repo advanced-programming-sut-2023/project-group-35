@@ -45,9 +45,9 @@ assignees: Arman17Babaei
 
 ## تسک‌های نفر اول
 
-  **نام و نام خانوادگی:**
+  **نام و نام خانوادگی:علیرضا ملک حسینی
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>تسک های مربوطه</summary>
 
   <div dir="ltr" align='right'>
 
