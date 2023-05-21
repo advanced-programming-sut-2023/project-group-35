@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import model.*;
 import Enum.*;
 import model.buildings.Building;
+import model.buildings.StoreHouse;
 
 import javax.swing.plaf.synth.Region;
 import java.io.FileNotFoundException;
@@ -49,14 +50,35 @@ public class Map {
         }
     }
     public static Map getTemplateMapByName(String name) {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        int count = 0;
         for (Map map : templateMaps) {
-            if(map.name.equals(name)) return map;
+            count++;
+            if(map.name.equals(name))
+                indexes.add(count-1);
         }
-        return null;
+        if(indexes.size() < 1)
+            return null;
+        else
+            return templateMaps.get(indexes.get(indexes.size()-1));
     }
     public static String getMapList() {
-        return null;
-        // ??????
+        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<String> mapNamesUsed = new ArrayList<>();
+        for(Map map: templateMaps){
+            if(!isMapNameRepeated(mapNamesUsed,map.name)){
+                stringBuilder.append(map.name+" ");
+                mapNamesUsed.add(map.name);
+            }
+        }
+        return stringBuilder.toString();
+    }
+    public static boolean isMapNameRepeated(ArrayList<String> arrayList,String string){
+        for(String s1:arrayList){
+            if(s1.equals(string))
+                return true;
+        }
+        return false;
     }
     public static ArrayList<Map> getTemplateMaps(){
         return templateMaps;
@@ -76,7 +98,14 @@ public class Map {
     }
 
     public void addRegin(Reign reign) {
-        baseBlocks.get(0).setBuilding(new Building(BuildingType.BASE, reign, baseBlocks.get(0)));
+        Block block = baseBlocks.get(0);
+        block.setBuilding(new Building(BuildingType.BASE, reign, block));
+        for (Direction value : Direction.values()) {
+            if(!value.isMajor) continue;
+            if(!this.getNeighborBlock(block, value).isOccupied()) {
+                block.setBuilding(new StoreHouse(BuildingType.STOCK_PILE, reign, block));
+            }
+        }
         baseBlocks.remove(0);
     }
     public ArrayList<Block> getBlocks() {
@@ -90,6 +119,8 @@ public class Map {
         for (Block block : baseBlocks) {
             if(block.x == x && block.y == y) return true;
         }
+        if(getBlockByLocation(x,y).isHasBase())
+            return true;
         return false;
     }
     public boolean findUnitsOfOpponent(Block block , int range, Reign reign) {

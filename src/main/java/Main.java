@@ -24,4 +24,8 @@ public class Main {
         menu.run();
         //menu.run();
     }
-}
+} /* user login -u Amir -p PAsss1!@
+        start a new game
+          add -u Ali
+          add -u Reza
+          add -u Abolfazl  */

@@ -13,18 +13,23 @@ public class GameMenu extends Menu{
 
     public void run() {
         System.out.println("welcome to another game of crusaders!\n You are in the game menu now!\nwrite down your command!");
+        System.out.println("enter the menu you want to enter");
+        System.out.println("reign menu");
+        System.out.println("trade menu");
+        System.out.println("shop menu");
+        System.out.println("...");
         while (true) {
             input = scanner.nextLine();
-            if(input.matches("map menu")) {
+            if(input.matches("enter\\s*map\\s+menu\\s*")) {
                 EditAndShowMapMenu menu = new EditAndShowMapMenu(new MapController(gameController.getMap() , true , gameController.getPlayingReign()));
                 menu.run();
-            } else if(input.matches("Reign menu")) {
+            } else if(input.matches("enter\\s*Reign\\s+menu\\s*")) {
                 ReignMenu reignMenu = new ReignMenu(new ReignController(gameController.getGame())); // todo constructor
                 reignMenu.run();
-            } else if(input.matches("trade menu")) {
+            } else if(input.matches("enter\\s*trade\\s+menu\\s*")) {
                 TradeMenu tradeMenu = new TradeMenu(new TradeController(gameController.getGame()));
                 tradeMenu.run();
-            } else if(input.matches("shop menu")) {
+            } else if(input.matches("enter\\s*shop\\s+menu\\s*")) {
                 ShopMenu shopMenu = new ShopMenu(new ShopController(gameController.getGame()));
                 shopMenu.run();
             } else if((matcher = getRealMatcher(input , Commands.SELECT_BUILDING, Commands.X,Commands.Y)) != null) {

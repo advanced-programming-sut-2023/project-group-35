@@ -35,7 +35,7 @@ public class ReignMenu extends Menu{
                 System.out.println(reignController.showFearRate());
             } else if ((matcher = getRealMatcher(input, Commands.TAX_RATE,Commands.RATE)) != null) {
                 System.out.println(reignController.setTaxRate(matcher));
-            }else if ((matcher = getRealMatcher(input, Commands.TAX_RATE,Commands.RATE)) != null) {
+            }else if ((matcher = getRealMatcher(input, Commands.FEAR_RATE,Commands.RATE)) != null) {
                 System.out.println(reignController.setFearRate(matcher));
             }else if ((matcher = Commands.getMatcher(input, Commands.BACK)) != null) {
                 System.out.println("exiting reign menu");

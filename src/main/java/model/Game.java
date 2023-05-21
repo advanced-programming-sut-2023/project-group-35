@@ -9,20 +9,14 @@ public class Game {
     private User starter;
     private Map map;
     protected Reign playingReign;
-
     private Building selectedBuilding;
-    private ArrayList<MilitaryUnit> selectedUnits; // people nabayad bashe?
-    private MilitaryUnit selectedSingleUnit;
+    private MilitaryUnit selectedUnit;
     private final ArrayList<MilitaryUnit> allOfTheUnits = new ArrayList<>();
     private final ArrayList<Building> allTheBuildings = new ArrayList<>();
-
-    //private Block selectedBlock;
     private int numberOfPlayers = 0;
     private final ArrayList<User> users = new ArrayList<>();
-
     private final ArrayList<Reign> reigns = new ArrayList<>();
     private int turnsPassed;
-    private MilitaryUnit selectedUnit;
 
     public Game(User starter, Map map) {
         this.starter = starter;
@@ -30,8 +24,8 @@ public class Game {
         addReign(starter);
     }
 
-    public MilitaryUnit getSelectedSingleUnit() {
-        return selectedSingleUnit;
+    public MilitaryUnit getSelectedUnit() {
+        return selectedUnit;
     }
 
     public String showReigns() {
@@ -46,10 +40,6 @@ public class Game {
 
     public ArrayList<MilitaryUnit> getAllOfTheUnits() {
         return allOfTheUnits;
-    }
-
-    public ArrayList<MilitaryUnit> getSelectedUnits() {
-        return selectedUnits;
     }
 
     public Reign getPlayingReign() {
@@ -102,8 +92,6 @@ public class Game {
         return units;
     }
 
-
-
     public Building getSelectedBuilding() {
         return selectedBuilding;
     }
@@ -114,9 +102,7 @@ public class Game {
     public void oneTurnPassed() {
         turnsPassed++;
     }
-    public MilitaryUnit getSelectedUnit() {
-        return selectedUnit;
-    }
+
     public void removeUnitIfKilled(MilitaryUnit unit) {
         if(unit.getHp() > 0) return;
         allOfTheUnits.remove(unit);
@@ -142,5 +128,7 @@ public class Game {
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
+
+
 }
 

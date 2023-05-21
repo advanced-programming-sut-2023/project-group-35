@@ -14,9 +14,18 @@ public class Block {
     public int y;
 
     private Building building;
-    private ArrayList<Structure> structures = new ArrayList<>();
+    private final ArrayList<Structure> structures = new ArrayList<>();
 
-    private ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
+    private final ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
+    private boolean hasBase = false;
+
+    public boolean isHasBase() {
+        return hasBase;
+    }
+
+    public void setHasBase(boolean hasBase) {
+        this.hasBase = hasBase;
+    }
 
     private Tree tree;
 
@@ -29,16 +38,25 @@ public class Block {
     }
 
     public String BlockInfo(Boolean detailed) {
+        boolean hasBuilding = false;
+        if(building != null)
+            hasBuilding = true;
         String output = "block (" + x + ", " + y + ")";
         output += "\nfield type: " + this.fieldType;
         if(!detailed) return output;
+        if(hasBuilding)
         output += "\nbuilding: " + building.buildingType.name();
-        output += "\nstructures: ";
-        for (Structure structure : structures) {
-            output += structure.toString();
+        else{
+            output += "\nbuilding: nothing!";
         }
-        //todo: compete this function
-        return output;
+        output += "\nstructures: ";
+
+            for (Structure structure : this.structures) {
+                output += structure.toString();
+            }
+
+            return output;
+
     }
     public void clearBlock(Reign playing) {
         if(building.getOwner().equals(playing)) building = null;

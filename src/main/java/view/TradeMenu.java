@@ -50,9 +50,9 @@ public class TradeMenu extends Menu{
     public void runChosenUser() {
         while (true) {
             input = scanner.nextLine();
-            if((matcher = getMatcher(input , Commands.ADD_REQUEST.regex)) != null) {
+            if((matcher = getRealMatcher(input , Commands.ADD_REQUEST, Commands.TYPE,Commands.AMOUNT,Commands.PRICE,Commands.MESSAGE)) != null) {
                 System.out.println(tradeController.addRequest(matcher));
-            } else if((matcher = getMatcher(input, Commands.DONATION.regex)) != null) {
+            } else if((matcher = getRealMatcher(input, Commands.DONATION,Commands.TYPE,Commands.AMOUNT,Commands.MESSAGE)) != null) {
                 System.out.println(tradeController.donate(matcher));
             }
         }

@@ -23,7 +23,7 @@ public class Menu {
     }
     public static Matcher findRegex(String input , Commands command) {
         Matcher matcher = Pattern.compile(command.regex).matcher(input);
-        System.out.println("input: " + input + "  \ncommands: " + command.regex);
+        //System.out.println("input: " + input + "  \ncommands: " + command.regex);
         return matcher.find()? matcher : null;
     }
     public static Matcher getRealMatcher(String input, Commands starter, Commands... groups) {

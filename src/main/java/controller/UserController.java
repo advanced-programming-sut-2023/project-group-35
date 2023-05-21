@@ -8,6 +8,7 @@ import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -108,7 +109,6 @@ public class UserController {
                 User.getUserByUsername(userName).getAttemptsNumber() * 1000)
             return "wait few seconds before another try";
         else if (!turnPasswordToSha256(password).equals(User.getUserByUsername(userName).getPassword())) {
-            System.out.println(turnPasswordToSha256(password) + "\n" + User.getUserByUsername(userName).getPassword());
             User.getUserByUsername(userName).addNumberOfAttempts();
             User.getUserByUsername(userName).setLastAttemptForLogin(System.currentTimeMillis());
             return "Password didn't match";
@@ -230,7 +230,7 @@ public class UserController {
 
     public String displaySlogan() {
         if (loggedInUser.getSloganOfUser() == null)
-            return "your slogan is empty!";
+            return "you don't have an slogan!\nuse <profile change slogan> to choose a slogan!";
         return loggedInUser.getSloganOfUser();
     }
 
@@ -239,7 +239,7 @@ public class UserController {
         stringBuilder.append("Your NickName: " + loggedInUser.getNickName() + "\n");
         stringBuilder.append("Your Slogan: " + loggedInUser.getSloganOfUser() + "\n");
         stringBuilder.append("Your highscore is " + loggedInUser.getHighScore() + "\n");
-        stringBuilder.append("Your rank between users " + displayRank());
+        stringBuilder.append("Your rank between users is <" + displayRank() + ">");
         String out = stringBuilder.toString();
         return out;
     }
@@ -254,6 +254,14 @@ public class UserController {
                 break;
             }
         }
+    }
+    public void createMap(){
+        System.out.println("enter map name:");
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+        Map newMap = new Map(loggedInUser,100,name);
+        loggedInUser.setMap(newMap);
+        Map.getTemplateMaps().add(newMap);
     }
 
     public static String turnPasswordToSha256(String password) throws NoSuchAlgorithmException, IOException {

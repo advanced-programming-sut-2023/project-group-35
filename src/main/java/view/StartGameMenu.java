@@ -1,6 +1,7 @@
 package view;
 
 import controller.GameController;
+import controller.UnitController;
 import model.*;
 import Enum.*;
 public class StartGameMenu extends Menu{
@@ -10,8 +11,9 @@ public class StartGameMenu extends Menu{
 
     public StartGameMenu(User starter) {
         //this.playingUser = starter;
-        leftUsersToAdd = starter.getMap().getNumberOfBases();
+        leftUsersToAdd = starter.getMap().getNumberOfBases() - 1;
         gameController = new GameController(new Game(starter, starter.getMap()));
+        gameController.setUnitController();
     }
 
 
@@ -26,7 +28,7 @@ public class StartGameMenu extends Menu{
                     System.out.println("exiting start game menu...");
                     return;
                 }
-            } else if((getRealMatcher(input,Commands.ADD_USER,Commands.USERNAME)) != null) {
+            } else if((matcher = getRealMatcher(input,Commands.ADD_USER,Commands.USERNAME)) != null) {
                 String result = gameController.addUser(matcher);
                 System.out.println(result);
                 if(result.equals("user added successfully")) leftUsersToAdd--;

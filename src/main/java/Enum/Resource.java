@@ -3,15 +3,15 @@ package Enum;
 public enum Resource {
     WOOD(20 , 18, null, BuildingType.WOOD_CUTTER, BuildingType.STOCK_PILE),
     STONE(20 , 20, null, BuildingType.STONE_MINE, BuildingType.STOCK_PILE),
-    WHEAT(0, 0, null, BuildingType.WHEAT_FARM, null), // گندم
+    WHEAT(0, 0, null, BuildingType.WHEAT_FARM, BuildingType.FOOD_STOCK_PILE), // گندم
     APPLE(0, 0, null, BuildingType.APPLE_GARDEN, BuildingType.FOOD_STOCK_PILE),
     CHEESE(0, 0, null, BuildingType.DAIRY_FARM, BuildingType.FOOD_STOCK_PILE),
     MEAT(0, 0, null , null, BuildingType.FOOD_STOCK_PILE),
     PROCESSED_MEAT(0, 0, MEAT, BuildingType.HUNTING_GROUND, BuildingType.FOOD_STOCK_PILE ),
     IRON(10 , 20, null , BuildingType.HOP_FARM, BuildingType.STOCK_PILE), //
-    HOP(0, 0, null , BuildingType.HOP_FARM, null), // جو
+    HOP(0, 0, null , BuildingType.HOP_FARM, BuildingType.FOOD_STOCK_PILE), // جو
     BEAR(0, 0, HOP, BuildingType.BREWERY, BuildingType.FOOD_STOCK_PILE), //
-    FLOUR(0, 0, WHEAT, BuildingType.MILL, null), // wheat
+    FLOUR(0, 0, WHEAT, BuildingType.MILL, BuildingType.FOOD_STOCK_PILE), // wheat
     BREAD(0, 0, FLOUR, BuildingType.BAKERY, BuildingType.FOOD_STOCK_PILE), //
     HORSE(0, 0, null, BuildingType.STABLE, null), //
     TAR(0, 0, null, BuildingType.PITCH_RIG, null), //قیر

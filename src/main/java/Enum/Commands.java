@@ -23,7 +23,7 @@ public enum Commands {
     PASSWORD_NOT_IN_LOGIN("-p\\s+((?<random>random)|((?<password>\\S+|(\"[^\"]+\"))\\s+(?<passwordConfirm>\\S+|(\"[^\"]+\"))))"),
     NICKNAME("-n\\s+(?<nickName>\\S+|(\"[^\"]+\"))"),
     EMAIL("-e\\s+(?<email>\\S*)"),
-    SLOGAN("-s\\s+((?<random>random)|(?<slogan>\\S+|(\"[^\"]+\")))"),
+    SLOGAN("-s\\s+((?<random>random)|(?<slogan>([^\"]\\S+)|(\"[^\"]+\")))"),
     ISNUMERIC("-?\\d+(\\.\\d+)?"),
 
 
@@ -102,9 +102,9 @@ public enum Commands {
     SHOW_POPULARITY_FACTORS("\\s*show\\s+popularity\\s+factors\\s*"),
     SHOW_POPULARITY("\\s*show\\s+popularity\\s*"),
     SHOW_FOOD_LIST("\\s*show\\s+food\\s+list\\s*"),
-    FOOD_RATE("\\s*food\\s+rate\\*"),
+    FOOD_RATE("\\s*food\\s+rate\\s*"),
     FOOD_RATE_SHOW("\\s*food\\s+rate\\s+show\\s*"),
-    TAX_RATE("\\s*tax\\s+rate\\*"),
+    TAX_RATE("\\s*tax\\s+rate\\s*"),
     TAX_RATE_SHOW("\\s*tax\\s+rate\\s+show\\s*"),
     FEAR_RATE_SHOW("\\s*fear\\s+rate\\s+show\\s*"),
 
@@ -125,7 +125,8 @@ public enum Commands {
     X("-x\\s+(?<x>\\d+)"),
     Y("-y\\s+(?<y>\\d+)"),
     ITEM("-t\\s+(?<item>\\S+|(\"[^\"]+\"))"),
-    REMOVE_BASE("\\s*remove\\s+base\\s*");
+    REMOVE_BASE("\\s*remove\\s+base\\s*"),
+    SET_BASE("\\s*set\\s+base\\s*");
 
     public String regex;
     private Commands(String regex){

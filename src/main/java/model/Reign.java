@@ -42,7 +42,14 @@ Reign {
     }
 
     public void initializeResources(){
-
+        for (Resource value : Resource.values()) {
+            resources.put(value, 0);
+            if(value.getStoredInBuilding() == null) continue;
+            if (value.getStoredInBuilding().equals(BuildingType.STOCK_PILE)) {
+                resourceCapacity.put(value, 1000);
+            }
+            else resourceCapacity.put(value, 100);
+        }
     }
 
     public ArrayList<MilitaryUnit> getMilitaryUnits() {
@@ -97,7 +104,9 @@ Reign {
     }
 
     public void changeResourcesCapacity(BuildingType buildingType , int amount) {
+
         for (Resource value : Resource.values()) {
+            if(value.getStoredInBuilding() == null) continue;
             if(value.getStoredInBuilding().equals(buildingType))
                 resourceCapacity.replace(value, resourceCapacity.get(value) + amount);
         }

@@ -21,9 +21,11 @@ public class GameController {
         this.game = game;
         this.map = game.getMap();
         this.playingReign = game.getPlayingReign();
-        this.unitController = new UnitController(game);
     }
 
+    public void setUnitController() {
+        this.unitController = new UnitController(game);
+    }
     public String addUser(Matcher matcher) {
         User user = User.getUserByUsername(matcher.group("username"));
         if(user == null) return "this user does not exist";

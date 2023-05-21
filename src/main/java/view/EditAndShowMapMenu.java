@@ -16,12 +16,17 @@ public class EditAndShowMapMenu extends Menu{
     }
 
     public void run() {
+        System.out.println("you are in the map menu!");
         while(true) {
             input = scanner.nextLine();
             if(((matcher = getRealMatcher(input, Commands.SHOW_MAP, Commands.X, Commands.Y))) != null) {
                 System.out.println(mapController.showMap(matcher));
             } else if(input.matches(Commands.MOVE_MAP.regex)) {
                 HashMap<Direction, Integer> directions = getDirections(input);
+                if (directions == null) {
+                    System.out.println("Invalid command!");
+                    continue;
+                }
                 System.out.println(mapController.moveMap(directions));
             } else if((matcher = getRealMatcher(input , Commands.SHOW_MAP_DETAILS,Commands.X,Commands.Y)) != null) {
                 mapController.showDetail(matcher);
@@ -39,7 +44,10 @@ public class EditAndShowMapMenu extends Menu{
                 System.out.println(mapController.dropBuilding(matcher));
             } else if((matcher = getRealMatcher(input , Commands.DROP_UNIT,Commands.X,Commands.Y,Commands.TYPE,Commands.AMOUNT)) != null) {
                 System.out.println(mapController.dropUnit(matcher));
-            }else if((matcher = getRealMatcher(input,Commands.SAVE)) != null){
+            }
+            else if((matcher = getRealMatcher(input, Commands.SET_BASE,Commands.X,Commands.Y))!= null){
+                System.out.println(mapController.setNewBase(matcher));
+            } else if((matcher = getRealMatcher(input,Commands.SAVE)) != null){
                 Map.getTemplateMaps().add(mapController.getMap());
                 MapController.saveTheMaps();
             }
@@ -55,12 +63,15 @@ public class EditAndShowMapMenu extends Menu{
 
     public HashMap<Direction, Integer> getDirections(String input) {
         HashMap<Direction, Integer> directions = new HashMap<>();
+        boolean flag = false;
         for (Direction value : Direction.values()) {
             if(!value.isMajor) continue;
             int number = getDirectionNumber(input, value);
             if(number == -1) return null;
+            if(number > 0) flag = true;
             directions.put(value, number);
         }
+        if(!flag) return null;
         return directions;
     }
     public int getDirectionNumber(String input, Direction dir) {
