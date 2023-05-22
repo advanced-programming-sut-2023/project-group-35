@@ -2,6 +2,7 @@ package view;
 
 import controller.UnitController;
 import Enum.*;
+import controller.UserController;
 
 public class UnitSelectMenu extends Menu{
     private UnitController unitController;
@@ -15,7 +16,7 @@ public class UnitSelectMenu extends Menu{
         while (true) {
             input = scanner.nextLine();
             if((matcher = getRealMatcher(input, Commands.MOVE_UNIT, Commands.X, Commands.Y)) != null) {
-                unitController.moveUnitCommand(getInt(matcher, "x"), getInt(matcher, "y"));
+                System.out.println(unitController.moveUnitCommand(getInt(matcher, "x"), getInt(matcher, "y")));
             } else if((matcher = getRealMatcher(input, Commands.PATROL_UNIT, Commands.X1, Commands.X2, Commands.Y1, Commands.Y2)) != null) {
                 unitController.patrolUnit(getInt(matcher, "x1"), getInt(matcher, "x2"),
                         getInt(matcher, "y1"), getInt(matcher, "y2"));
@@ -36,11 +37,11 @@ public class UnitSelectMenu extends Menu{
             } else if((matcher = getRealMatcher(input, Commands.PUSH_OFF_LADDER, Commands.X, Commands.Y)) != null) {
                 System.out.println(unitController.pushOffLadder(getInt(matcher, "x"), getInt(matcher, "y")));
             } else if((matcher = getRealMatcher(input, Commands.POUR_OIL, Commands.DIRECTION)) != null) {
-                System.out.println(unitController.pourOil(matcher.group("direction")));
+                System.out.println(unitController.pourOil(UserController.checkForQuotation(matcher.group("direction"))));
             } else if((matcher = getRealMatcher(input, Commands.DIG_TUNNEL, Commands.X, Commands.Y)) != null) {
                 System.out.println(unitController.digTunnel(getInt(matcher, "x"), getInt(matcher, "y")));
             } else if((matcher = getRealMatcher(input, Commands.BUILD_STRUCTURE, Commands.EQUIPMENT)) != null) {
-                //System.out.println(unitController.buildStructure(matcher.group("equipment"), getInt(matcher, )));
+                System.out.println(unitController.buildStructure(UserController.checkForQuotation(matcher.group("equipment"))));
             } else if((matcher = getRealMatcher(input, Commands.MOVE_STRUCTURE)) != null) {
                 System.out.println(unitController.moveStructure(getInt(matcher , "x"), getInt(matcher, "y")));
             }
@@ -50,7 +51,10 @@ public class UnitSelectMenu extends Menu{
                 System.out.println("unit deselected!\nexiting unit menu...");
                 unitController.deleteSelectedUnits();
                 return;
+            } else if(input.matches("\\s*show\\s+menu\\s*")) {
+                System.out.println("you are in the unit menu right now!");
             }
+            else System.out.println("Invalid command!");
         }
     }
 }

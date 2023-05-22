@@ -1,6 +1,5 @@
 package model;
 
-
 import model.buildings.Building;
 import model.people.MilitaryUnit;
 import model.structures.Structure;
@@ -8,33 +7,23 @@ import Enum.*;
 import java.util.ArrayList;
 
 
-
 public class Block {
     public int x;
     public int y;
 
     private Building building;
-    private final ArrayList<Structure> structures = new ArrayList<>();
-
-    private final ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
+    private ArrayList<Structure> structures;
+    private ArrayList<MilitaryUnit> militaryUnits;
     private boolean hasBase = false;
-
-    public boolean isHasBase() {
-        return hasBase;
-    }
-
-    public void setHasBase(boolean hasBase) {
-        this.hasBase = hasBase;
-    }
-
     private Tree tree;
-
     private FieldType fieldType;
 
     public Block(int x, int y, FieldType fieldType) {
         this.x = x;
         this.y = y;
         this.fieldType = fieldType;
+        this.structures = new ArrayList<>();
+        this.militaryUnits = new ArrayList<>();
     }
 
     public String BlockInfo(Boolean detailed) {
@@ -49,24 +38,30 @@ public class Block {
         else{
             output += "\nbuilding: nothing!";
         }
+        output += "\nmilitaryUnits: ";
+        for(MilitaryUnit militaryUnit: this.militaryUnits){
+            output += militaryUnit.toString() + "\n";
+        }
         output += "\nstructures: ";
 
-            for (Structure structure : this.structures) {
-                output += structure.toString();
-            }
+        for (Structure structure : this.structures) {
+            output += structure.toString() + "\n";
+        }
 
-            return output;
+        return output;
 
     }
     public void clearBlock(Reign playing) {
-        if(building.getOwner().equals(playing)) building = null;
-        for (int i = structures.size() - 1; i >= 0; i++) {
-           if(structures.get(i).getOwner().equals(playing)) structures.remove(i);
-        }
-        for(int i = militaryUnits.size() - 1; i >= 0; i++) {
-            if(militaryUnits.get(i).getOwner().equals(playing)) militaryUnits.remove(i);
-        }
-        //todo check
+        if(building != null && building.getOwner().equals(playing)) building = null;
+        if(structures == null) structures = new ArrayList<>();
+        if(militaryUnits == null) militaryUnits = new ArrayList<>();
+        for (int i = structures.size() - 1; i >= 0; i--) {
+                if (structures.get(i).getOwner().equals(playing)) structures.remove(i);
+            }
+            for (int i = militaryUnits.size() - 1; i >= 0; i--) {
+                if (militaryUnits.get(i).getOwner().equals(playing)) militaryUnits.remove(i);
+            }
+        this.setFieldType(FieldType.Ground);
     }
 
     public boolean isOccupied() {
@@ -79,6 +74,8 @@ public class Block {
     }
 
     public boolean findOpponentInBlock(Reign reign) {
+        if(militaryUnits == null) militaryUnits = new ArrayList<>();
+        if(structures == null) structures = new ArrayList<>();
         for (MilitaryUnit militaryUnit : militaryUnits) {
             if (!militaryUnit.getOwner().equals(reign)) return true;
         }
@@ -89,7 +86,8 @@ public class Block {
     }
 
     public boolean isPassable() {
-        if (!this.building.buildingType.isPassableForTroop) return false;
+
+        if (this.hasABuilding() && !this.building.buildingType.isPassableForTroop) return false;
         return this.fieldType.canTroopPass;
     }
 
@@ -106,6 +104,7 @@ public class Block {
 
 
     public ArrayList<MilitaryUnit> getMilitaryUnits() {
+        if ( militaryUnits == null) militaryUnits = new ArrayList<>();
         return militaryUnits;
     }
 
@@ -137,7 +136,7 @@ public class Block {
         return false; //todo complete
     }
     public boolean hasABuilding() {
-        return building != null;
+        return (building != null);
     }
 
     public int getX() {
@@ -148,24 +147,43 @@ public class Block {
         return y;
     }
     public void addNewStructure(Structure structure){
+        if(structures == null) structures = new ArrayList<>();
         structures.add(structure);
     }
     public void removeStructure(Structure structure){
+        if(structures == null) structures = new ArrayList<>();
         structures.remove(structure);
     }
     public ArrayList<Structure> getStructures() {
-        return structures;
+        if(this.structures == null) {this.structures = new ArrayList<>();}
+        return this.structures;
     }
 
     public void removeUnit(MilitaryUnit militaryUnit) {
+        if (militaryUnit == null) militaryUnits = new ArrayList<>();
         militaryUnits.remove(militaryUnit);
     }
     public void addUnit(MilitaryUnit militaryUnit){
+        if(militaryUnit == null) militaryUnits = new ArrayList<>();
         militaryUnits.add(militaryUnit);
     }
     public void removeBuilding() {
         building = null;
     }
 
+    public boolean isHasBase() {
+        return hasBase;
+    }
 
+    public void setHasBase(boolean hasBase) {
+        this.hasBase = hasBase;
+    }
+
+    public void setStructures(ArrayList<Structure> structures) {
+        this.structures = structures;
+    }
+
+    public void setMilitaryUnits(ArrayList<MilitaryUnit> militaryUnits) {
+        this.militaryUnits = militaryUnits;
+    }
 }

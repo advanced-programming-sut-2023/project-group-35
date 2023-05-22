@@ -29,9 +29,9 @@ public class EditAndShowMapMenu extends Menu{
                 }
                 System.out.println(mapController.moveMap(directions));
             } else if((matcher = getRealMatcher(input , Commands.SHOW_MAP_DETAILS,Commands.X,Commands.Y)) != null) {
-                mapController.showDetail(matcher);
+                System.out.println(mapController.showDetail(matcher));
             } else if((matcher = getRealMatcher(input , Commands.SET_TEXTURE,Commands.X,Commands.Y,Commands.TYPE)) != null) {
-                mapController.setTextureOfBlock(matcher);
+                System.out.println(mapController.setTextureOfBlock(matcher));
             } else if((matcher = getRealMatcher(input, Commands.DROP_ROCK,Commands.DIRECTION,Commands.X,Commands.Y)) != null) {
                 System.out.println(mapController.dropRock(matcher));
             } else if((matcher = getRealMatcher(input , Commands.CLEAR,Commands.X,Commands.Y)) != null) {
@@ -56,6 +56,8 @@ public class EditAndShowMapMenu extends Menu{
             } else if(input.matches(Commands.BACK.regex)) {
                 System.out.println("exiting map menu...");
                 return;
+            } else if(input.matches("\\s*show\\s+menu\\s*")){
+                System.out.println("you are in the map menu!");
             }
             else System.out.println(ResponseToUser.INVALID_COMMAND);
         }

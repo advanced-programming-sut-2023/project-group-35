@@ -22,6 +22,8 @@ public class ShopMenu extends Menu{
             } else if((input.matches(Commands.BACK.regex))){
                 System.out.println("exiting shop menu...");
                 return;
+            } else if(input.matches("\\s*show\\s+menu\\s*")){
+                System.out.println("you are in the shop menu right now!");
             }
             else System.out.println(ResponseToUser.INVALID_COMMAND);
         }

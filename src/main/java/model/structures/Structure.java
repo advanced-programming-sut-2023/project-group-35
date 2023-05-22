@@ -44,7 +44,10 @@ public class Structure {
 //        }
 //    } // todo delete structure methods
 
-
+    @Override
+    public String toString() {
+        return "type: " + type + "owner: " + owner;
+    }
 
 }
 

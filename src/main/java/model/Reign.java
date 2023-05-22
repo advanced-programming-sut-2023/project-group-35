@@ -13,14 +13,14 @@ Reign {
     private String nickName;
     private User user;
     private double gold;
-    private int population;
-    private int unemployedPopulation;
-    private int popularity;
-    private int taxRate;
-    private int currentTaxRate;
-    private double foodRate;
-    private double currentFoodRate;
-    private int fearRate;
+    private int population = 100;
+    private int unemployedPopulation = 100;
+    private int popularity = 100;
+    private int taxRate = 1;
+    private int currentTaxRate = 1;
+    private double foodRate = 1;
+    private double currentFoodRate = 1;
+    private int fearRate = 0;
     private int foodVariety;
 
     private final HashMap<Resource, Integer> resources = new HashMap<>();
@@ -41,17 +41,16 @@ Reign {
         initializeResources();
     }
 
+
     public void initializeResources(){
         for (Resource value : Resource.values()) {
-            this.resources.put(value, 0);
+            this.resources.put(value, 50);
             if(value.getStoredInBuilding() == null) this.resourceCapacity.put(value, 0);
             else if (value.getStoredInBuilding().equals(BuildingType.STOCK_PILE)) this.resourceCapacity.put(value, 1000);
             else resourceCapacity.put(value, 100);
-            if(value.equals(Resource.SWORD)) {
-                System.out.println("initialized");
-                System.out.println(value.getStoredInBuilding());
-            }
+
         }
+        this.changePopulation(50);
     }
 
     public ArrayList<MilitaryUnit> getMilitaryUnits() {
@@ -67,13 +66,14 @@ Reign {
     }
     public void distributeFood(Resource...resources) {
         int i = 0;
+        currentFoodRate = foodRate;
         for(Resource resource: resources) {
             if(getResourceAmount(resource) < population * foodRate) continue;
             spendResources(resource, (int) (population * foodRate));
             i++;
         }
         foodVariety = i;
-        if(i == 0) currentTaxRate = 0;
+        if(i == 0) currentFoodRate = 0;
     }
     public void getTaxFromPeople() {
         double tax = (Math.abs(taxRate) * 0.2 + 0.4) * population;
@@ -153,6 +153,7 @@ Reign {
         return RequestsFromOthers;
     }
     public void changeResourceAmount(Resource resource, int amount) {
+
         int former = resources.get(resource);
         resources.replace(resource , former + amount);
     }

@@ -20,6 +20,10 @@ public class UnitController extends GameController{
         selectedUnit = game.getSelectedUnit();
     }
 
+    public void setSelectedUnit(MilitaryUnit selectedUnit) {
+        this.selectedUnit = selectedUnit;
+    }
+
     public String moveUnitCommand(int x, int y) {
         if (!areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.response;
         if (selectedUnit instanceof Engineer) {
@@ -31,6 +35,7 @@ public class UnitController extends GameController{
         if (!(destMessage = checkTheDestination(x, y)).equals("correct")) return destMessage;
         selectedUnit.setDestination(map.getBlockByLocation(x, y));
         String result = move(selectedUnit);
+        System.out.println(result);
         if(result.equals("no path")) return "there is no path to this block";
         if(result.equals("killed")) return "the Military unit was killed by a trap";
         if(result.equals("arrived")) return "move unit successful. the unit is in the dest block";
@@ -67,6 +72,7 @@ public class UnitController extends GameController{
 
         father.put(start, start);
         openList.put(0, start);
+        gOfBlocks.put(start, 0);
         while(true) {
             Block block = openList.firstEntry().getValue();
             openList.remove(openList.firstEntry().getKey(), openList.firstEntry().getValue());
@@ -77,11 +83,15 @@ public class UnitController extends GameController{
                 if(nextBlock == null) continue;
                 if (!nextBlock.isPassable()) continue;
                 if(closed.contains(nextBlock)) continue;
+                System.out.println("next block is: " + nextBlock.getX() + "y: " + nextBlock.getY());
                 if (nextBlock.equals(dest)) {
+                    System.out.println("got to dest");
                     father.put(nextBlock, block);
                     return arrayListMaker(father, dest);
+
                 }
                 int g = gOfBlocks.get(block) + 1;
+                gOfBlocks.put(nextBlock, g);
                 int h = getMaxDistance(nextBlock, dest);
                 // todo check the previous f
                 openList.put(h + g, nextBlock);
@@ -120,7 +130,7 @@ public class UnitController extends GameController{
         Block fatherB;
         while (true) {
             fatherB = father.get(currectBlock);
-            if(father.equals(currectBlock)) break;
+            if(fatherB.equals(currectBlock)) break;
             output.add(0, fatherB);
             currectBlock = fatherB;
         }
@@ -136,7 +146,7 @@ public class UnitController extends GameController{
     public String checkTheDestination(int x, int y) {
         if(!map.getBlockByLocation(x, y).getFieldType().canTroopPass) return "you can't move this unit to a "
                 + map.getBlockByLocation(x, y).getFieldType().getName();
-        if(!map.getBlockByLocation(x, y).getBuilding().buildingType.isPassableForTroop)
+        if(map.getBlockByLocation(x, y).hasABuilding() && !map.getBlockByLocation(x, y).getBuilding().buildingType.isPassableForTroop)
             return "units can't go to this block because of the building in the block";
         return "correct";
     }
@@ -267,8 +277,10 @@ public class UnitController extends GameController{
     }
     public String buildStructure(String structureType) {
         StructuresType type = StructuresType.getType(structureType);
-        if (!(selectedUnit instanceof Engineer))
-            return "You must choose bunch of engineers!";
+        if(type == null)
+            return "invalid structure type!";
+        if (!(selectedUnit instanceof Engineer || selectedUnit.getUnitType().equals(UnitType.ENGINEER)))
+            return "You must choose unit of engineers!";
         if (playingReign.getResourceAmount(type.resource) < type.getAmountOfMaterial())
             return "You don't have enough material to build this structure";
         if (selectedUnit.getNumber() < type.getAmountOfEngineer()) return "You don't have enough engineers!";

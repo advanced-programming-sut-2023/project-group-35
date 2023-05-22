@@ -54,7 +54,10 @@ public class MainMenu extends Menu{
                     System.out.println("logout successful!");
                     return;
                 }
-            } else{
+            } else if(input.matches("\\s*show\\s+menu\\s*")){
+                System.out.println("you are in the main menu!");
+            }
+            else{
                 System.out.println("invalid commend!");
             }
         }

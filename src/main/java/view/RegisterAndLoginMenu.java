@@ -24,7 +24,7 @@ public class RegisterAndLoginMenu extends Menu{
             if ((matcher = getRealMatcher(input,Commands.CREATE_USER,Commands.USERNAME, Commands.PASSWORD_NOT_IN_LOGIN, Commands.EMAIL,
                     Commands.NICKNAME)) != null) {
                 System.out.println(userController.register(matcher,extractSlogan(input)));
-            } else if((matcher = getRealMatcher(input,Commands.USER_LOGIN,Commands.USERNAME,Commands.PASSWORD_USED_IN_LOGIN)) != null) {
+            } else if((matcher = getRealMatcher(input,Commands.USER_LOGIN, Commands.USERNAME, Commands.PASSWORD_USED_IN_LOGIN)) != null) {
                 String resOfLogin = userController.login(matcher,input);
                 System.out.println(resOfLogin);
                 if(resOfLogin.equals("logged in successfully")) {
@@ -42,6 +42,8 @@ public class RegisterAndLoginMenu extends Menu{
                     System.out.println("game is now finished");
                     return;
                 }
+            } else if(input.matches("\\s*show\\s+menu\\s*")){
+                System.out.println("you are in register and login menu");
             } else {
                 System.out.println(ResponseToUser.INVALID_COMMAND);
             }
@@ -53,15 +55,6 @@ public class RegisterAndLoginMenu extends Menu{
         this.userController = userController;
     }
 
-    public boolean booleanErrorInCreateUser(String contentText) {
-        if (Commands.getMatcher(contentText, Commands.PASSWORD_NOT_IN_LOGIN) == null
-                || Commands.getMatcher(contentText, Commands.USERNAME) == null)
-            return false;
-        else if (Commands.getMatcher(contentText, Commands.NICKNAME) == null
-                || Commands.getMatcher(contentText, Commands.EMAIL) == null)
-            return false;
-        return true;
-    }
 
     public static SecurityQuestion getSafetyQuestion() {
         int counter = 1;

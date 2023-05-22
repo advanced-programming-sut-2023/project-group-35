@@ -25,6 +25,8 @@ public class BuildingMenu extends Menu{
             } else if((matcher = getMatcher(input , Commands.CHANGE_TAX_RATE.regex)) != null) {
                 int rate = Integer.parseInt(matcher.group("rate"));
                 System.out.println(buildingController.changeTaxRate(rate));
+            } else if(input.matches("\\s*show\\s+menu\\s*")){
+                System.out.println("you are in the building menu!");
             } else System.out.println(ResponseToUser.INVALID_COMMAND);
         }
 

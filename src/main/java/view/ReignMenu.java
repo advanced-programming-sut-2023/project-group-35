@@ -40,7 +40,10 @@ public class ReignMenu extends Menu{
             }else if ((matcher = Commands.getMatcher(input, Commands.BACK)) != null) {
                 System.out.println("exiting reign menu");
                 return;
-            }else {
+            } else if(input.matches("\\s*show\\s+menu\\s*")){
+                System.out.println("you are in the reign menu right now!");
+            }
+            else {
                 System.out.println(ResponseToUser.INVALID_COMMAND);
             }
 

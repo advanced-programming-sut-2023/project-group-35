@@ -65,6 +65,7 @@ public class Game {
         if(reigns.size() == 1) playingReign = reign;
         map.addRegin(reign);
         numberOfPlayers++;
+        reign.earnGold(1000);
     }
     public void setSelectedBuilding(Building building) {
         this.selectedBuilding = building;

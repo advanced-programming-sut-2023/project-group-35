@@ -28,4 +28,11 @@ public class Main {
         start a new game
           add -u Ali
           add -u Reza
-          add -u Abolfazl  */
+          add -u Abolfazl
+            drop building -x 22 -y 34 -t "engineer guild"
+            select building -x 22 -y 34
+            create unit -t engineer -c 5
+            back
+            select unit -x 22 -y 34
+            move unit to -x 21 -y 34
+            */

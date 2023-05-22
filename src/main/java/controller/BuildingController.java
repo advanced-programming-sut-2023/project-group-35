@@ -22,11 +22,11 @@ public class BuildingController extends GameController{
     }
     public String createUnit(Matcher matcher) {
         int count = Integer.parseInt(matcher.group("count"));
-        UnitType unitType = UnitType.getUnitTypeByName(matcher.group("type"));
+        UnitType unitType = UnitType.getUnitTypeByName(UserController.checkForQuotation(matcher.group("type")));
         if(unitType == null) return "wrong unit type";
         if(count <= 0) return "invalid count of troops";
         if(playingReign.getGold() < unitType.cost * count) return "you don't have enough gold";
-        if(playingReign.getResourceAmount(unitType.resourceToBuild) < count)
+        if(unitType.resourceToBuild != null && playingReign.getResourceAmount(unitType.resourceToBuild) < count)
             return "you don't have enough" + unitType.resourceToBuild.name() + "to build this unit";
         if(!unitType.buildingProducedIn.equals(selectedBuilding.buildingType))
             return "you can't build " + unitType.name() + "s in a" + selectedBuilding.buildingType.getName();
@@ -35,9 +35,10 @@ public class BuildingController extends GameController{
                 selectedBuilding.getBlock(), count);
         playingReign.changeUnemployedPopulation(-count);
         playingReign.spendGold(count * unitType.cost);
-        playingReign.changeResourceAmount(unitType.resourceToBuild, count);
+        if(unitType.resourceToBuild != null) playingReign.changeResourceAmount(unitType.resourceToBuild, count);
         playingReign.getMilitaryUnits().add(unit);
         game.getAllOfTheUnits().add(unit);
+        selectedBuilding.getBlock().addUnit(unit);
         return "create unit successful";
     }
     public String repair() {

@@ -38,19 +38,18 @@ public class GameController {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if(!areCoordinatesCorrect(x, y)) return "coordinates are not correct";
-        BuildingType type = BuildingType.getBuildingTypeByName(matcher.group("type"));
+        BuildingType type = BuildingType.getBuildingTypeByName(UserController.checkForQuotation(matcher.group("type")));
         if(type == null) return "wrong building type";
         Block block = map.getBlockByLocation(x, y);
         if (!block.getFieldType().isSuitableForBuilding)
             return "the filed type is not suitable to drop building";
-        if(map.getBlockByLocation(x, y).getBuilding() != null) return "there is already a building in this block";
+        if(map.getBlockByLocation(x, y).hasABuilding()) return "there is already a building in this block";
         if(map.getBlockByLocation(x, y).getStructures().size() > 0) {
             return "drop building failed: there are some structures in this block";
         }
         if(type.equals(BuildingType.BASE)) return "you can't build a new base inside a game";
         if(type.equals(BuildingType.PITCH_RIG) && !block.getFieldType().equals(FieldType.plain))
             return "you should build the pitch rig on a plain";
-        // todo check the side blocks for the same type for stoke pile and ?? ..
         if(type.goldCost > playingReign.getGold()) return "you do not have enough gold";
         if(playingReign.getResourceAmount(type.resourceToBuild) < type.resourceAmount)
             return "you do not have enough resources to build this building";
@@ -112,12 +111,7 @@ public class GameController {
 
         return "drop building successful";
     }
-    public String dropWall(Matcher matcher) {
-        return null;
-    }
-    public String dropStairs(Matcher matcher) {
-        return null;
-    }
+
     public String selectBuilding(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -142,6 +136,7 @@ public class GameController {
             else return "you did not choose the right number of the unit";
         } else {
             game.setSelectedUnit(units.get(0));
+            System.out.println(units.get(0).toString());
         }
         return "select units successful!";
     }
@@ -294,6 +289,7 @@ public class GameController {
         return game.getMap();
     }
     public UnitController getUnitController() {
+        unitController.setSelectedUnit(game.getSelectedUnit());
         return unitController;
     }
     public boolean areCoordinatesCorrect(int x , int y) {

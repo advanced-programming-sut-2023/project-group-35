@@ -143,4 +143,11 @@ public class MilitaryUnit {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+    @Override
+    public String toString() {
+        String output = "unit type: " + unitType + "owner: " + owner;
+        output += "unit state: " + unitState;
+        if(destBlock != null) output += "destination block: " + destBlock;
+        return output;
+    }
 }

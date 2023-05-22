@@ -25,7 +25,7 @@ import com.google.gson.JsonSyntaxException;
 public class UserController {
     private User loggedInUser;
 
-    public String checkForQuotation(String text) {
+    public static String checkForQuotation(String text) {
         if (text == null)
             return text;
         if ((text.charAt(0) == '\"') && (text.trim().charAt(text.trim().length() - 1) == '\"'))
@@ -55,6 +55,7 @@ public class UserController {
         }
         String passwordConfirm = matcher.group("passwordConfirm");
         String nickName = matcher.group("nickName");
+        nickName = checkForQuotation(nickName);
         String email = matcher.group("email");
         String userName = matcher.group("username");
 
@@ -98,6 +99,8 @@ public class UserController {
     public String login(Matcher matcher, String command) throws NoSuchAlgorithmException, IOException {
         String userName = matcher.group("username");
         String password = matcher.group("password");
+        password = checkForQuotation(password);
+        userName = checkForQuotation(userName);
         Boolean gonnaBeLoggedIn = null;
         Pattern stayLoggedIn = Pattern.compile("--stay-logged-in");
         Matcher matcherOfLogin = stayLoggedIn.matcher(command);
@@ -144,6 +147,7 @@ public class UserController {
 
     public String usernameChange(Matcher matcher) {
         String newUserName = matcher.group("username");
+        newUserName = checkForQuotation(newUserName);
         if (!newUserName.matches("\\w+") || newUserName.length() < 1)
             return "Invalid username format!";
         else {
@@ -154,6 +158,7 @@ public class UserController {
 
     public String nicknameChange(Matcher matcher) {
         String newNickName = matcher.group("nickName");
+        newNickName = checkForQuotation(newNickName);
         if (!newNickName.matches("\\w+") || newNickName.length() < 1)
             return "Invalid username format!";
         else {

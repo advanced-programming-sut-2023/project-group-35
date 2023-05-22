@@ -130,7 +130,7 @@ public class MapController {
         int y = Integer.parseInt(matcher.group("y"));
         if (!areCoordinatesValid(x, y))
             return "no valid point!";
-        FieldType fieldType = FieldType.getFieldType(matcher.group("type"));
+        FieldType fieldType = FieldType.getFieldType(UserController.checkForQuotation(matcher.group("type")));
         if (fieldType == null)
             return "no valid field type!";
         if (isInTheGame) return "you can't change the texture of the blocks in the game";
@@ -140,7 +140,7 @@ public class MapController {
     }
 
     public String setTextureOfArea(Matcher matcher) {
-        FieldType fieldType = FieldType.getFieldType(matcher.group("type"));
+        FieldType fieldType = FieldType.getFieldType(UserController.checkForQuotation(matcher.group("type")));
         int x2 = Integer.parseInt(matcher.group("x2"));
         int x1 = Integer.parseInt(matcher.group("x1"));
         int y1 = Integer.parseInt(matcher.group("y1"));
@@ -165,7 +165,7 @@ public class MapController {
             return "there is already building in that point!";
         if (block.isOccupied())
             return "you can't build anything here!";
-        BuildingType buildingType = BuildingType.getBuildingTypeByName(matcher.group("type"));
+        BuildingType buildingType = BuildingType.getBuildingTypeByName(UserController.checkForQuotation(matcher.group("type")));
         if (buildingType == null)
             return "your chosen building is not valid!";
         Building buildingToAdd = new Building(buildingType, reignPlaying, block);
@@ -182,7 +182,7 @@ public class MapController {
     public String dropUnit(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        UnitType unitType = UnitType.getUnitTypeByName(matcher.group("type"));
+        UnitType unitType = UnitType.getUnitTypeByName(UserController.checkForQuotation(matcher.group("type")));
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!areCoordinatesValid(x, y))
             return "there is no valid point!";

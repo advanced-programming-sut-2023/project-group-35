@@ -138,6 +138,7 @@ public class Map {
         templateMaps.add(map);
     }
     public static void loadTheMap(){
+        Map mapToEdit;
         Reader reader;
         try {
             reader = new FileReader("dataBaseMap.json");
@@ -146,8 +147,14 @@ public class Map {
         }
         Gson gson = new Gson();
         JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
-        for (JsonElement jsonElement : jsonArray)
+        for (JsonElement jsonElement : jsonArray) {
             Map.addTemplateMap(gson.fromJson(jsonElement, Map.class));
+            mapToEdit = templateMaps.get(templateMaps.size()-1);
+            for (Block block : mapToEdit.getBlocks()) {
+                block.setMilitaryUnits(new ArrayList<>());
+                block.setStructures(new ArrayList<>());
+            }
+        }
 
     }
 }

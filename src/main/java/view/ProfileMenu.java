@@ -36,7 +36,10 @@ public class ProfileMenu extends Menu{
             }else if ((matcher = Commands.getMatcher(input, Commands.BACK)) != null) {
                 System.out.println("exiting profile menu...");
                 return;
-            }else {
+            } else if(input.matches("\\s*show\\s+menu\\s*")){
+                System.out.println("you are in the profile menu!");
+            }
+            else {
                 System.out.println(ResponseToUser.INVALID_COMMAND);
             }
 

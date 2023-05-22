@@ -4,6 +4,9 @@ import controller.GameController;
 import controller.UnitController;
 import model.*;
 import Enum.*;
+
+import java.util.ArrayList;
+
 public class StartGameMenu extends Menu{
     //private User playingUser;
     private int leftUsersToAdd;
@@ -13,6 +16,10 @@ public class StartGameMenu extends Menu{
         //this.playingUser = starter;
         leftUsersToAdd = starter.getMap().getNumberOfBases() - 1;
         gameController = new GameController(new Game(starter, starter.getMap()));
+        for (Block block : starter.getMap().getBlocks()) {
+            if(block.getStructures() == null) block.setStructures(new ArrayList<>());
+            if(block.getMilitaryUnits() == null) block.setMilitaryUnits(new ArrayList<>());
+        }
         gameController.setUnitController();
     }
 
@@ -37,7 +44,10 @@ public class StartGameMenu extends Menu{
                     GameMenu gameMenu = new GameMenu(gameController);
                     gameMenu.run();
                 }
-            } else System.out.println(ResponseToUser.INVALID_COMMAND);
+            } else if(input.matches("\\s*show\\s+menu\\s*")) {
+                System.out.println("you are in the start game menu!");
+            }
+            else System.out.println(ResponseToUser.INVALID_COMMAND);
         }
     }
     public void printLeftUsersToEnter() {

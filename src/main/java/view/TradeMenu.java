@@ -37,6 +37,8 @@ public class TradeMenu extends Menu{
                 System.out.println("exiting trade menu...");
                 tradeController.clearNotification();
                 return;
+            } else if(input.matches("\\s*show\\s+menu\\s*")) {
+                System.out.println("you are in the trade menu!");
             }
             else System.out.println(ResponseToUser.INVALID_COMMAND);
         }

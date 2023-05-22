@@ -44,9 +44,9 @@ public class TradeController extends GameController{
         int price = Integer.parseInt(matcher.group("price"));
         if(price <= 0) return "you cant add a request with no price";
         if(!hasEnoughBalance(price)) return "you don't have enough balance";
-        Resource resource = Resource.getResourceByName(matcher.group("type"));
+        Resource resource = Resource.getResourceByName(UserController.checkForQuotation(matcher.group("type")));
         if(resource == null) return "you have entered the wrong resource";
-        TradeItem tradeItem = new TradeItem(playingReign, secondReign, resource, amount , price , matcher.group("message"));
+        TradeItem tradeItem = new TradeItem(playingReign, secondReign, resource, amount , price , UserController.checkForQuotation(matcher.group("message")));
         playingReign.spendGold(price);
         TradeItem.getTradeList().add(0 , tradeItem);
         playingReign.getRequestsFromOthers().add(0 , tradeItem);
@@ -66,7 +66,7 @@ public class TradeController extends GameController{
         if(tradeItem.getSecondReign().equals(playingReign)) return "this request is not from you";
         if(playingReign.getResourceAmount(tradeItem.getResource()) < tradeItem.getAmount())
             return "you don't have enough resource to give" + secondReign.getNickName();
-        tradeItem.setMessage(matcher.group("message"));
+        tradeItem.setMessage(UserController.checkForQuotation(matcher.group("message")));
         playingReign.earnGold(tradeItem.getPrice());
         playingReign.changeResourceAmount(tradeItem.getResource(), -tradeItem.getAmount());
         secondReign.changeResourceAmount(tradeItem.getResource(), tradeItem.getAmount());
@@ -100,7 +100,7 @@ public class TradeController extends GameController{
         Resource resource = Resource.getResourceByName(matcher.group("type"));
         if(resource == null) return "you have entered the wrong resource";
         if(playingReign.getResourceAmount(resource) < amount) return "you don't have enough resources";
-        TradeItem tradeItem = new TradeItem(playingReign, secondReign, resource, amount , 0 , matcher.group("message"));
+        TradeItem tradeItem = new TradeItem(playingReign, secondReign, resource, amount , 0 , UserController.checkForQuotation(matcher.group("message")));
         secondReign.getNotification().add(0 , tradeItem);
         playingReign.getTradeHistory().add(0 , tradeItem);
         secondReign.getTradeHistory().add(0 , tradeItem);
