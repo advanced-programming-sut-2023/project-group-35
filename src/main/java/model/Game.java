@@ -130,6 +130,8 @@ public class Game {
         return numberOfPlayers;
     }
 
-
+    public void setPlayingReign(Reign playingReign) {
+        this.playingReign = playingReign;
+    }
 }
 

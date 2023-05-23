@@ -21,6 +21,5 @@ public enum UnitState {
             if (value.name().compareToIgnoreCase(state) == 0) return value;
         }
         return null;
-        //todo check
     }
 }

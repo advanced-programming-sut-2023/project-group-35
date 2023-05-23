@@ -21,15 +21,13 @@ Reign {
     private double foodRate = 1;
     private double currentFoodRate = 1;
     private int fearRate = 0;
-    private int foodVariety;
+    private int foodVariety = 0;
 
     private final HashMap<Resource, Integer> resources = new HashMap<>();
     private final HashMap<Resource ,Integer> resourceCapacity = new HashMap<>();
     private ArrayList<MilitaryUnit> militaryUnits = new ArrayList<>();
-
     private ArrayList<Building> buildings = new ArrayList<>(); // is this nessesary?
     private ArrayList<MilitaryUnit> units = new ArrayList<>(); // is this nessesary?
-
     private ArrayList<TradeItem> tradeHistory = new ArrayList<>();
     private ArrayList<TradeItem> notification = new ArrayList<>();
     private ArrayList<TradeItem> requestsFromMe = new ArrayList<>();
@@ -45,10 +43,10 @@ Reign {
     public void initializeResources(){
         for (Resource value : Resource.values()) {
             this.resources.put(value, 50);
-            if(value.getStoredInBuilding() == null) this.resourceCapacity.put(value, 0);
+//            System.out.println(resources.get(value));
+            if(value.getStoredInBuilding() == null) this.resourceCapacity.put(value, 100);
             else if (value.getStoredInBuilding().equals(BuildingType.STOCK_PILE)) this.resourceCapacity.put(value, 1000);
             else resourceCapacity.put(value, 100);
-
         }
         this.changePopulation(50);
     }
@@ -87,7 +85,11 @@ Reign {
     }
 
     public void addToResource(Resource resource, int change) {
-        int now = resources.get(resource);
+        Integer now = resources.get(resource);
+        if(now == null){
+            resources.put(resource,50);
+            now = resources.get(resource);
+        }
         int newAmount = now + change;
         if(now + change > resourceCapacity.get(resource)){
             newAmount = resourceCapacity.get(resource);
@@ -120,7 +122,8 @@ Reign {
     public String showTradeList() {
         String output = "requests from you:";
         for (TradeItem tradeItem : requestsFromMe) {
-            output += "\n" + ""; //todo complete this
+            output += "\n" + "user: " + tradeItem.getFirstReign() + " has requested for " + tradeItem.getAmount()
+                    + " of " + tradeItem.getResource() + " and for the price: " + tradeItem.getPrice() ;
         }
         return output;
     }
@@ -129,7 +132,8 @@ Reign {
         for (TradeItem tradeItem : notification) {
             if(tradeItem.isADonation() != wasADonation) continue;
             output += "\nfrom: " + tradeItem.firstReign + " to: " + tradeItem.secondReign;
-            //todo complete output;
+            output += "resource traded: " + tradeItem.resource + "amount: " + tradeItem.getAmount();
+            if(!wasADonation) output += "price: " + tradeItem.getPrice();
         }
         return output;
     }
@@ -163,7 +167,7 @@ Reign {
             if(wasADonation != tradeItem.isADonation()) continue;
             output += "\nfrom " + tradeItem.firstReign.getUser().getNickName()
                     + " to: " + tradeItem.secondReign.getUser().getNickName()
-                    ; //todo complete this
+            + tradeItem.getAmount() + " of " + tradeItem.getResource() + "s for the price" + tradeItem.getAmount();
         }
         return output;
     }

@@ -14,7 +14,7 @@ public class TradeController extends GameController{
     }
 
     public String showTradeList () {
-        return playingReign.showTradeList()  + '\n' + TradeItem.showTradeList();
+        return playingReign.showTradeList()  + "\n" + TradeItem.showTradeList();
     }
     public String showMyRequestsFromOthers () {
         String output = "requests form other reigns: ";
@@ -63,7 +63,7 @@ public class TradeController extends GameController{
         TradeItem tradeItem = TradeItem.getTradeItemById(id);
         if(tradeItem == null) return "this item does not exist in the list";
         secondReign = tradeItem.getFirstReign();
-        if(tradeItem.getSecondReign().equals(playingReign)) return "this request is not from you";
+        if(tradeItem.getSecondReign() != null && tradeItem.getSecondReign().equals(playingReign)) return "this request is not from you";
         if(playingReign.getResourceAmount(tradeItem.getResource()) < tradeItem.getAmount())
             return "you don't have enough resource to give" + secondReign.getNickName();
         tradeItem.setMessage(UserController.checkForQuotation(matcher.group("message")));
@@ -111,7 +111,7 @@ public class TradeController extends GameController{
                 + "\n Trades: \n" + playingReign.getHistoryOfTrades(false);
     }
     public String notification() {
-        return "Donations: \n" + playingReign.showNotification(true)
+        return "recent trades for you or donations: \n" + playingReign.showNotification(true)
                 + "\n Trades: \n" + playingReign.showNotification(false);
     }
     public void clearNotification() {

@@ -20,6 +20,10 @@ public class Building {
         block.setBuilding(this);
     }
 
+    public BuildingType getBuildingType() {
+        return buildingType;
+    }
+
     public void nextTurn() {
 
     }

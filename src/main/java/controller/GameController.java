@@ -60,7 +60,7 @@ public class GameController {
 
     }
     public String BuildTheBuilding(BuildingType type, Block block) {
-        Building building = null; //todo check for the buildings that need the same building around them
+        Building building = null;
         if(type.checkForEquals(BuildingType.SHOP, BuildingType.BARRACK, BuildingType.MERCENARY_CAMP, BuildingType.ENGINEER_GUILD)) {
             building = new Building(type, playingReign, block);
         }
@@ -103,6 +103,7 @@ public class GameController {
         }
         else if(type.checkForEquals(BuildingType.APPLE_GARDEN, BuildingType.WHEAT_FARM, BuildingType.BAKERY, BuildingType.DAIRY_FARM)) {
             building = new Producer(type, playingReign, block, Resource.getProduct(type));
+            System.out.println(Resource.getProduct(type));
         } else if(type.checkForEquals(BuildingType.CAGED_WAR_DOGS)) {
             building = new dogCage(type, playingReign , block);
         }
@@ -169,9 +170,10 @@ public class GameController {
         playingReign.getTaxFromPeople();
         playingReign.calculatePopularityRate();
         playingReign = game.getNextReign();
+        game.setPlayingReign(playingReign);
         if(playingReign.equals(game.getReigns().get(0))) nextTurn();
         if(game.getReigns().size() == 1) return "endGame";
-        return "turn switched.\nplayer " + playingReign.getNickName() + "is now playing!";
+        return "turn switched.\nplayer " + playingReign.getNickName() + " is now playing!";
     }
     public void nextTurn() {
         game.oneTurnPassed();

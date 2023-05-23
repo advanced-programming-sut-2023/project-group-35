@@ -29,10 +29,6 @@ public class Main {
           add -u Ali
           add -u Reza
           add -u Abolfazl
-            drop building -x 22 -y 34 -t "engineer guild"
-            select building -x 22 -y 34
-            create unit -t engineer -c 5
-            back
-            select unit -x 22 -y 34
-            move unit to -x 21 -y 34
+           enter trade menu
+            request -t apple -a 10 -p 20 -m ok
             */

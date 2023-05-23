@@ -88,7 +88,7 @@ public enum Commands {
     TYPE("-t\\s+(?<type>([^\"]\\S+)|(\".+\"))"),
     DONATION("^\\s*donate"),
     ACCEPT_REQUEST("^\\s*request\\s+accept"),
-    ID("-i\\s+\\d+"),
+    ID("-i\\s+(?<id>\\d+)"),
     DELETE_TRADE("^\\s*delete\\s+trade\\s*"),
     TRADE_LIST("\\s*show\\s+trade\\s+list\\s*"),
     TRADE_HISTORY("\\s*show\\s+trade\\s+history\\s*"),

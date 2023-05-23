@@ -37,12 +37,7 @@ public class Structure {
     public Reign getOwner() {
         return owner;
     }
-//    public void getDamagedAndDestroy(int damage) {
-//        this.hp -= damage;
-//        if(hp <= 0) {
-//            this.block.removeStructure(this);
-//        }
-//    } // todo delete structure methods
+
 
     @Override
     public String toString() {

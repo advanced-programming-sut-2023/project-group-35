@@ -33,13 +33,12 @@ public class ShopController extends GameController{
     }
     public String sell(Matcher matcher) {
         Integer amount = Integer.parseInt(matcher.group("amount"));
-        System.out.println(amount);
+
         if(amount <= 0) return "the amount is not correct";
         Resource resource = Resource.getResourceByName(UserController.checkForQuotation(matcher.group("item")));
-        System.out.println(resource);
+
         if(resource == null) return "resource not found in the shop";
         if(amount > playingReign.getResourceAmount(resource)+1) return "you don't have enough resources to sell";
-        System.out.println(playingReign.getResourceAmount(resource));
         playingReign.spendGold(amount * resource.sellPrice);
         playingReign.changeResourceAmount(resource , -amount);
         return "selling resources successful";

@@ -33,10 +33,10 @@ public class TradeItem {
     public static String showTradeList() {
         String output = "Global: ";
         for (TradeItem tradeItem : getTradeList()) {
-            if(tradeItem.secondReign == null) continue;
-            output += "\n" + "";  //todo complete this;
+            output += "\nitemId: " + tradeItem.itemId + " first reign: " + tradeItem.getFirstReign().getNickName() + " second reign: " + tradeItem.secondReign
+                    + "resource: " + tradeItem.getResource() + " amount: " + tradeItem.getAmount() + " for the price : " + tradeItem.getPrice();
         }
-        return null;
+        return output;
     }
 
     public static TradeItem getTradeItemById(int id) {

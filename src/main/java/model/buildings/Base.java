@@ -7,6 +7,4 @@ public class Base extends Building{
     public Base(BuildingType buildingType, Reign owner, Block block) {
         super(buildingType, owner, block);
     }
-
-    //todo complete
 }

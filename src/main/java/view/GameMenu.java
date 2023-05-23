@@ -25,7 +25,7 @@ public class GameMenu extends Menu{
                 menu.run();
                 System.out.println("you are in the game menu now!");
             } else if(input.matches("enter\\s*Reign\\s+menu\\s*")) {
-                ReignMenu reignMenu = new ReignMenu(new ReignController(gameController.getGame())); // todo constructor
+                ReignMenu reignMenu = new ReignMenu(new ReignController(gameController.getGame()));
                 reignMenu.run();
                 System.out.println("you are in the game menu now!");
 

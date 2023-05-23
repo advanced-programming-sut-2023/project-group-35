@@ -35,7 +35,6 @@ public class UnitController extends GameController{
         if (!(destMessage = checkTheDestination(x, y)).equals("correct")) return destMessage;
         selectedUnit.setDestination(map.getBlockByLocation(x, y));
         String result = move(selectedUnit);
-        System.out.println(result);
         if(result.equals("no path")) return "there is no path to this block";
         if(result.equals("killed")) return "the Military unit was killed by a trap";
         if(result.equals("arrived")) return "move unit successful. the unit is in the dest block";
@@ -47,7 +46,6 @@ public class UnitController extends GameController{
             return ResponseToUser.COORDINATES_NOT_CORRECT.response;
         if(!checkTheDestination(x1, y1).equals("correct") || !checkTheDestination(x2, y2).equals("correct"))
             return "you can't go into one of these blocks";
-        //todo check if the unit can patrol
         if (findAPath(map.getBlockByLocation(x1, y1), map.getBlockByLocation(x2, y2)) == null)
             return "there is no path to connect these blocks";
         if (findAPath(selectedUnit.getBlock(), map.getBlockByLocation(x1, y1)) == null)
@@ -83,9 +81,8 @@ public class UnitController extends GameController{
                 if(nextBlock == null) continue;
                 if (!nextBlock.isPassable()) continue;
                 if(closed.contains(nextBlock)) continue;
-                System.out.println("next block is: " + nextBlock.getX() + "y: " + nextBlock.getY());
+                //System.out.println("next block is: " + nextBlock.getX() + "y: " + nextBlock.getY());
                 if (nextBlock.equals(dest)) {
-                    System.out.println("got to dest");
                     father.put(nextBlock, block);
                     return arrayListMaker(father, dest);
 

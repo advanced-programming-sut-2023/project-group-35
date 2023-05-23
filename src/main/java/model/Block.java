@@ -69,7 +69,6 @@ public class Block {
         if(this.getFieldType().equals(FieldType.Rock)) return true;
         if(this.getTree() != null) return true;
         if(!this.getFieldType().isSuitableForBuilding) return true;
-        //todo what else?
         return false;
     }
 
@@ -133,7 +132,8 @@ public class Block {
 
 
     public boolean isATrapFor(MilitaryUnit unit) {
-        return false; //todo complete
+        if(building != null && building.getBuildingType().equals(BuildingType.KILLING_PIT)) return true;
+        return false;
     }
     public boolean hasABuilding() {
         return (building != null);
