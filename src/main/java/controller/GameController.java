@@ -146,12 +146,6 @@ public class GameController {
         String output = "choose one of the units below by writing the ordinal number of the unit";
         int i = 1;
         for (MilitaryUnit unit : units) {
-            if(unit.getUnitType().equals(UnitType.ENGINEER)){
-                Engineer engineer = (Engineer) unit;
-                output += "\n" + i + ": unit " + unit.getUnitType();
-                if(engineer.hasStructure()) output += "inside a " + engineer.getStructure().getType().name();
-                if(engineer.hasOilToPour()) output += "with oil to pour";
-            }
             output += "\n" + i + ": unit " + unit.getUnitType() + "with the number " + unit.getNumber()
                     + "and the state: " + unit.getUnitState();
             i++;
@@ -185,6 +179,8 @@ public class GameController {
                 if(block.findOpponentInBlock(playingReign)) opponentFound = true;
                 if(result.equals("endGame")) return;
             }
+            if(unit.isMoving()) unitController.move(unit);
+            if(unit.isPatrolling()) unitController.patrol(unit);
             if(!opponentFound && !unit.isPatrolling() && !unit.isMoving()) {
                  Block block = findTheNearestOpponent(unit.getBlock(), unit.getUnitState().getRange());
                  if(block != null) {

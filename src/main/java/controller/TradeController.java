@@ -67,6 +67,7 @@ public class TradeController extends GameController{
         if(playingReign.getResourceAmount(tradeItem.getResource()) < tradeItem.getAmount())
             return "you don't have enough resource to give" + secondReign.getNickName();
         tradeItem.setMessage(UserController.checkForQuotation(matcher.group("message")));
+        tradeItem.setSecondReign(playingReign);
         playingReign.earnGold(tradeItem.getPrice());
         playingReign.changeResourceAmount(tradeItem.getResource(), -tradeItem.getAmount());
         secondReign.changeResourceAmount(tradeItem.getResource(), tradeItem.getAmount());

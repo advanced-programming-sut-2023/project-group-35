@@ -235,7 +235,7 @@ Reign {
     }
 
     public void changeUnemployedPopulation(int change) {
-        this.unemployedPopulation = change;
+        this.unemployedPopulation += change;
     }
     public ArrayList<Building> getBuildings() {
         return buildings;

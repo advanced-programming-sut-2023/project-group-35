@@ -29,6 +29,12 @@ public class Main {
           add -u Ali
           add -u Reza
           add -u Abolfazl
-           enter trade menu
-            request -t apple -a 10 -p 20 -m ok
+           next turn
+           yes
+           drop building -x 24 -y 24 -t "mercenary camp"
+           select building -x 24 -y 24
+           create unit -t slinger -c 5
+           back
+           select unit -x 24 -y 24
+           patrol unit -x1 24 -x2 27 -y1 24 -y2 27
             */

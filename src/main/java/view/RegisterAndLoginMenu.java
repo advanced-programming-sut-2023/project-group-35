@@ -22,6 +22,7 @@ public class RegisterAndLoginMenu extends Menu{
         while (true) {
             input = scanner.nextLine();
             if ((matcher = getRealMatcher(input,Commands.CREATE_USER,Commands.USERNAME, Commands.PASSWORD_NOT_IN_LOGIN, Commands.EMAIL,
+                    Commands.NICKNAME,Commands.SLOGAN)) != null || (matcher = getRealMatcher(input,Commands.CREATE_USER,Commands.USERNAME, Commands.PASSWORD_NOT_IN_LOGIN, Commands.EMAIL,
                     Commands.NICKNAME)) != null) {
                 System.out.println(userController.register(matcher,extractSlogan(input)));
             } else if((matcher = getRealMatcher(input,Commands.USER_LOGIN, Commands.USERNAME, Commands.PASSWORD_USED_IN_LOGIN)) != null) {

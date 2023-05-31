@@ -52,6 +52,7 @@ public class UnitController extends GameController{
             return "there is no path to go to the first block";
         selectedUnit.setDestination(map.getBlockByLocation(x1, y1));
         selectedUnit.setSecondDestBlock(map.getBlockByLocation(x2, y2));
+        selectedUnit.setPatrolling(true);
         String result = patrol(selectedUnit);
         if(result.equals("killed")) return "unit was killed by a trap";
         return "the patrol has begun";

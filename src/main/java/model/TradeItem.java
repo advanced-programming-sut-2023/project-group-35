@@ -75,4 +75,8 @@ public class TradeItem {
     public static ArrayList<TradeItem> getTradeList() {
         return tradeList;
     }
+
+    public void setSecondReign(Reign secondReign) {
+        this.secondReign = secondReign;
+    }
 }

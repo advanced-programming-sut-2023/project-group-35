@@ -24,7 +24,7 @@ public enum Commands {
     PASSWORD_NOT_IN_LOGIN("-p\\s+((?<random>random)|((?<password>([^\"]\\S+)|(\".+\"))\\s+(?<passwordConfirm>([^\"]\\S+)|(\".+\"))))"),
     NICKNAME("-n\\s+(?<nickName>([^\"]\\S+)|(\".+\"))"),
     EMAIL("-e\\s+(?<email>\\S*)"),
-    SLOGAN("-s\\s+((?<random>random)|(?<slogan>([^\"]\\S+)|(\".+\"))"),
+    SLOGAN("-s\\s+((?<Random>random)|(?<slogan>([^\"]\\S+)|(\".+\")))"),
     ISNUMERIC("-?\\d+(\\.\\d+)?"),
 
 

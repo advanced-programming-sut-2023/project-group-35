@@ -150,4 +150,8 @@ public class MilitaryUnit {
         if(destBlock != null) output += "destination block: " + destBlock;
         return output;
     }
+
+    public void setPatrolling(boolean patrolling) {
+        isPatrolling = patrolling;
+    }
 }
