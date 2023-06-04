@@ -2,6 +2,7 @@ package view;
 
 import controller.BuildingController;
 import Enum.*;
+import javafx.stage.Stage;
 
 public class BuildingMenu extends Menu{
     private BuildingController buildingController;
@@ -10,6 +11,10 @@ public class BuildingMenu extends Menu{
         this.buildingController = buildingController;
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
     public void run() {
         buildingController.showHitPoint();
         while (true) {
@@ -31,4 +36,6 @@ public class BuildingMenu extends Menu{
         }
 
     }
+
+
 }

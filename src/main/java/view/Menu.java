@@ -6,17 +6,42 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import Enum.*;
+import controller.UserController;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import model.User;
 
-public class Menu {
+public class Menu extends Application {
     public static final Scanner scanner = new Scanner(System.in);
     protected String input;
     protected String result;
     protected Matcher matcher;
+    protected static Stage stage;
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+        launch(args);
 
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Menu.stage = stage;
+//        File tempFile = new File("loggedIn.txt");
+//        boolean exists = tempFile.exists();
+//        Menu menu = new RegisterAndLoginMenu(new UserController());
+//        if(exists){
+//            String nameOfLoggedIn = tempFile.toString();
+//            UserController userController = new UserController();
+//            userController.setLoggedInUser(User.getUserByUsername(nameOfLoggedIn));
+//            menu = new MainMenu(userController);
+//        }
+//        menu.run();
+        new RegisterAndLoginMenu(new UserController()).start(Menu.stage);
+    }
 
     public void run() throws IOException, NoSuchAlgorithmException {
 
     }
+
     public static Matcher getMatcher(String input , String regex){
         Matcher matcher = Pattern.compile(regex).matcher(input);
         return matcher.matches()? matcher : null;

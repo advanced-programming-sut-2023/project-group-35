@@ -2,6 +2,7 @@ package view;
 
 import controller.ReignController;
 import controller.UserController;
+import javafx.stage.Stage;
 import model.Game;
 import model.Reign;
 import model.User;
@@ -13,6 +14,11 @@ public class ReignMenu extends Menu{
     private ReignController reignController;
     public ReignMenu(ReignController reignController) {
         this.reignController = reignController;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
     }
 
     public void run() {

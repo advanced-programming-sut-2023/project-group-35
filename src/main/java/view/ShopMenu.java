@@ -2,11 +2,18 @@ package view;
 
 import controller.ShopController;
 import Enum.*;
+import javafx.stage.Stage;
+
 public class ShopMenu extends Menu{
     ShopController shopController;
 
     public ShopMenu(ShopController shopController) {
         this.shopController = shopController;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
     }
 
     public void run() {

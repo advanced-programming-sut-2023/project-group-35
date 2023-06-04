@@ -2,6 +2,7 @@ package view;
 
 import controller.*;
 import Enum.*;
+import javafx.stage.Stage;
 import model.Reign;
 
 public class GameMenu extends Menu{
@@ -9,6 +10,11 @@ public class GameMenu extends Menu{
 
     public GameMenu(GameController gameController) {
         this.gameController = gameController;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
     }
 
     public void run() {

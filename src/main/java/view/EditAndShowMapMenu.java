@@ -2,6 +2,7 @@ package view;
 
 import controller.*;
 import Enum.*;
+import javafx.stage.Stage;
 import model.Map;
 
 import java.util.HashMap;
@@ -13,6 +14,10 @@ public class EditAndShowMapMenu extends Menu{
 
     public EditAndShowMapMenu(MapController mapController) {
         this.mapController = mapController;
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+
     }
 
     public void run() {
@@ -84,4 +89,6 @@ public class EditAndShowMapMenu extends Menu{
         if(matcher.find()) return -1;
         return number;
     }
+
+
 }

@@ -3,12 +3,18 @@ package view;
 import controller.UnitController;
 import Enum.*;
 import controller.UserController;
+import javafx.stage.Stage;
 
 public class UnitSelectMenu extends Menu{
     private UnitController unitController;
 
     public UnitSelectMenu(UnitController unitController) {
         this.unitController = unitController;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
     }
 
     public void run() {

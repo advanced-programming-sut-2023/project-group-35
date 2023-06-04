@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800.0" prefWidth="600.0" stylesheets="@../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginMenu">
+   <children>
+      <VBox layoutX="135.0" layoutY="160.0" prefHeight="371.0" prefWidth="306.0">
+         <children>
+            <AnchorPane prefHeight="48.0" prefWidth="306.0">
+               <children>
+                  <TextField fx:id="usernameField" prefHeight="29.0" prefWidth="209.0" promptText="username" />
+                  <Label fx:id="usernameControllerLabel" layoutX="14.0" layoutY="35.0" prefHeight="17.0" prefWidth="149.0" text="Label" />
+               </children>
+            </AnchorPane>
+            <AnchorPane>
+               <children>
+                  <TextField fx:id="nicknameField" prefHeight="27.0" prefWidth="209.0" promptText="nickname" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="48.0" prefWidth="306.0">
+               <children>
+                  <PasswordField fx:id="passwordField" layoutY="1.0" prefHeight="27.0" prefWidth="209.0" promptText="password" />
+                  <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="231.0" layoutY="6.0" onMouseClicked="#showPasswordField" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/showHide.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="passwordControllerLabel" layoutX="14.0" layoutY="34.0" prefHeight="17.0" prefWidth="114.0" text="Label" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="64.0" prefWidth="306.0">
+               <children>
+                  <PasswordField fx:id="confirmPasswordField" prefHeight="29.0" prefWidth="209.0" promptText="confirm password" />
+                  <ImageView fitHeight="24.0" fitWidth="25.0" layoutX="232.0" layoutY="6.0" onMouseClicked="#showConfirmPasswordField" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/showHide.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="confirmPasswordController" layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="149.0" text="Label" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="83.0" prefWidth="306.0">
+               <children>
+                  <TextField fx:id="emailField" prefHeight="27.0" prefWidth="209.0" promptText="Email" />
+                  <CheckBox fx:id="sloganCheckBox" layoutX="6.0" layoutY="58.0" mnemonicParsing="false" text="slogan" />
+                  <Label layoutX="14.0" layoutY="28.0" prefHeight="25.0" prefWidth="175.0" text="Label" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="sloganPane" prefHeight="19.0" prefWidth="306.0">
+               <children>
+                  <TextField fx:id="sloganField" layoutY="-13.0" prefHeight="27.0" prefWidth="209.0" promptText="slogan" />
+                  <Button layoutX="220.0" layoutY="-12.0" mnemonicParsing="false" text="random" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <Button layoutX="264.0" layoutY="542.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="25.0" prefWidth="89.0" text="Back" />
+      <Button layoutX="152.0" layoutY="542.0" minHeight="17.0" minWidth="56.0" mnemonicParsing="false" onMouseClicked="#register" prefHeight="25.0" prefWidth="89.0" text="register" />
+   </children>
+</AnchorPane>

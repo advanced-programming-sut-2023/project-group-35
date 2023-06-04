@@ -2,6 +2,7 @@ package view;
 
 import controller.TradeController;
 import Enum.*;
+import javafx.stage.Stage;
 
 public class TradeMenu extends Menu{
     TradeController tradeController;
@@ -9,7 +10,10 @@ public class TradeMenu extends Menu{
     public TradeMenu(TradeController tradeController) {
         this.tradeController = tradeController;
     }
+    @Override
+    public void start(Stage stage) throws Exception {
 
+    }
     public void run() {
         System.out.println("You are in the trade menu now!");
         System.out.println(tradeController.notification());
@@ -62,4 +66,6 @@ public class TradeMenu extends Menu{
     public static void nickNameNotFound() {
         System.out.println("nick name not found, please try again");
     }
+
+
 }

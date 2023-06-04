@@ -2,6 +2,7 @@ package view;
 
 import controller.GameController;
 import controller.UnitController;
+import javafx.stage.Stage;
 import model.*;
 import Enum.*;
 
@@ -23,6 +24,10 @@ public class StartGameMenu extends Menu{
         gameController.setUnitController();
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 
     public void run() {
         System.out.println("YOU ARE IN THE START GAME MENU");

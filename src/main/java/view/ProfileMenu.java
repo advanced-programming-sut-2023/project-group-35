@@ -5,11 +5,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 
 import controller.UserController;
+import javafx.stage.Stage;
 import model.User;
 import Enum.*;
 public class ProfileMenu extends Menu{
     private UserController profileMenu = new UserController();
     private User loggedInUser;
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 
     public void run() throws NoSuchAlgorithmException, IOException {
         while (true) {

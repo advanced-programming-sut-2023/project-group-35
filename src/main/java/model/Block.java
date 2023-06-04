@@ -1,10 +1,12 @@
 package model;
 
+
 import model.buildings.Building;
 import model.people.MilitaryUnit;
 import model.structures.Structure;
 import Enum.*;
 import java.util.ArrayList;
+
 
 
 public class Block {
@@ -16,6 +18,7 @@ public class Block {
     private ArrayList<MilitaryUnit> militaryUnits;
     private boolean hasBase = false;
     private Tree tree;
+
     private FieldType fieldType;
 
     public Block(int x, int y, FieldType fieldType) {
@@ -69,6 +72,7 @@ public class Block {
         if(this.getFieldType().equals(FieldType.Rock)) return true;
         if(this.getTree() != null) return true;
         if(!this.getFieldType().isSuitableForBuilding) return true;
+        //todo what else?
         return false;
     }
 

@@ -3,6 +3,7 @@ package view;
 import Enum.*;
 import controller.MapController;
 import controller.UserController;
+import javafx.stage.Stage;
 import model.*;
 
 import java.io.File;
@@ -18,6 +19,12 @@ public class MainMenu extends Menu{
         if(loggedInUser == null)
             System.out.println("null");
     }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
+
     public void run() throws NoSuchAlgorithmException, IOException {
         System.out.println("choose the menu you want to enter");
         System.out.println("map menu");
