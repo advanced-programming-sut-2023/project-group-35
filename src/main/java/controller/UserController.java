@@ -46,24 +46,14 @@ public class UserController {
         this.loggedInUser = loggedInUser;
     }
 
-    public String register(Matcher matcher, String slogan) throws IOException, NoSuchAlgorithmException {
-        String password = null;
-        if (matcher.group("random") == null && matcher.group("password") != null) {
-            password = matcher.group("password");
-        } else {
-            password = matcher.group("random");
-        }
-        String passwordConfirm = matcher.group("passwordConfirm");
-        String nickName = matcher.group("nickName");
+    public String register(ُString password,String userName,String nickName,String passwordConfirm,String email,
+                           String slogan) throws IOException, NoSuchAlgorithmException {
         nickName = checkForQuotation(nickName);
-        String email = matcher.group("email");
-        String userName = matcher.group("username");
-
         if (password.equals("random")) {
             password = RegisterAndLoginMenu.getRandomPassword();
             if (RegisterAndLoginMenu.checkPassword(password))
                 System.out.println("It was entered correctly.");
-            passwordConfirm = password;
+                passwordConfirm = password;
         }
         if (slogan != null && slogan.equals("Random")) {
             slogan = generateRandomSlogan();
@@ -96,16 +86,9 @@ public class UserController {
         return "Sign up was successful,we have " + userName + " on board now";
     }
 
-    public String login(Matcher matcher, String command) throws NoSuchAlgorithmException, IOException {
-        String userName = matcher.group("username");
-        String password = matcher.group("password");
+    public String login(String userName,String password,boolean isLoggedIn) throws NoSuchAlgorithmException, IOException {
         password = checkForQuotation(password);
         userName = checkForQuotation(userName);
-        Boolean gonnaBeLoggedIn = null;
-        Pattern stayLoggedIn = Pattern.compile("--stay-logged-in");
-        Matcher matcherOfLogin = stayLoggedIn.matcher(command);
-        if (matcherOfLogin.find()) gonnaBeLoggedIn = true;
-        else gonnaBeLoggedIn = false;
         if (User.getUserByUsername(userName) == null)
             return "No such user found!";
         else if ((-1 * User.getUserByUsername(userName).getLastAttemptForLogin() + System.currentTimeMillis()) <=
@@ -117,7 +100,7 @@ public class UserController {
             return "Password didn't match";
         } else {
             loggedInUser = User.getUserByUsername(userName);
-            if (gonnaBeLoggedIn) {
+            if (isLoggedIn) {
                 FileWriter fileWriter = new FileWriter("loggedIn.txt");
                 fileWriter.write(loggedInUser.getUserName());
                 fileWriter.close();
@@ -129,9 +112,7 @@ public class UserController {
         }
     }
 
-    public String forgotMyPassword(Matcher matcher) throws NoSuchAlgorithmException, IOException {
-        String userName = matcher.group("username");
-        String password = matcher.group("password");
+    public String forgotMyPassword(String userName,String password) throws NoSuchAlgorithmException, IOException {
         if (User.getUserByUsername(userName) == null)
             return "No such user exists!";
         else if (!RegisterAndLoginMenu.checkTheSecurityHitAndPass(User.getUserByUsername(userName)))
@@ -145,8 +126,7 @@ public class UserController {
 
     }
 
-    public String usernameChange(Matcher matcher) {
-        String newUserName = matcher.group("username");
+    public String usernameChange(String newUserName) {
         newUserName = checkForQuotation(newUserName);
         if (!newUserName.matches("\\w+") || newUserName.length() < 1)
             return "Invalid username format!";
@@ -156,8 +136,7 @@ public class UserController {
         }
     }
 
-    public String nicknameChange(Matcher matcher) {
-        String newNickName = matcher.group("nickName");
+    public String nicknameChange(String newNickName) {
         newNickName = checkForQuotation(newNickName);
         if (!newNickName.matches("\\w+") || newNickName.length() < 1)
             return "Invalid username format!";
@@ -167,9 +146,7 @@ public class UserController {
         }
     }
 
-    public String passwordChanger(Matcher matcher) throws NoSuchAlgorithmException, IOException {
-        String oldPass = matcher.group("password");
-        String newPass = matcher.group("confirmPassword");
+    public String passwordChanger(String oldPass,String newPass) throws NoSuchAlgorithmException, IOException {
         if (!loggedInUser.getPassword().equals(turnPasswordToSha256(oldPass)))
             return "You entered wrong password!";
         else if (loggedInUser.getPassword().equals(turnPasswordToSha256(newPass)))
@@ -184,8 +161,7 @@ public class UserController {
         }
     }
 
-    public String emailChange(Matcher matcher) {
-        String email = matcher.group("email");
+    public String emailChange(String email) {
         if (User.getUserByEmail(email) != null)
             return "this email is already in database";
         else if (!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))
