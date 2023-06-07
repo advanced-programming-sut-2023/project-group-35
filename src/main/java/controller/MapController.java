@@ -7,8 +7,6 @@ import model.Block;
 import model.Map;
 import Enum.*;
 import model.Reign;
-import model.User;
-import model.buildings.Base;
 import model.buildings.Building;
 import model.people.MilitaryUnit;
 
@@ -104,7 +102,7 @@ public class MapController {
         int y = Integer.parseInt(matcher.group("y"));
         if (!areCoordinatesValid(x, y))
             return "location is not valid!";
-        if (map.getBlockByLocation(x, y) == null) return ResponseToUser.INDEX.response;
+        if (map.getBlockByLocation(x, y) == null) return ResponseToUser.INDEX.text;
         if (map.isABase(x, y)) return "this block already is a base";
         if (map.getBlockByLocation(x, y).isOccupied()) return "this block is occupied";
         if (map.getBaseBlocks().size() > 7) return "you have 8 bases you can't add more";
@@ -228,7 +226,7 @@ public class MapController {
             return "No such tree exists!";
         Block block = map.getBlockByLocation(x, y);
         if(block == null) return "index out of bounds";
-        if(block.isOccupied()) return ResponseToUser.OCCUPIED.response;
+        if(block.isOccupied()) return ResponseToUser.OCCUPIED.text;
         block.setTree(tree);
         return "tree was dropped successfully";
     }

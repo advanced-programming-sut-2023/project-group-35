@@ -23,7 +23,7 @@ public class ProfileMenu extends Menu{
             if ((matcher = getRealMatcher(input,Commands.CHANGE_USERNAME,Commands.USERNAME)) != null) {
                 System.out.println(profileMenu.usernameChange(matcher));
             } else if((matcher = getRealMatcher(input,Commands.CHANGE_PASSWORD,Commands.PASSWORD_NOT_IN_LOGIN)) != null) {
-                System.out.println(profileMenu.passwordChanger(matcher));
+                //System.out.println(profileMenu.passwordChanger(matcher));
             } else if ((matcher = getRealMatcher(input,Commands.CHANGE_EMAIL,Commands.EMAIL)) != null) {
                 System.out.println(profileMenu.emailChange(matcher));
             }else if ((matcher = Commands.getMatcher(input, Commands.CHANGE_SLOGAN)) != null ||

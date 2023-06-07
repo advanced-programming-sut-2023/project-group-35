@@ -3,13 +3,16 @@ package view;
 import java.io.*;
 import java.security.*;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import Enum.*;
-import controller.UserController;
 import javafx.application.Application;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
-import model.User;
+import javafx.scene.paint.Color;
 
 public class Menu extends Application {
     public static final Scanner scanner = new Scanner(System.in);
@@ -17,9 +20,10 @@ public class Menu extends Application {
     protected String result;
     protected Matcher matcher;
     protected static Stage stage;
+    public static Color successGreenColor = Color.rgb(24,181, 55);
+    public static Color failRedColor = Color.rgb(176, 25, 14);
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         launch(args);
-
     }
 
     @Override
@@ -35,7 +39,7 @@ public class Menu extends Application {
 //            menu = new MainMenu(userController);
 //        }
 //        menu.run();
-        new RegisterAndLoginMenu(new UserController()).start(Menu.stage);
+        new RegisterAndLoginMenu().start(Menu.stage);
     }
 
     public void run() throws IOException, NoSuchAlgorithmException {
@@ -89,4 +93,36 @@ public class Menu extends Application {
         return Integer.parseInt(matcher.group(regex));
     }
 
+
+
+    public static String buildATextInputDialog(String contentText, String title) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setContentText(contentText);
+        dialog.setTitle(title);
+        dialog.showAndWait();
+        return dialog.getEditor().getText();
+    }
+    public static void buildInformationAlert(String massage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(massage);
+        alert.show();
+    }
+    public static AtomicBoolean alertForConfirmation(String alertName, String contentText, String title) {
+        Alert alert = new Alert(Alert.AlertType.NONE, alertName, ButtonType.YES, ButtonType.CANCEL);
+        alert.setContentText(contentText);
+        alert.setTitle(title);
+        AtomicBoolean toReturn = new AtomicBoolean(false);
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                try {
+                    toReturn.set(false);
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } else if(response == ButtonType.CANCEL)
+                toReturn.set(true);
+        });
+        return toReturn;
+    }
 }

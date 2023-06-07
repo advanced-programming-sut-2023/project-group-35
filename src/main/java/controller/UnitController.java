@@ -25,7 +25,7 @@ public class UnitController extends GameController{
     }
 
     public String moveUnitCommand(int x, int y) {
-        if (!areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.response;
+        if (!areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.text;
         if (selectedUnit instanceof Engineer) {
             if(((Engineer)selectedUnit).hasStructure())
                 return "you can't move an engineering unit inside a structure\ntry moving the structure itself";
@@ -43,7 +43,7 @@ public class UnitController extends GameController{
 
     public String patrolUnit(int x1, int x2, int y1, int y2) {
         if(!areCoordinatesCorrect(x1, y2) || !areCoordinatesCorrect(x2, y2))
-            return ResponseToUser.COORDINATES_NOT_CORRECT.response;
+            return ResponseToUser.COORDINATES_NOT_CORRECT.text;
         if(!checkTheDestination(x1, y1).equals("correct") || !checkTheDestination(x2, y2).equals("correct"))
             return "you can't go into one of these blocks";
         if (findAPath(map.getBlockByLocation(x1, y1), map.getBlockByLocation(x2, y2)) == null)
@@ -165,7 +165,7 @@ public class UnitController extends GameController{
 
     public String attackEnemy(int x , int y) {
         Block block = map.getBlockByLocation(x, y);
-        if (areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.response;
+        if (areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.text;
         if (!selectedUnit.isBlockInRange(block)) return "you can't attack this block because its not in the units range";
         if (block.findOpponentInBlock(playingReign)) return "there is no enemy in this block";
         return attackBlock(selectedUnit, block, true);
@@ -409,7 +409,7 @@ public class UnitController extends GameController{
     }
 
     public String moveStructure(int x, int y) {
-        if(!areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.response;
+        if(!areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.text;
         if(!selectedUnit.unitType.equals(UnitType.ENGINEER)) return "you should select an engineer unit to move a structure";
         Engineer engineer = (Engineer) selectedUnit;
         if(!engineer.hasStructure()) return "this unit has no structure to move";
