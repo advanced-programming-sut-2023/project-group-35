@@ -20,8 +20,8 @@ public class Menu extends Application {
     protected String result;
     protected Matcher matcher;
     protected static Stage stage;
-    public static Color successGreenColor = Color.rgb(24,181, 55);
-    public static Color failRedColor = Color.rgb(176, 25, 14);
+    public static Color successGreenColor = Color.rgb(30,103, 45);
+    public static Color failRedColor = Color.rgb(145, 38, 32);
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         launch(args);
     }
@@ -29,6 +29,7 @@ public class Menu extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Menu.stage = stage;
+        stage.setFullScreen(true);
 //        File tempFile = new File("loggedIn.txt");
 //        boolean exists = tempFile.exists();
 //        Menu menu = new RegisterAndLoginMenu(new UserController());

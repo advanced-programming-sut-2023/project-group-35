@@ -34,8 +34,8 @@ public class UserController {
     }
 
     public UserController() {
-        loadTheData();
-        Map.loadTheMap();
+        //loadTheData();
+        //Map.loadTheMap();
     }
 
     public void setLoggedInUser(User loggedInUser) {
@@ -248,30 +248,30 @@ public class UserController {
         return hex;
     }
 
-    public static void saveTheData() {
-        Gson gson = new Gson();
-        String json = gson.toJson(User.getUsers());
-        try {
-            FileWriter myWriter = new FileWriter("dataBase.json");
-            myWriter.write(json);
-            myWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void saveTheData() {
+//        Gson gson = new Gson();
+//        String json = gson.toJson(User.getUsers());
+//        try {
+//            FileWriter myWriter = new FileWriter("dataBase.json");
+//            myWriter.write(json);
+//            myWriter.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    public static void loadTheData() {
-        Reader reader;
-        try {
-            reader = new FileReader("dataBase.json");
-        } catch (FileNotFoundException e) {
-            return;
-        }
-        Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
-        for (JsonElement jsonElement : jsonArray)
-            User.getUsers().add(gson.fromJson(jsonElement, User.class));
-    }
+//    public static void loadTheData() {
+//        Reader reader;
+//        try {
+//            reader = new FileReader("dataBase.json");
+//        } catch (FileNotFoundException e) {
+//            return;
+//        }
+//        Gson gson = new Gson();
+//        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+//        for (JsonElement jsonElement : jsonArray)
+//            User.getUsers().add(gson.fromJson(jsonElement, User.class));
+//    }
 
 
 }

@@ -10,8 +10,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="600.0" stylesheets="@../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginMenu">
-   <children>
+<AnchorPane prefHeight="912" prefWidth="1368" stylesheets="@../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginMenu">
+   <children>x
       <VBox layoutX="135.0" layoutY="160.0" prefHeight="532.0" prefWidth="306.0">
          <children>
             <AnchorPane prefHeight="48.0" prefWidth="306.0">
@@ -39,7 +39,7 @@
                   <Label fx:id="confirmPasswordController" layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="149.0" text="Label" />
                   <ImageView fitHeight="17.0" fitWidth="32.0" layoutX="230.0" layoutY="6.0" onMouseClicked="#showAndHidePasswordField" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../image/showHide.png" />
+                        <Image url="@../Images/showHide.png" />
                      </image>
                   </ImageView>
                </children>

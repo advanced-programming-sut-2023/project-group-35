@@ -9,9 +9,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -55,14 +55,19 @@ public class RegisterAndLoginMenu extends Menu {
         userController = new UserController();
     }
 
-    public void initializeHashmapFields() {
-        textFieldsChecker.put(usernameControllerLabel, false);
-        textFieldsChecker.put(passwordControllerLabel, false);
-        textFieldsChecker.put(emailControllerLabel, false);
+    @Override
+    public void start(Stage stage) throws Exception {
+        AnchorPane pane = FXMLLoader.load(RegisterAndLoginMenu.class.getResource("/fxml/RegisterAndLoginMenu.fxml"));
+        //InitStyle.setBackGround(pane, ImageEnum.BACKGROUND_IMAGE);
+//        Image image = ImageEnum.getImage(ImageEnum.LOGIN_MENU_IMAGE, true);
+//        pane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        InitStyle.setBackGround(pane, ImageEnum.REGISTER_MENU_IMAGE);
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        stage.show();
+        //new MainMenu(this.userController).start(Menu.stage);
     }
-
     public void initialize() {
-
         initializeHashmapFields();
         usernameField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -84,7 +89,7 @@ public class RegisterAndLoginMenu extends Menu {
                         timeline.play();
                     }
                 }
-                if (t1.length() < s.length()) password = password.substring(0, password.length() - 2);
+                if (t1.length() < s.length()) password = password.substring(0, Math.max(password.length() - 2, 0));
 
                 String result = UserController.checkPasswordErrors(password);
                 if (result.equals("correct")) {
@@ -116,8 +121,12 @@ public class RegisterAndLoginMenu extends Menu {
                 } else fillTheControllerLabel(emailControllerLabel, responseToUser.text, false);
             }
         });
+    }
 
-
+    public void initializeHashmapFields() {
+        textFieldsChecker.put(usernameControllerLabel, false);
+        textFieldsChecker.put(passwordControllerLabel, false);
+        textFieldsChecker.put(emailControllerLabel, false);
     }
 
     public void register(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
@@ -230,13 +239,7 @@ public class RegisterAndLoginMenu extends Menu {
         if(textFieldsChecker.containsKey(controllerLabel)) textFieldsChecker.put(controllerLabel, isFilledCorrectly);
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        AnchorPane pane = FXMLLoader.load(RegisterAndLoginMenu.class.getResource("/fxml/RegisterAndLoginMenu.fxml"));
-        stage.setScene(new Scene(pane));
-        stage.show();
-        //new MainMenu(this.userController).start(Menu.stage);
-    }
+
 
     public void showAndHidePasswordField(MouseEvent mouseEvent) {
         if (isPasswordShowing) {
