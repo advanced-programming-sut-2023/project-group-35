@@ -2,6 +2,7 @@ package view;
 
 import java.io.*;
 import java.security.*;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
@@ -47,54 +48,54 @@ public class Menu extends Application {
 
     }
 
-    public static Matcher getMatcher(String input , String regex){
-        Matcher matcher = Pattern.compile(regex).matcher(input);
-        return matcher.matches()? matcher : null;
-    }
-    public static Matcher findRegex(String input , Commands command) {
-        Matcher matcher = Pattern.compile(command.regex).matcher(input);
-        //System.out.println("input: " + input + "  \ncommands: " + command.regex);
-        return matcher.find()? matcher : null;
-    }
-    public static Matcher getRealMatcher(String input, Commands starter, Commands... groups) {
-
-        if( findRegex(input , starter) == null) {
-            //System.out.println("find regex did not work");
-            return null;
-        }
-        input = input.replaceFirst(starter.regex , "");
-        //System.out.println("new input; " + input);
-        String orderedInput = "";
-        Matcher matcher1;
-        for (Commands group : groups) {
-            if((matcher1 = findRegex(input , group)) == null){
-                //System.out.println("group" + group + "not found");
-                return null;
-            }
-            input = input.replaceFirst(group.regex, "");
-            orderedInput += " " + matcher1.group();
-            //System.out.println(input);
-        }
-        //System.out.println("at last: " + input);
-        if (!input.matches("\\s*")) return null;
-        //System.out.println("regex group: " + appendGroups(groups));
-        //System.out.println(orderedInput);
-        return getMatcher(orderedInput , appendGroups(groups));
-    }
-    public static String appendGroups(Commands[] groups) {
-        String output = "\\" + "s*";
-        for (Commands group : groups) {
-            output += group.regex + "\\" + "s+";
-        }
-        output = output.replaceFirst("\\+$", "*");
-        return output;
-    }
-
-    public int getInt(Matcher matcher, String regex) {
-        return Integer.parseInt(matcher.group(regex));
-    }
-
-
+//    public static Matcher getMatcher(String input , String regex){
+//        Matcher matcher = Pattern.compile(regex).matcher(input);
+//        return matcher.matches()? matcher : null;
+//    }
+//    public static Matcher findRegex(String input , Commands command) {
+//        Matcher matcher = Pattern.compile(command.regex).matcher(input);
+//        //System.out.println("input: " + input + "  \ncommands: " + command.regex);
+//        return matcher.find()? matcher : null;
+//    }
+//    public static Matcher getRealMatcher(String input, Commands starter, Commands... groups) {
+//
+//        if( findRegex(input , starter) == null) {
+//            //System.out.println("find regex did not work");
+//            return null;
+//        }
+//        input = input.replaceFirst(starter.regex , "");
+//        //System.out.println("new input; " + input);
+//        String orderedInput = "";
+//        Matcher matcher1;
+//        for (Commands group : groups) {
+//            if((matcher1 = findRegex(input , group)) == null){
+//                //System.out.println("group" + group + "not found");
+//                return null;
+//            }
+//            input = input.replaceFirst(group.regex, "");
+//            orderedInput += " " + matcher1.group();
+//            //System.out.println(input);
+//        }
+//        //System.out.println("at last: " + input);
+//        if (!input.matches("\\s*")) return null;
+//        //System.out.println("regex group: " + appendGroups(groups));
+//        //System.out.println(orderedInput);
+//        return getMatcher(orderedInput , appendGroups(groups));
+//    }
+//    public static String appendGroups(Commands[] groups) {
+//        String output = "\\" + "s*";
+//        for (Commands group : groups) {
+//            output += group.regex + "\\" + "s+";
+//        }
+//        output = output.replaceFirst("\\+$", "*");
+//        return output;
+//    }
+//
+//    public int getInt(Matcher matcher, String regex) {
+//        return Integer.parseInt(matcher.group(regex));
+//    }
+//
+//
 
     public static String buildATextInputDialog(String contentText, String title) {
         TextInputDialog dialog = new TextInputDialog();
@@ -108,6 +109,11 @@ public class Menu extends Application {
         alert.setContentText(massage);
         alert.show();
     }
+
+//    public int getRandomIntInRange(int range) {
+//        Random random = new Random();
+//        random.
+//    }
     public static AtomicBoolean alertForConfirmation(String alertName, String contentText, String title) {
         Alert alert = new Alert(Alert.AlertType.NONE, alertName, ButtonType.YES, ButtonType.CANCEL);
         alert.setContentText(contentText);

@@ -49,6 +49,7 @@ public class UserController {
         User userToBeAdded = new User(username, turnPasswordToSha256(password),
                 nickName, email, securityQuestion, answer, slogan);
         User.addUser(userToBeAdded);
+        saveTheData();
         return "Sign up was successful,we have " + username + " on board now";
     }
 
@@ -134,7 +135,7 @@ public class UserController {
     public String changePassword(String newPass, String confirmPass) throws NoSuchAlgorithmException, IOException {
         String result;
         if(newPass.equals(confirmPass)) return "please check the confirmation again";
-        if (!(result = checkPasswordErrors(newPass)).equals("correct")) return result;
+        if (!(result = checkPasswordErrors(newPass)).equals("perfect")) return result;
         loggedInUser.setPassword(turnPasswordToSha256(newPass));
         return "your password changed successfully!";
 
@@ -148,11 +149,11 @@ public class UserController {
         } else if (!password.matches(".*[a-z].*")) {
             return "Your Password must have a lowercase letter!";
         } else if (!password.matches(".*[0-9].*")) {
-            return "Your Password doesn't has any number!";
+            return "Password is not strong enough, must have a number!";
         } else if (!password.matches(".*[!@#$%^&*\\(\\)].*")) {
             return "Your Password must have a character from <!@#$%^&*()>!";
         }
-        return "correct";
+        return "perfect";
     }
     public String emailChange(Matcher matcher) {
         String email = matcher.group("email");
@@ -248,30 +249,30 @@ public class UserController {
         return hex;
     }
 
-//    public static void saveTheData() {
-//        Gson gson = new Gson();
-//        String json = gson.toJson(User.getUsers());
-//        try {
-//            FileWriter myWriter = new FileWriter("dataBase.json");
-//            myWriter.write(json);
-//            myWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void saveTheData() {
+        Gson gson = new Gson();
+        String json = gson.toJson(User.getUsers());
+        try {
+            FileWriter myWriter = new FileWriter("dataBase.json");
+            myWriter.write(json);
+            myWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-//    public static void loadTheData() {
-//        Reader reader;
-//        try {
-//            reader = new FileReader("dataBase.json");
-//        } catch (FileNotFoundException e) {
-//            return;
-//        }
-//        Gson gson = new Gson();
-//        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
-//        for (JsonElement jsonElement : jsonArray)
-//            User.getUsers().add(gson.fromJson(jsonElement, User.class));
-//    }
+    public static void loadTheData() {
+        Reader reader;
+        try {
+            reader = new FileReader("dataBase.json");
+        } catch (FileNotFoundException e) {
+            return;
+        }
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+        for (JsonElement jsonElement : jsonArray)
+            User.getUsers().add(gson.fromJson(jsonElement, User.class));
+    }
 
 
 }

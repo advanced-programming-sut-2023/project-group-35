@@ -1,28 +1,36 @@
 package view;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import controller.UserController;
 import Enum.Slogan;
 import Enum.*;
+import org.testng.SkipException;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class RegisterAndLoginMenu extends Menu {
@@ -30,8 +38,8 @@ public class RegisterAndLoginMenu extends Menu {
     public Label usernameControllerLabel;
     public TextField nicknameField;
     public Label passwordControllerLabel;
-    public PasswordField passwordField;
-    public PasswordField confirmPasswordField;
+    public TextField passwordField;
+    public TextField confirmPasswordField;
     public TextField emailField;
     public CheckBox sloganCheckBox;
     public AnchorPane sloganPane;
@@ -40,16 +48,19 @@ public class RegisterAndLoginMenu extends Menu {
     public Label sloganControllerLabel;
     public Label confirmPasswordController;
     public Label emailControllerLabel;
+    public ChoiceBox sloganChoiceBox;
+    public Label registerResultLabel;
     private String password = "";
     private String confirmPass = "";
+    private String captchaNumber;
     private boolean isPasswordShowing = false;
     private SecurityQuestion securityQuestion;
-    private String answerToSecurityQuestion;
+    private String answerToSecurityQuestion = "";
     private HashMap<Label, Boolean> textFieldsChecker = new HashMap<>();
 
 
     private UserController userController;
-    public static Stage stage;
+    //public static Stage stage;
 
     public RegisterAndLoginMenu() {
         userController = new UserController();
@@ -58,17 +69,18 @@ public class RegisterAndLoginMenu extends Menu {
     @Override
     public void start(Stage stage) throws Exception {
         AnchorPane pane = FXMLLoader.load(RegisterAndLoginMenu.class.getResource("/fxml/RegisterAndLoginMenu.fxml"));
-        //InitStyle.setBackGround(pane, ImageEnum.BACKGROUND_IMAGE);
-//        Image image = ImageEnum.getImage(ImageEnum.LOGIN_MENU_IMAGE, true);
-//        pane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+
         InitStyle.setBackGround(pane, ImageEnum.REGISTER_MENU_IMAGE);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
         //new MainMenu(this.userController).start(Menu.stage);
+
     }
+
     public void initialize() {
         initializeHashmapFields();
+        initSloganChoiceBox();
         usernameField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String old, String now) {
@@ -82,17 +94,20 @@ public class RegisterAndLoginMenu extends Menu {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
                 if (t1.length() > s.length()) {
-                    password += t1.charAt(t1.length() - 1);
+                    //password += t1.charAt(t1.length() - 1);
+                    password = t1;
+                    System.out.println(password);
                     if (!isPasswordShowing) {
-                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), actionEvent -> passwordField.setText(buildBulletString(t1.length()))));
-                        timeline.setCycleCount(1);
-                        timeline.play();
+//                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), actionEvent -> passwordField.setText(buildBulletString(t1.length()))));
+//                        timeline.setCycleCount(1);
+//                        timeline.play();
+                        passwordField.setText(buildBulletString(t1.length()));
                     }
                 }
-                if (t1.length() < s.length()) password = password.substring(0, Math.max(password.length() - 2, 0));
+                if (t1.length() < s.length()) password = password.substring(0, Math.max(password.length() - 1, 0));
 
                 String result = UserController.checkPasswordErrors(password);
-                if (result.equals("correct")) {
+                if (result.equals("perfect")) {
                     fillTheControllerLabel(passwordControllerLabel, result, true);
                 } else fillTheControllerLabel(passwordControllerLabel, result, false);
 
@@ -104,12 +119,13 @@ public class RegisterAndLoginMenu extends Menu {
                 if (t1.length() > s.length()) {
                     confirmPass += t1.charAt(t1.length() - 1);
                     if (!isPasswordShowing) {
-                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), actionEvent -> passwordField.setText(buildBulletString(t1.length()))));
-                        timeline.setCycleCount(1);
-                        timeline.play();
+//                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), actionEvent -> passwordField.setText(buildBulletString(t1.length()))));
+//                        timeline.setCycleCount(1);
+//                        timeline.play();
+                        confirmPasswordField.setText(buildBulletString(t1.length()));
                     }
                 }
-                if (t1.length() < s.length()) password = password.substring(0, password.length() - 2);
+                if (t1.length() < s.length()) confirmPass = confirmPass.substring(0, Math.max(confirmPass.length() - 1, 0));
             }
         });
         emailField.textProperty().addListener(new ChangeListener<String>() {
@@ -121,6 +137,27 @@ public class RegisterAndLoginMenu extends Menu {
                 } else fillTheControllerLabel(emailControllerLabel, responseToUser.text, false);
             }
         });
+        nicknameField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if(!t1.isEmpty()) nickNameControllerLabel.setText("");
+            }
+        });
+        sloganField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if(!t1.isEmpty()) sloganControllerLabel.setText("");
+                if(Math.abs(t1.length() - s.length()) < 2) sloganChoiceBox.getSelectionModel().selectFirst();
+            }
+        });
+
+        sloganPane.setVisible(false);
+        sloganCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                sloganPane.setVisible(t1.equals(true));
+            }
+        });
     }
 
     public void initializeHashmapFields() {
@@ -128,31 +165,59 @@ public class RegisterAndLoginMenu extends Menu {
         textFieldsChecker.put(passwordControllerLabel, false);
         textFieldsChecker.put(emailControllerLabel, false);
     }
-
-    public void register(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
-        if (!checkIfFieldsAreFilled()) {
-            Menu.buildInformationAlert("please fill out the text fields first");
-        } else if (!areFieldsFilledCorrectly()) {
-            Menu.buildInformationAlert("please correct the fields with red alert");
-        } else if (!password.equals(confirmPass)) {
-            Menu.buildInformationAlert("password and confirmation are not the same");
-        } else {
-            pickTheSecurityQuestion();
-            if (answerToSecurityQuestion.length() == 0 || securityQuestion == null) {
-                securityQuestion = null;
-                answerToSecurityQuestion = "";
-                Menu.buildInformationAlert("question or answer is not set");
-            } else
-                userController.register(usernameField.getText(), password, nicknameField.getText(), emailField.getText(), sloganField.getText(), securityQuestion, answerToSecurityQuestion);
-        }
+    public ChoiceBox initSloganChoiceBox() {
+        sloganChoiceBox = new ChoiceBox(FXCollections.observableArrayList(Slogan.values()));
+        sloganChoiceBox.getSelectionModel().selectFirst();
+        sloganChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object o, Object t1) {
+                Slogan slogan = (Slogan) t1;
+                sloganField.setText(slogan.slogan);
+            }
+        });
+        sloganPane.getChildren().add(sloganChoiceBox);
+        sloganChoiceBox.setLayoutY(25);
+        sloganChoiceBox.setMaxWidth(60);
+        return sloganChoiceBox;
     }
 
-    public void pickTheSecurityQuestion() {
+    public void register(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
+//        if (!checkIfFieldsAreFilled()) {
+//            Menu.buildInformationAlert("please fill out the text fields first");
+//        } else if (!areFieldsFilledCorrectly()) {
+//            Menu.buildInformationAlert("please correct the fields with red alert");
+//        } else if (!password.equals(confirmPass)) {
+//            Menu.buildInformationAlert("password and confirmation are not the same");
+//        } else {
+            pickTheSecurityQuestion();
+
+        System.out.println("getting out");
+       // }
+    }
+
+    public void showAndHidePasswordField(MouseEvent mouseEvent) {
+        System.out.println("here");
+        System.out.println(password);
+        //todo background for hide/unhide
+        if (isPasswordShowing) {
+            passwordField.setText(buildBulletString(password.length()));
+            confirmPasswordField.setText(buildBulletString(confirmPass.length()));
+            isPasswordShowing = false;
+        } else {
+            passwordField.setText(password);
+            confirmPasswordField.setText(confirmPass);
+            System.out.println(password);
+            isPasswordShowing = true;
+        }
+        //todo set the cursor at the right position
+    }
+    public void pickTheSecurityQuestion() throws IOException {
         Popup popup = new Popup();
         popup.setWidth(400);
         popup.setHeight(300);
         ChoiceBox choiceBox = new ChoiceBox(FXCollections.observableArrayList(SecurityQuestion.values()));
         choiceBox.getSelectionModel().select(0);
+        securityQuestion = SecurityQuestion.values()[0];
         choiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observableValue, Object o, Object t1) {
@@ -160,45 +225,100 @@ public class RegisterAndLoginMenu extends Menu {
             }
         });
 
-        TextField textField = new TextField();
-        textField.setPromptText("answer?");
-        Button okButton = new Button("OK");
-        okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        TextField securityQuestionTextField = new TextField();
+        securityQuestionTextField.setPromptText("answer?");
+        ImageView imageView = new ImageView();
+        String captchaNum = generateRandomCaptcha(imageView);
+        TextField captchaTextField = new TextField();
+        captchaTextField.setPromptText("enter the number above");
+        ImageView reloadIV = new ImageView();
+        reloadIV.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (textField.getText().isEmpty()) {
-                    Menu.buildInformationAlert("please answer the security question first");
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.NONE, "delete account", ButtonType.YES, ButtonType.CANCEL);
-                    alert.setContentText("this is your answer: <" + textField.getText() + ">\nare you sure about it?");
-                    alert.setTitle("security question");
-                    alert.showAndWait().ifPresent(response -> {
-                        if (response == ButtonType.YES) {
-                            try {
-                                answerToSecurityQuestion = textField.getText();
-                                alert.close();
-                                popup.hide();
-
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        } else if (response == ButtonType.CANCEL)
-                            alert.close();
-                    });
+                try {
+                    generateRandomCaptcha(imageView);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-
             }
         });
-        Button cancleButton = new Button("cancel");
+        Image reload = new Image(RegisterAndLoginMenu.class.getResource("/Images/reloadCaptcha.png").toExternalForm(), 40, 40, true, true);
+        reloadIV.setImage(reload);
+        HBox captchaHBox = new HBox(imageView, reloadIV);
+        captchaHBox.setSpacing(30);
+
+        Button okButton = InitStyle.setGameButtonStyles("ok", 20, 60);
+        Button cancleButton =InitStyle.setGameButtonStyles("cancel", 20, 60);
+        HBox hBox = new HBox(okButton, cancleButton);
+        hBox.setSpacing(20);
         cancleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 popup.hide();
             }
         });
+        okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                popup.hide();
+                if (securityQuestionTextField.getText().isEmpty()) {
+                    Menu.buildInformationAlert("please answer the security question first");
+                    popup.show(Menu.stage);
+                } else if(captchaTextField.getText().isEmpty()) {
+                    Menu.buildInformationAlert("please write the captcha number");
+                    popup.show(Menu.stage);
+                } else if(!captchaTextField.getText().equals(captchaNum)) {
+                    Menu.buildInformationAlert("the captcha is not correct!\nplease try again!");
+                    try {
+                        generateRandomCaptcha(imageView);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    popup.show(Menu.stage);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.NONE, "security question", ButtonType.YES, ButtonType.CANCEL);
+                    alert.setContentText("this is your answer: <" + securityQuestionTextField.getText() + ">\nare you sure about it?");
+                    alert.setTitle("security question");
+                    alert.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.YES) {
+                            try {
+                                answerToSecurityQuestion = securityQuestionTextField.getText();
+                                String result = userController.register(usernameField.getText(), password, nicknameField.getText(), emailField.getText(), sloganField.getText(), securityQuestion, answerToSecurityQuestion);
+                                alert.close();
+                                popup.hide();
+                                registerResultLabel.setText(result);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        } else if (response == ButtonType.CANCEL)
+                            alert.close();
+                            popup.show(Menu.stage);
+                    });
+                }
+            }
+        });
+
+
+
         VBox box = new VBox();
-        box.getChildren().addAll(choiceBox, textField, okButton, cancleButton);
-        popup.getContent().add(box);
+        box.setAlignment(Pos.CENTER);
+        box.setSpacing(10);
+        box.setBackground(new Background(new BackgroundFill(Color.rgb(212, 196, 174), CornerRadii.EMPTY, new Insets(2))));
+        box.getChildren().addAll(choiceBox, securityQuestionTextField);
+        box.getChildren().addAll(captchaHBox, captchaTextField);
+        box.getChildren().add(hBox);
+//        Button button = new Button("salam");
+//        button.setStyle("-fx-border-color: rgb(192,22,198)");
+//        captchaHBox.getChildren().add(button);
+        //AnchorPane anchorPane = new AnchorPane();
+        BorderPane borderPane = new BorderPane();
+        borderPane.setCenter(box);
+        borderPane.setMinHeight(400);
+        borderPane.setMinWidth(300);
+        //borderPane.setBackground(new Background(new BackgroundImage()));
+
+
+        popup.getContent().add(borderPane);
         popup.show(Menu.stage);
     }
 
@@ -241,15 +361,7 @@ public class RegisterAndLoginMenu extends Menu {
 
 
 
-    public void showAndHidePasswordField(MouseEvent mouseEvent) {
-        if (isPasswordShowing) {
-            passwordField.setText(buildBulletString(password.length()));
-            isPasswordShowing = false;
-        } else {
-            passwordField.setText(password);
-            isPasswordShowing = true;
-        }
-    }
+
 
 
     public void back(MouseEvent mouseEvent) throws Exception {
@@ -269,11 +381,11 @@ public class RegisterAndLoginMenu extends Menu {
     public void generateRandomPassword(MouseEvent mouseEvent) {
         Random random = new Random();
         String randomPassword = "";
-        if (usernameField.getText().length() > 5) randomPassword = usernameField.getText();
+        if (usernameField.getText().length() > 5) randomPassword = usernameField.getText() + "Zz";
         else randomPassword = getRandomWord();
         randomPassword += random.nextInt(999) + "!@";
-        passwordField.setText(randomPassword);
         isPasswordShowing = true;
+        passwordField.setText(randomPassword);
     }
 
     public String getRandomWord() {
@@ -289,9 +401,36 @@ public class RegisterAndLoginMenu extends Menu {
     }
 
     public void generateRandomSlogan(MouseEvent mouseEvent) {
-        Slogan slogan = Slogan.getRandomSlogan();
-        sloganField.setText(slogan.slogan);
-        Menu.buildInformationAlert("your slogan is: \n" + slogan.slogan);
+        int index =  Slogan.getRandomSlogan();
+        sloganField.setText(Slogan.values()[index].slogan);
+        sloganChoiceBox.getSelectionModel().select(index);
+        //Menu.buildInformationAlert("your slogan is: \n" + slogan.slogan);
+    }
+    public String generateRandomCaptcha(ImageView imageView) throws IOException {
+        URL url = RegisterAndLoginMenu.class.getResource("/Images/captcha");
+        File file = new File(url.getPath());
+        if(!file.isDirectory()) System.out.println("not a directory");
+        else {
+            File[] files = file.listFiles();
+            File captcha = files[new Random().nextInt(files.length)];
+            String captchaName = captcha.getName();
+            System.out.println(captchaName);
+            URL url1 = RegisterAndLoginMenu.class.getResource("/Images/captcha/" + captchaName);
+            Image image = new Image(url1.toExternalForm());
+            System.out.println("url: " + image.getUrl());
+            imageView.setImage(image);
+            captchaNumber = getNumberOfCaptcha(captchaName);
+            return getNumberOfCaptcha(captchaName);
+        }
+        return null;
+    }
+    public String getNumberOfCaptcha(String fullName) {
+        Matcher matcher = Pattern.compile("^(?<number>\\d+)\\.png").matcher(fullName);
+        if(matcher.matches()){
+            System.out.println(matcher.group("number"));
+            return matcher.group("number");
+        }
+        return null;
     }
 
 
