@@ -15,6 +15,7 @@ public class User implements Comparable {
     private long lastAttemptForLogin;
     private String sloganOfUser;
     private Map map;
+    public String avatar;
     private static final ArrayList<User> users = new ArrayList<>();
 
     public User(String userName, String password, String nickName,
@@ -29,6 +30,14 @@ public class User implements Comparable {
         this.highScore = 0;
         this.attemptsNumber = 0;
         this.lastAttemptForLogin = System.currentTimeMillis();
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public int getHighScore() {

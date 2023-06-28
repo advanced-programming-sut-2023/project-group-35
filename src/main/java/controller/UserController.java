@@ -46,12 +46,12 @@ public class UserController {
         this.loggedInUser = loggedInUser;
     }
 
-    public String register(ُString password,String userName,String nickName,String passwordConfirm,String email,
+    public String register(String password,String userName,String nickName,String passwordConfirm,String email,
                            String slogan) throws IOException, NoSuchAlgorithmException {
         nickName = checkForQuotation(nickName);
         if (password.equals("random")) {
-            password = RegisterAndLoginMenu.getRandomPassword();
-            if (RegisterAndLoginMenu.checkPassword(password))
+           // password = RegisterAndLoginMenu.getRandomPassword();
+           // if (RegisterAndLoginMenu.checkPassword(password))
                 System.out.println("It was entered correctly.");
                 passwordConfirm = password;
         }
@@ -67,8 +67,8 @@ public class UserController {
         else if (!userName.matches("\\w+"))
             return "Invalid username format!";
         else if (User.getUserByUsername(userName) != null) {
-            String suggestedUserName = RegisterAndLoginMenu.suggestNewName(userName);
-            userName = suggestedUserName;
+          //  String suggestedUserName = RegisterAndLoginMenu.suggestNewName(userName);
+        //    userName = suggestedUserName;
         }
         if (!RegisterAndLoginMenu.checkPasswordErrors(password))
             return "so you got the error...";
@@ -78,8 +78,8 @@ public class UserController {
             return "Email already exists in Server!";
         else if (!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))
             return "Invalid Email format";
-        securityQuestion = RegisterAndLoginMenu.getSafetyQuestion();
-        answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
+       // securityQuestion = RegisterAndLoginMenu.getSafetyQuestion();
+        //answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
         User userToBeAdded = new User(userName, turnPasswordToSha256(password),
                 nickName, email, securityQuestion, answerToSecurity, slogan);
         User.addUser(userToBeAdded);
@@ -115,8 +115,8 @@ public class UserController {
     public String forgotMyPassword(String userName,String password) throws NoSuchAlgorithmException, IOException {
         if (User.getUserByUsername(userName) == null)
             return "No such user exists!";
-        else if (!RegisterAndLoginMenu.checkTheSecurityHitAndPass(User.getUserByUsername(userName)))
-            return "you didn't answered security question correctly";
+       // else if (!RegisterAndLoginMenu.checkTheSecurityHitAndPass(User.getUserByUsername(userName)))
+       //     return "you didn't answered security question correctly";
         else if (!RegisterAndLoginMenu.checkPasswordErrors(password))
             return "you get the error...";
         else {
@@ -130,6 +130,8 @@ public class UserController {
         newUserName = checkForQuotation(newUserName);
         if (!newUserName.matches("\\w+") || newUserName.length() < 1)
             return "Invalid username format!";
+        else if(User.getUserByUsername(newUserName) != null)
+            return "This name already Exists!";
         else {
             loggedInUser.setUserName(newUserName);
             return "your username changed!";
@@ -146,15 +148,15 @@ public class UserController {
         }
     }
 
-    public String passwordChanger(String oldPass,String newPass) throws NoSuchAlgorithmException, IOException {
+    public String passwordChanger(String oldPass,String newPass,String confirmation) throws NoSuchAlgorithmException, IOException {
         if (!loggedInUser.getPassword().equals(turnPasswordToSha256(oldPass)))
             return "You entered wrong password!";
         else if (loggedInUser.getPassword().equals(turnPasswordToSha256(newPass)))
             return "your new password is same as last one";
         else if (!RegisterAndLoginMenu.checkPasswordErrors(newPass))
             return "so you got the error...";
-        else if (!RegisterAndLoginMenu.checkPassword(newPass))
-            return "try the command again!";
+        else if (!confirmation.equals(newPass))
+            return "confirm doesn't match!";
         else {
             loggedInUser.setPassword(turnPasswordToSha256(newPass));
             return "your password changed!";
@@ -187,9 +189,9 @@ public class UserController {
     }
 
     public String changeOrRemoveSlogan(String slogan) {
-        if (loggedInUser.getSloganOfUser() == null && slogan == null)
+        if (loggedInUser.getSloganOfUser() == null && (slogan == null || slogan.length() < 1))
             return "you have no slogan to remove!";
-        if (slogan == null) {
+        if (slogan == null || slogan.length() < 1) {
             loggedInUser.setSloganOfUser(null);
             return "your slogan removed!";
         } else {

@@ -15,6 +15,8 @@ public class TradeItem {
     private String message;
     private boolean isADonation = false;
     private boolean isGlobalRequest = false;
+    private boolean isChecked = false;
+    private boolean accepted = false;
     private static final ArrayList<TradeItem> tradeList = new ArrayList<>();
 
     public TradeItem(Reign firstReign, Reign secondReign, Resource resource, int amount, int price, String message) {
@@ -28,6 +30,26 @@ public class TradeItem {
         if(price == 0) isADonation = true;
         numOfTrades ++;
         this.itemId = numOfTrades;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 
     public static String showTradeList() {

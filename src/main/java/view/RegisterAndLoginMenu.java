@@ -205,26 +205,21 @@ public class RegisterAndLoginMenu extends Menu{
 //        }
 //    }
 //
-//    public static boolean checkPasswordErrors(String password) {
-//        if (password.length() < 6) {
-//            System.out.println("Password Is Short!");
-//            return false;
-//        } else if (!password.matches(".*[A-Z].*")) {
-//            System.out.println("Your Password doesn't has any uppercase letter!");
-//            return false;
-//        } else if (!password.matches(".*[a-z].*")) {
-//            System.out.println("Your Password doesn't has any lowercase letter!");
-//            return false;
-//        } else if (!password.matches(".*[0-9].*")) {
-//            System.out.println("Your Password doesn't has any number!");
-//            return false;
-//        } else if (!password.matches(".*[!@#$%^&*\\(\\)].*")) {
-//            System.out.println("Your Password doesn't has any special character!");
-//            return false;
-//        }
-//        return true;
-//    }
-//
+    public static boolean checkPasswordErrors(String password) {
+        if (password.length() < 6) {
+            return false;
+        } else if (!password.matches(".*[A-Z].*")) {
+            return false;
+        } else if (!password.matches(".*[a-z].*")) {
+            return false;
+        } else if (!password.matches(".*[0-9].*")) {
+            return false;
+        } else if (!password.matches(".*[!@#$%^&*\\(\\)].*")) {
+            return false;
+        }
+        return true;
+    }
+
 //    public static String suggestNewName(String oldUserName) {
 //        String string;
 //        Scanner scn = new Scanner(System.in);

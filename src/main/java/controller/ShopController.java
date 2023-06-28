@@ -20,10 +20,8 @@ public class ShopController extends GameController{
         }
         return output;
     }
-    public String purchase(Matcher matcher) {
-        int amount = Integer.parseInt(matcher.group("amount"));
+    public String purchase(int amount,Resource resource) {
         if(amount <= 0) return "the amount is not correct";
-        Resource resource = Resource.getResourceByName(UserController.checkForQuotation(matcher.group("item")));
         if(resource == null) return "resource not found in the shop";
         if(playingReign.getResourceCapacity(resource) < amount + playingReign.getResourceAmount(resource))
             return "you don't have enough capacity";
@@ -31,12 +29,8 @@ public class ShopController extends GameController{
         playingReign.changeResourceAmount(resource, amount);
         return "you have bought the resources successfully";
     }
-    public String sell(Matcher matcher) {
-        Integer amount = Integer.parseInt(matcher.group("amount"));
-
+    public String sell(int amount,Resource resource) {
         if(amount <= 0) return "the amount is not correct";
-        Resource resource = Resource.getResourceByName(UserController.checkForQuotation(matcher.group("item")));
-
         if(resource == null) return "resource not found in the shop";
         if(amount > playingReign.getResourceAmount(resource)+1) return "you don't have enough resources to sell";
         playingReign.spendGold(amount * resource.sellPrice);

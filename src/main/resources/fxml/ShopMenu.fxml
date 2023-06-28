@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShopMenu">
+   <children>
+      <Button fx:id="buy" layoutX="274.0" layoutY="133.0" mnemonicParsing="false" onMouseClicked="#buying" text="Buy" />
+      <Button fx:id="sell" layoutX="274.0" layoutY="194.0" mnemonicParsing="false" onMouseClicked="#selling" text="Sell" />
+      <ImageView fx:id="beforeItem" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="left" layoutX="97.0" layoutY="133.0" mnemonicParsing="false" onMouseClicked="#goLeft" text="Left" />
+      <Button fx:id="right" layoutX="97.0" layoutY="65.0" mnemonicParsing="false" onMouseClicked="#goRight" text="right" />
+      <ImageView fx:id="afterItem" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="gold" fitHeight="150.0" fitWidth="150.0" layoutX="359.0" layoutY="207.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="amountOF" layoutX="217.0" layoutY="58.0" />
+      <Button fx:id="submit" layoutX="407.0" layoutY="58.0" mnemonicParsing="false" onMouseClicked="#submiting" text="submit" />
+      <ImageView fx:id="currentItem" fitHeight="150.0" fitWidth="150.0" layoutX="48.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="goldYouHave" layoutX="361.0" layoutY="180.0" wrappingWidth="199.9999999999999" />
+      <Button fx:id="trade" layoutX="491.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#enterTrade" text="Enter Trade Menu" />
+   </children>
+</AnchorPane>

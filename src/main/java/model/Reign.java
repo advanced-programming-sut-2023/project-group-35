@@ -161,16 +161,18 @@ Reign {
         int former = resources.get(resource);
         resources.replace(resource , former + amount);
     }
-    public String getHistoryOfTrades(boolean wasADonation) {
+    public ArrayList<String> getHistoryOfTrades() {
+        ArrayList<String> tradeHistories = new ArrayList<>();
         String output = "";
         for (TradeItem tradeItem : tradeHistory) {
-            if(wasADonation != tradeItem.isADonation()) continue;
-            output += "\nfrom " + tradeItem.firstReign.getUser().getNickName()
+            output = "from " + tradeItem.firstReign.getUser().getNickName()
                     + " to: " + tradeItem.secondReign.getUser().getNickName()
             + tradeItem.getAmount() + " of " + tradeItem.getResource() + "s for the price" + tradeItem.getAmount();
+            tradeHistories.add(output);
         }
-        return output;
+        return tradeHistories;
     }
+
 
     public String getNickName() {
         return nickName;
