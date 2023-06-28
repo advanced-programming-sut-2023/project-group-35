@@ -49,7 +49,7 @@ public class UserController {
         User userToBeAdded = new User(username, turnPasswordToSha256(password),
                 nickName, email, securityQuestion, answer, slogan);
         User.addUser(userToBeAdded);
-        saveTheData();
+        //saveTheData();
         return "Sign up was successful,we have " + username + " on board now";
     }
 
@@ -221,24 +221,24 @@ public class UserController {
     }
 
 
-    public void chooseMap() {
-        while (true) {
-            String mapName = MainMenu.getMapFromUser(Map.getMapList());
-            Map map = Map.getTemplateMapByName(mapName);
-            if (map != null) {
-                loggedInUser.setMap(map);
-                break;
-            }
-        }
-    }
-    public void createMap(){
-        System.out.println("enter map name:");
-        Scanner scanner = new Scanner(System.in);
-        String name = scanner.nextLine();
-        Map newMap = new Map(loggedInUser,100,name);
-        loggedInUser.setMap(newMap);
-        Map.getTemplateMaps().add(newMap);
-    }
+//    public void chooseMap() {
+//        while (true) {
+//            String mapName = MainMenu.getMapFromUser(Map.getMapList());
+//            Map map = Map.getTemplateMapByName(mapName);
+//            if (map != null) {
+//                loggedInUser.setMap(map);
+//                break;
+//            }
+//        }
+//    }
+//    public void createMap(){
+//        System.out.println("enter map name:");
+//        Scanner scanner = new Scanner(System.in);
+//        String name = scanner.nextLine();
+//        Map newMap = new Map(loggedInUser,100,name);
+//        loggedInUser.setMap(newMap);
+//        Map.getTemplateMaps().add(newMap);
+//    }
 
     public static String turnPasswordToSha256(String password) throws NoSuchAlgorithmException, IOException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");

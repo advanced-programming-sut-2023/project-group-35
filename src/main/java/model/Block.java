@@ -29,7 +29,7 @@ public class Block {
         this.militaryUnits = new ArrayList<>();
     }
 
-    public String BlockInfo(Boolean detailed) {
+    public String getBlockInfo(Boolean detailed) {
         boolean hasBuilding = false;
         if(building != null)
             hasBuilding = true;

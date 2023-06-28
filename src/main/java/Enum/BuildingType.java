@@ -1,5 +1,7 @@
 package Enum;
 
+import javafx.scene.image.Image;
+
 public enum BuildingType {
     BASE(null, 0 , 0, 0, 1000, 0, false), // مقر
     SMALL_STONE_GATE( null , 0, 0, 0 , 200, 0, false), // changble passsing
@@ -50,12 +52,12 @@ public enum BuildingType {
     public final int resourceAmount;
     public final int goldCost;
     public final int workersNumber;
-
     public final int hp;
     private final int rateOrCapacity;
     public final boolean isPassableForTroop;
+    public String buildingUrl;
 
-    BuildingType(Resource resourceToBuild, int resourceAmount, int goldCost, int workersNumber, int hp, int rateOrCapacity, boolean isPassableForTroop) {
+    BuildingType(String url, Resource resourceToBuild, int resourceAmount, int goldCost, int workersNumber, int hp, int rateOrCapacity, boolean isPassableForTroop) {
         //Group = group;
         this.resourceToBuild = resourceToBuild;
         this.resourceAmount = resourceAmount;
@@ -64,6 +66,11 @@ public enum BuildingType {
         this.hp = hp;
         this.rateOrCapacity = rateOrCapacity;
         this.isPassableForTroop = isPassableForTroop;
+        this.buildingUrl = url;
+    }
+    public Image getImage() {
+        Image image = new Image(BuildingType.class.getResource("/Images/buildings/" + this.getBuildingUrl()).toExternalForm(), 40, 40, false, true);
+        return image;
     }
 
     public String getName() {
@@ -91,5 +98,7 @@ public enum BuildingType {
         return this.rateOrCapacity;
     }
 
-
+    public String getBuildingUrl() {
+        return buildingUrl;
+    }
 }

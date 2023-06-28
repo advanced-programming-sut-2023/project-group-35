@@ -29,73 +29,73 @@ public class MapController {
         reignPlaying = playing;
     }
 
-    public String showMap(Matcher matcher) {
-        this.x = Integer.parseInt(matcher.group("x"));
-        this.y = Integer.parseInt(matcher.group("y"));
-        if (x > map.dimensions || y > map.dimensions) return "not in the map";
-        return printMap(x, y);
-    }
+//    public String showMap(Matcher matcher) {
+//        this.x = Integer.parseInt(matcher.group("x"));
+//        this.y = Integer.parseInt(matcher.group("y"));
+//        if (x > map.dimensions || y > map.dimensions) return "not in the map";
+//        return printMap(x, y);
+//    }
 
-    public String printMap(int i, int j) {
-        int underLimitX = i - 5;
-        int underLimitY = j - 5;
-        int upperLimitX = i + 5;
-        int upperLimitY = j + 5;
+//    public String printMap(int i, int j) {
+//        int underLimitX = i - 5;
+//        int underLimitY = j - 5;
+//        int upperLimitX = i + 5;
+//        int upperLimitY = j + 5;
+//
+//        if (i < 5) {
+//            underLimitX = 0;
+//        }
+//        if (j < 5) {
+//            underLimitY = 0;
+//        }
+//        if (upperLimitX > map.dimensions) {
+//            upperLimitX = map.dimensions;
+//        }
+//        if (upperLimitY > map.dimensions) {
+//            upperLimitY = map.dimensions;
+//        }
+//        for (int x = underLimitX; x < upperLimitX; x++) {
+//            System.out.print("|");
+//            for (int y = underLimitY; y < upperLimitY; y++) {
+//                Block block = map.getBlockByLocation(x, y);
+//                if (block.getBuilding() != null) {
+//                    System.out.print(FieldType.getFieldTypeColor(block)+"#"+FieldType.ANSI_BLACK_BACKGROUND);
+//                    continue;
+//                } else if (block.getFieldType().isAquatic) {
+//                    System.out.print(FieldType.getFieldTypeColor(block)+"~"+FieldType.ANSI_BLACK_BACKGROUND);
+//                } else if (!block.isOccupied()) {
+//                    System.out.print(FieldType.getFieldTypeColor(block)+"X"+FieldType.ANSI_BLACK_BACKGROUND);
+//                    continue;
+//                } else if (map.isABase(x, y)) {
+//                    System.out.print(FieldType.getFieldTypeColor(block)+"@"+FieldType.ANSI_BLACK_BACKGROUND);
+//                    continue;
+//                } else if (block.getFieldType().isSuitableForBuilding) {
+//                    System.out.print(FieldType.getFieldTypeColor(block)+"^"+FieldType.ANSI_BLACK_BACKGROUND);
+//                } else
+//                    System.out.print(FieldType.getFieldTypeColor(block)+"+"+FieldType.ANSI_BLACK_BACKGROUND);
+//            }
+//            System.out.println("|");
+//        }
+//
+//        return "-map|shown-";
+//    }
 
-        if (i < 5) {
-            underLimitX = 0;
-        }
-        if (j < 5) {
-            underLimitY = 0;
-        }
-        if (upperLimitX > map.dimensions) {
-            upperLimitX = map.dimensions;
-        }
-        if (upperLimitY > map.dimensions) {
-            upperLimitY = map.dimensions;
-        }
-        for (int x = underLimitX; x < upperLimitX; x++) {
-            System.out.print("|");
-            for (int y = underLimitY; y < upperLimitY; y++) {
-                Block block = map.getBlockByLocation(x, y);
-                if (block.getBuilding() != null) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"#"+FieldType.ANSI_BLACK_BACKGROUND);
-                    continue;
-                } else if (block.getFieldType().isAquatic) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"~"+FieldType.ANSI_BLACK_BACKGROUND);
-                } else if (!block.isOccupied()) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"X"+FieldType.ANSI_BLACK_BACKGROUND);
-                    continue;
-                } else if (map.isABase(x, y)) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"@"+FieldType.ANSI_BLACK_BACKGROUND);
-                    continue;
-                } else if (block.getFieldType().isSuitableForBuilding) {
-                    System.out.print(FieldType.getFieldTypeColor(block)+"^"+FieldType.ANSI_BLACK_BACKGROUND);
-                } else
-                    System.out.print(FieldType.getFieldTypeColor(block)+"+"+FieldType.ANSI_BLACK_BACKGROUND);
-            }
-            System.out.println("|");
-        }
+//    public String moveMap(HashMap<Direction, Integer> move) {
+//        for (Direction direction : Direction.values()) {
+//            if(!direction.isMajor) continue;
+//            this.x += move.get(direction) * direction.xChange;
+//            this.y += move.get(direction) * direction.yChange;
+//        }
+//        return printMap(x, y);
+//    }
 
-        return "-map|shown-";
-    }
-
-    public String moveMap(HashMap<Direction, Integer> move) {
-        for (Direction direction : Direction.values()) {
-            if(!direction.isMajor) continue;
-            this.x += move.get(direction) * direction.xChange;
-            this.y += move.get(direction) * direction.yChange;
-        }
-        return printMap(x, y);
-    }
-
-    public String showDetail(Matcher matcher) {
-        this.x = Integer.parseInt(matcher.group("x"));
-        this.y = Integer.parseInt(matcher.group("y"));
-        if (!areCoordinatesValid(x, y))
-            return "location is not valid!";
-        return map.getBlockByLocation(x, y).BlockInfo(true);
-    }
+//    public String showDetail(Matcher matcher) {
+//        this.x = Integer.parseInt(matcher.group("x"));
+//        this.y = Integer.parseInt(matcher.group("y"));
+//        if (!areCoordinatesValid(x, y))
+//            return "location is not valid!";
+//        return map.getBlockByLocation(x, y).BlockInfo(true);
+//    }
 
     public String setNewBase(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
@@ -279,6 +279,7 @@ public class MapController {
         }
         Gson gson = new Gson();
         JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+        //Map.getTemplateMaps().clear(); mabye will need this
         for (JsonElement jsonElement : jsonArray)
             Map.getTemplateMaps().add(gson.fromJson(jsonElement, Map.class));
     }

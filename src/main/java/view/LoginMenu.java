@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import Enum.ResponseToUser;
 import javafx.util.Duration;
 import model.User;
+import Enum.*;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -38,21 +40,36 @@ public class LoginMenu extends Application  {
 //        this.userController = userController;
 //    }
 
+    public LoginMenu() {
+        userController = new UserController();
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        AnchorPane LoginPane = FXMLLoader.load(LoginMenu.class.getResource("/fxml/LoginMenu.fxml"));
-        stage.setScene(new Scene(LoginPane));
+        stage.setFullScreen(true);
+        AnchorPane loginPane = FXMLLoader.load(LoginMenu.class.getResource("/fxml/LoginMenu.fxml"));
+        InitStyle.setBackGround(loginPane, ImageEnum.LOGIN_MENU_IMAGE);
+        stage.setScene(new Scene(loginPane));
         stage.show();
     }
 
     public void login(MouseEvent mouseEvent) throws Exception {
+        System.out.println("here");
         String username = usernameField.getText();
         String password = passwordField.getText();
-        if(username.length() == 0) usernameLabel.setText("please enter your username");
-        if(password.length() == 0) passwordLabel.setText("please enter your password");
+        if(username.length() == 0){
+            passwordLabel.setText("");
+            usernameLabel.setText("please enter your username");
+            return;
+        }
+        if(password.length() == 0) {
+            usernameLabel.setText("");
+            passwordLabel.setText("please enter your password");
+            return;
+        }
         ResponseToUser responseToUser = userController.login(username, password, stayLoggedInCheckBox.isSelected());
         if(responseToUser.equals(ResponseToUser.USERNAME_NOT_FOUND)) usernameLabel.setText(responseToUser.text);
-        if(responseToUser.equals(ResponseToUser.WRONG_PASSWORD)) {
+        else if(responseToUser.equals(ResponseToUser.WRONG_PASSWORD)) {
             failedAttempts++;
             passwordLabel.setText(ResponseToUser.WRONG_PASSWORD.text);
             initializeTimerTimeLine((long) failedAttempts * 10 * 1000);
@@ -60,6 +77,7 @@ public class LoginMenu extends Application  {
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(failedAttempts * 10), actionEvent -> loginButton.setDisable(false)));
             timeline.setCycleCount(1);
             timeline.play();
+
         }
         else {
             timeLabel.setText("success");
@@ -96,6 +114,7 @@ public class LoginMenu extends Application  {
 
     public void startRegisterMenu(MouseEvent mouseEvent) throws Exception {
         new RegisterAndLoginMenu().start(Menu.stage);
+
     }
 
     public void passwordRecovery(MouseEvent mouseEvent) {
@@ -116,7 +135,7 @@ public class LoginMenu extends Application  {
 
 
         TextField newPass = new TextField("new password");
-        TextField confirmPass = new TextField("confrim password");
+        TextField confirmPass = new TextField("confirm password");
         Label label = new Label("");
         label.setTextFill(Color.rgb(166, 52, 27));
 
@@ -126,6 +145,8 @@ public class LoginMenu extends Application  {
         box.setSpacing(15);
         Pane pane = new Pane(box);
         Popup popup = new Popup();
+        popup.setHeight(300);
+        popup.setWidth(400);
         popup.getContent().add(pane);
         popup.show(Menu.stage);
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {

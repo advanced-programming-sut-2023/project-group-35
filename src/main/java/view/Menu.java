@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import Enum.*;
+import controller.MapController;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -23,6 +24,8 @@ public class Menu extends Application {
     protected static Stage stage;
     public static Color successGreenColor = Color.rgb(30,103, 45);
     public static Color failRedColor = Color.rgb(145, 38, 32);
+    public static int gameButtonHeight = 30;
+    public static int gameButtonWidth = 80;
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         launch(args);
     }
@@ -41,7 +44,12 @@ public class Menu extends Application {
 //            menu = new MainMenu(userController);
 //        }
 //        menu.run();
-        new RegisterAndLoginMenu().start(Menu.stage);
+        //new RegisterAndLoginMenu().start(Menu.stage);
+        //new LoginMenu().start(Menu.stage);
+        MapMenu mapMenu = new MapMenu();
+        //mapMenu.setMapController(new MapController());
+        mapMenu.start(Menu.stage);
+
     }
 
     public void run() throws IOException, NoSuchAlgorithmException {

@@ -1,24 +1,76 @@
 package view;
 
 import controller.*;
-import Enum.*;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.Block;
 import model.Map;
 
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+public class MapMenu extends Menu{
+    private MapController mapController;
+    private Map map;
 
-public class EditAndShowMapMenu extends Menu{
-    public MapController mapController;
-
-    public EditAndShowMapMenu(MapController mapController) {
-        this.mapController = mapController;
-    }
     @Override
     public void start(Stage stage) throws Exception {
-
+        stage.setFullScreen(false);
+        Pane root = new Pane();
+        makeTheMap(root);
+        Scene scene = new Scene(root, 1200, 800, Color.rgb(219, 214, 178));
+        stage.setScene(scene);
+        stage.show();
     }
+
+
+
+
+    public void makeTheMap(Pane pane) {
+        for (Block block : map.getBlocks()) {
+            Rectangle rectangle = new Rectangle(200 + block.getX(), 200 + block.getY(), 40, 40);
+            rectangle.setFill(new ImagePattern(block.getFieldType().getFieldImage()));
+            if(block.hasABuilding()) {
+                ImageView imageView = new ImageView(block.getBuilding().getBuildingType().getImage());
+            }
+            Tooltip.install(rectangle, InitStyle.BuildToolTip(block.getBlockInfo(true)));
+            rectangle.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent keyEvent) {
+                    if(keyEvent.getCode().equals(KeyCode.DELETE)) block.clearBlock(null); //todo check if works correctly
+                }
+
+            });
+        }
+//        Rectangle rectangle = new Rectangle(200, 200 , 40, 40);
+//        Rectangle rectangle1 = new Rectangle(220, 190, 40, 40);
+//        Rectangle rectangle2 = new Rectangle(200, 240 , 40, 40);
+//        Rectangle rectangle3 = new Rectangle(240, 240 , 40, 40);
+        ImageView imageView = new ImageView(new Image(MapMenu.class.getResource("/Images/castle1.png").toExternalForm(), 40, 40, false, false ));
+        imageView.setX(200);
+        imageView.setY(200);
+//        pane.getChildren().addAll(rectangle, rectangle3, rectangle2);
+        //pane.getChildren().add(imageView);
+
+
+      //  rectangle.setFill(new ImagePattern(FieldType.Stone.getFieldImage()));
+
+//        pane.setScaleX(1.5);
+//        pane.setScaleY(1.5);
+//        //rectangle.setFill(new ImagePattern(FieldType.Stone.getFieldImage()));
+    }
+
+    public void setMapController(MapController mapController) {
+        this.mapController = mapController;
+    }
+
 
 //    public void run() {
 //        System.out.println("you are in the map menu!");
@@ -91,4 +143,7 @@ public class EditAndShowMapMenu extends Menu{
 //    }
 
 
+    public void setMap(Map map) {
+        this.map = map;
+    }
 }

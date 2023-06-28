@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public class Map {
     User owner;
     String name;
+
+
     public int dimensions;
 
 
@@ -157,4 +159,8 @@ public class Map {
         }
 
     }
+    public String getName() {
+        return name;
+    }
+
 }

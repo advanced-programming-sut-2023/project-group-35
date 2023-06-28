@@ -62,7 +62,7 @@
                <children>
                   <Button layoutX="29.0" layoutY="-14.0" minHeight="17.0" minWidth="56.0" mnemonicParsing="false" onMouseClicked="#register" prefHeight="34.0" prefWidth="89.0" text="register" />
                   <Button layoutX="153.0" layoutY="-14.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="25.0" prefWidth="89.0" text="Back" />
-                  <Label fx:id="registerResultLabel" layoutX="3.0" layoutY="23.0" prefHeight="25.0" prefWidth="348.0">
+                  <Label fx:id="registerResultLabel" layoutX="3.0" layoutY="23.0" prefHeight="25.0" prefWidth="348.0" style="-fx-text-fill: rgb(227, 217, 168);">
                      <font>
                         <Font size="14.0" />
                      </font>

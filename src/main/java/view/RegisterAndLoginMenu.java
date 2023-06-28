@@ -68,6 +68,7 @@ public class RegisterAndLoginMenu extends Menu {
 
     @Override
     public void start(Stage stage) throws Exception {
+        stage.setFullScreen(true);
         AnchorPane pane = FXMLLoader.load(RegisterAndLoginMenu.class.getResource("/fxml/RegisterAndLoginMenu.fxml"));
 
         InitStyle.setBackGround(pane, ImageEnum.REGISTER_MENU_IMAGE);
@@ -94,8 +95,8 @@ public class RegisterAndLoginMenu extends Menu {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
                 if (t1.length() > s.length()) {
-                    //password += t1.charAt(t1.length() - 1);
-                    password = t1;
+                    password += t1.charAt(t1.length() - 1);
+                    //password = t1;
                     System.out.println(password);
                     if (!isPasswordShowing) {
 //                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), actionEvent -> passwordField.setText(buildBulletString(t1.length()))));
@@ -260,21 +261,23 @@ public class RegisterAndLoginMenu extends Menu {
         okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                popup.hide();
+                //popup.hide();
                 if (securityQuestionTextField.getText().isEmpty()) {
                     Menu.buildInformationAlert("please answer the security question first");
-                    popup.show(Menu.stage);
+                    //popup.show(Menu.stage);
                 } else if(captchaTextField.getText().isEmpty()) {
                     Menu.buildInformationAlert("please write the captcha number");
-                    popup.show(Menu.stage);
+                    //popup.show(Menu.stage);
                 } else if(!captchaTextField.getText().equals(captchaNum)) {
+                    System.out.println("written:<" + captchaTextField.getText() + ">");
+                    System.out.println("captchanum: <" + captchaNum + ">");
                     Menu.buildInformationAlert("the captcha is not correct!\nplease try again!");
                     try {
                         generateRandomCaptcha(imageView);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    popup.show(Menu.stage);
+                    //popup.show(Menu.stage);
                 } else {
                     Alert alert = new Alert(Alert.AlertType.NONE, "security question", ButtonType.YES, ButtonType.CANCEL);
                     alert.setContentText("this is your answer: <" + securityQuestionTextField.getText() + ">\nare you sure about it?");
@@ -284,15 +287,17 @@ public class RegisterAndLoginMenu extends Menu {
                             try {
                                 answerToSecurityQuestion = securityQuestionTextField.getText();
                                 String result = userController.register(usernameField.getText(), password, nicknameField.getText(), emailField.getText(), sloganField.getText(), securityQuestion, answerToSecurityQuestion);
+                                System.out.println("done");
                                 alert.close();
                                 popup.hide();
                                 registerResultLabel.setText(result);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
-                        } else if (response == ButtonType.CANCEL)
+                        } else if (response == ButtonType.CANCEL) {
                             alert.close();
                             popup.show(Menu.stage);
+                        }
                     });
                 }
             }
@@ -359,11 +364,6 @@ public class RegisterAndLoginMenu extends Menu {
         if(textFieldsChecker.containsKey(controllerLabel)) textFieldsChecker.put(controllerLabel, isFilledCorrectly);
     }
 
-
-
-
-
-
     public void back(MouseEvent mouseEvent) throws Exception {
         new LoginMenu().start(Menu.stage);
     }
@@ -385,6 +385,7 @@ public class RegisterAndLoginMenu extends Menu {
         else randomPassword = getRandomWord();
         randomPassword += random.nextInt(999) + "!@";
         isPasswordShowing = true;
+        password = randomPassword.substring(0, randomPassword.length()-1);
         passwordField.setText(randomPassword);
     }
 

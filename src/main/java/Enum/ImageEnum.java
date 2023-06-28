@@ -8,6 +8,9 @@ import java.net.URL;
 public enum ImageEnum {
     LOGIN_MENU_IMAGE("/loginMenuImage.jpg"),
     REGISTER_MENU_IMAGE("/registerMenuImage.jpg"),
+    MAIN_MENU_IMAGE("/mainMenuImage.jpg"),
+    DEFAULT_MAP_IMAGE(""),
+    UNSELECTED_MAP_IMAGE(""),
     ;
 
     ImageEnum(String imageUrl) {

@@ -1,11 +1,23 @@
 package view;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import Enum.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Tooltip;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 public class InitStyle {
@@ -24,6 +36,15 @@ public class InitStyle {
         button.setTextFill(Color.rgb(230, 217, 156));
         button.setBackground(new Background(new BackgroundFill(buttonBackGround, CornerRadii.EMPTY, Insets.EMPTY)));
         return button;
-
+    }
+    public static Tooltip BuildToolTip(String tip) {
+        Tooltip toolTip = new Tooltip(tip);
+        toolTip.setFont(Font.font("new times roman", 13));
+        toolTip.setShowDelay(Duration.seconds(0.4));
+        toolTip.setHideDelay(Duration.seconds(0.8));
+        toolTip.setTextAlignment(TextAlignment.CENTER);
+        toolTip.setAnchorX(10);
+        toolTip.setAnchorY(10);
+        return toolTip;
     }
 }
