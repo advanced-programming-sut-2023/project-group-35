@@ -30,8 +30,7 @@ public class ReignController extends GameController{
         return stringBuilder;
 
     }
-    public String setFoodRate(Matcher matcher) {
-        int rate = Integer.parseInt(matcher.group("rate"));
+    public String setFoodRate(int rate) {
         if(rate > 2 || rate < -2)
             return "rate not valid!";
         game.getPlayingReign().setFoodRate(rate);
@@ -40,8 +39,7 @@ public class ReignController extends GameController{
     public String showFoodRate() {
         return "Your food rate: "+game.getPlayingReign().getFoodRate();
     }
-    public String setTaxRate(Matcher matcher) {
-       int rate = Integer.parseInt(matcher.group("rate"));
+    public String setTaxRate(int rate) {
         if(rate > 8 || rate < -3)
             return "rate not valid!";
         game.getPlayingReign().setTaxRate(rate);
@@ -50,11 +48,14 @@ public class ReignController extends GameController{
     public String showTaxRate() {
         return "Your tax rate: "+game.getPlayingReign().getTaxRate();
     }
-    public String setFearRate(Matcher matcher) {
-        int rate = Integer.parseInt(matcher.group("rate"));
+    public String setFearRate(int rate) {
         if(rate > 6|| rate < -6)
             return "rate not valid!";
         playingReign.setFearRate(rate);
         return "fear rate set!";
+    }
+    public String showAmountOfChange(){
+        int amount = (int) (game.getPlayingReign().getTaxRate()-game.getPlayingReign().getFearRate()+game.getPlayingReign().getFoodRate());
+        return ""+amount;
     }
 }

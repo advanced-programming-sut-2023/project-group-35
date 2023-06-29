@@ -160,6 +160,6 @@ public class User implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        return ((User)o).totalScore -this.totalScore;
+        return ((User)o).highScore -this.highScore;
     }
 }
