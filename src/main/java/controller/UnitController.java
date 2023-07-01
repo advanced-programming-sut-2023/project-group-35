@@ -330,7 +330,7 @@ public class UnitController extends GameController{
         }
         else if(map.getBlockByLocation(x,y).getMilitaryUnits().size() > 0)
             return "There are some units overthere!";
-        else if(map.getBlockByLocation(x,y).isOccupied()){
+        else if(map.getBlockByLocation(x,y).isOccupied(map)){
             return "there are some buildings on location.";
         }
         map.getBlockByLocation(x,y).setFieldType(FieldType.moat);

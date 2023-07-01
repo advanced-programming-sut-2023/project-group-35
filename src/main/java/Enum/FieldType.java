@@ -5,20 +5,20 @@ import javafx.scene.image.Image;
 public enum FieldType {
     Ground("desert_tile.jpg" , true, true,false),
     //Ground_With_Stone(null, false, true), //same as ground
-    Stone("collection27.png", true, true,false), // for stone production
-    Iron(null, true, true,false), // for iron production
-    Rock(null, false, false,false), // unpassable
-    Grass(null, true, true,false),
-    Savanna(null, true, true,false), // can't build farm
-    OilGround(null, false , true,false),
-    Swamp(null , false, false,true), // kills ???????
-    LittleLake(null, false, false,true), // can't pass or struct
-    BigLake(null, false, false,true), // can't pass or struct
-    River(null, false, false,true), // can't pass or struct
-    Beach(null , false, false,true), // can't pass or struct
-    Ocean(null, false, false,true), // can't pass or struct
-    plain(null , false, true,false),
-    moat(null , false, false,false); // can' struct but unpassable
+    Stone("stone.jpg", true, true,false), // for stone production
+    Iron("iron.jpg", true, true,false), // for iron production
+    Rock("rock.png", false, false,false), // unpassable
+    Grass("plain.jpg", true, true,false),
+    Savanna("plain.jpg", true, true,false), // can't build farm
+    OilGround("oilGround.jpg", false , true,false),
+    Swamp("swamp.png", false, false,true), // kills ???????
+    littleLake("littleLake.jpg", false, false,true), // can't pass or struct
+    BigLake("sea.jpg", false, false,true), // can't pass or struct
+    River("river.PNG", false, false,true), // can't pass or struct
+    Beach("beach.jpg" , false, false,true), // can't pass or struct
+    sea("sea.jpg", false, false,true), // can't pass or struct
+    plain("plain.jpg" , false, true,false),
+    moat("moat.jpg" , false, false,false); // can' struct but unpassable
 
     //private String fieldURL;
     private Image fieldImage;
@@ -36,6 +36,14 @@ public enum FieldType {
     public static FieldType getFieldType(String name) {
         for (FieldType value : FieldType.values()) {
             if(value.getName().equals(name)) return value;
+        }
+        return null;
+    }
+    public static FieldType getFieldTypeByImage(Image image) {
+        String url = image.getUrl();
+        for (FieldType value : values()) {
+            if(url.contains(value.name().toLowerCase())) return value;
+            if(url.contains(value.name())) return value;
         }
         return null;
     }

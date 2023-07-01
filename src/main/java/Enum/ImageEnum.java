@@ -26,5 +26,9 @@ public enum ImageEnum {
         if(isBackGround) return new Image(ImageEnum.class.getResource("/Images" + imageName.imageUrl).toExternalForm(), Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight(), false, true);
         return new Image(ImageEnum.class.getResource("/Images" + imageName.imageUrl).toExternalForm());
     }
+    public Image getImageWithSize(int width, int height) {
+        return new Image(ImageEnum.class.getResource("/Images" + this.imageUrl).toExternalForm(), width, height, false, true);
+    }
+
 }
 

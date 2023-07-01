@@ -2,16 +2,19 @@ package view;
 
 import controller.GameController;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import model.*;
 import Enum.*;
@@ -19,23 +22,27 @@ import Enum.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StartGameMenu extends Menu{
-    private User playingUser;
+    private User loggedInUser;
     private int leftUsersToAdd;
-    private int addedNumber;
+    private int addedNumber = 0;
     private GameController gameController;
 
-    public void setPlayingUser(User playingUser) {
-        this.playingUser = playingUser;
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+        leftUsersToAdd = gameController.getGame().getMap().getNumberOfBases();
     }
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
 
-    public static int LayoutX;
-    public static int LayoutY;
-    public static int HEIGHT;
-    public static int WIDTH;
+    public static int LayoutX = 50;
+    public static int LayoutY = 200;
+    public static int HEIGHT = 40;
+    public static int BUTTON_WIDTH = 80;
+    public static int BUTTON_HEIGHT = 40;
+    public static int WIDTH = 300;
+    public String labelStr = "left users to add: ";
     private Button startButton;
 
     @Override
@@ -49,6 +56,10 @@ public class StartGameMenu extends Menu{
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        for (Block baseBlock : gameController.getGame().getMap().getBaseBlocks()) {
+            System.out.println("base: " + baseBlock.getY() + " x:" + baseBlock.getX());
+        }
+        System.out.println("size: " + gameController.getGame().getMap().getBaseBlocks().size());
     }
 
     public void initTextFieldAndButton(Pane root) {
@@ -58,9 +69,14 @@ public class StartGameMenu extends Menu{
         textField.setLayoutY(LayoutY - 60);
         textField.setPrefHeight(HEIGHT);
         textField.setPrefWidth(WIDTH);
-        Button button = new Button("Find");
+        Label leftToAddLabel = new Label(labelStr + leftUsersToAdd);
+        root.getChildren().add(leftToAddLabel);
+        leftToAddLabel.setTextFill(Color.rgb(230, 217, 156));
+        leftToAddLabel.setFont(Font.font("times", FontWeight.BOLD, FontPosture.ITALIC, 16));
+
+        Button button = InitStyle.setGameButtonStyles("find", BUTTON_HEIGHT, BUTTON_WIDTH);
         button.setLayoutX(LayoutX + WIDTH + 10);
-        button.setLayoutY(LayoutY);
+        button.setLayoutY(LayoutY - 60);
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -73,6 +89,8 @@ public class StartGameMenu extends Menu{
                     root.getChildren().add(label);
                     leftUsersToAdd--;
                     addedNumber++;
+                    leftToAddLabel.setText(labelStr + leftUsersToAdd);
+                    textField.setText("");
                     if(leftUsersToAdd == 0) {
                         startButton.setDisable(false);
                         button.setDisable(true);
@@ -82,8 +100,9 @@ public class StartGameMenu extends Menu{
                 }
             }
         });
+        root.getChildren().addAll(textField, button);
     }
-    public void backAndForwardButton(Pane pane) {
+    public void backAndForwardButton(Pane root) {
         HBox hBox = new HBox();
         hBox.setSpacing(20);
         hBox.setLayoutX(LayoutX + 20);
@@ -96,8 +115,10 @@ public class StartGameMenu extends Menu{
                 throw new RuntimeException(ex);
             }
         });
-        startButton = InitStyle.setGameButtonStyles("Start", HEIGHT, 50);
+
+        startButton = InitStyle.setGameButtonStyles("Start", 30, 50);
         hBox.getChildren().addAll(back, startButton);
+        root.getChildren().add(hBox);
         startButton.setDisable(true);
         startButton.setOnMouseClicked(e -> {
             try {
@@ -113,27 +134,32 @@ public class StartGameMenu extends Menu{
         new GameMenu().start(Menu.stage);
     }
     public Label getLabel(User user) {
-        Label label = new Label(user.getUserName());
+        Label label = new Label();
+        label.setText(user.getUserName() + "  NickName: " + user.getNickName());
         label.setPrefHeight(HEIGHT);
         label.setPrefWidth(WIDTH);
-        label.setLayoutX(LayoutX);
+        label.setLayoutX(LayoutX + 40);
         label.setLayoutY(LayoutY + addedNumber * (HEIGHT + 20));
+        //label.setTextFill(Color.rgb(230, 217, 156));
+        label.setTextFill(Color.BLACK);
+        label.setBackground(new Background(new BackgroundFill(Color.rgb(94, 99, 75), CornerRadii.EMPTY, Insets.EMPTY)));
+        label.setFont(Font.font("times", FontWeight.BOLD, FontPosture.ITALIC, 15));
         return label;
     }
     public Circle getAvatarImage(User user) {
-        Circle circle = new Circle(30, LayoutX - 50, LayoutY + addedNumber * (HEIGHT + 20));
+        Circle circle = new Circle(LayoutX, LayoutY + addedNumber * (HEIGHT + 20), 20);
         try {
-            circle.setFill(new ImagePattern(new Image(user.getAvatarUrl())));
-        } catch (IllegalArgumentException e) {
-            circle.setFill(new ImagePattern(ImageEnum.getImage(ImageEnum.DEFAULT_AVATAR,false)));
+            circle.setFill(new ImagePattern(InitStyle.makeImageBySize(loggedInUser.getAvatar(), 20, 20)));
+        } catch (NullPointerException e) {
+            circle.setFill(new ImagePattern(ImageEnum.DEFAULT_AVATAR.getImageWithSize(20, 20)));
         }
         return circle;
-
     }
+
     public void backIfSure() throws Exception {
         AtomicBoolean sureToExit = Menu.alertForConfirmation("exit", "Are You Sure You Want to Exit?", "back");
         if (sureToExit.get()) {
-            Menu.startMainMenu(playingUser);
+            Menu.startMainMenu(loggedInUser);
         }
     }
 //    public void run() {

@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import model.Block;
 import model.Map;
 import Enum.*;
+import model.User;
+import model.buildings.Base;
 
 public class MapMenu extends Menu {
     private MapController mapController;
@@ -29,20 +31,27 @@ public class MapMenu extends Menu {
     public static Pane mapPane;
     private Tree selectedTree;
     private Rectangle selectedRectangle;
+    private boolean hasSelectedBase;
+    private FieldType selectedFieldType;
 
     @Override
     public void start(Stage stage) throws Exception {
         //stage.setFullScreen(false);
         Pane root = new Pane();
+
+//        for (Block baseBlock : map.getBaseBlocks()) {
+//            System.out.println("base: " + baseBlock.getY() + " x:" + baseBlock.getX());
+//        }
+//        System.out.println("size: " + map.getBaseBlocks().size());
         makeTheMap(root);
         // menu
         initializeMenuItems(root);
+
 
         Scene scene = new Scene(root, 1200, 800, Color.rgb(219, 214, 178));
         stage.setScene(scene);
         stage.show();
     }
-
 
     public void initializeMenuItems(Pane root) {
         Pane pane = new Pane();
@@ -56,11 +65,65 @@ public class MapMenu extends Menu {
         pane.getChildren().add(new Button("ala"));
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        tabPane.getTabs().add(getTreeTab());
         tabPane.getTabs().add(getTabForTexture());
+        tabPane.getTabs().add(getTreeTab());
+        tabPane.getTabs().add(getTabForBase());
+        tabPane.getTabs().add(getExitTap());
         pane.getChildren().add(tabPane);
     }
 
+    public Tab getExitTap() {
+        HBox hBox = new HBox();
+        hBox.setSpacing(20);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setPadding(new Insets(30, 20, 30, 20));
+        Button saveButton = InitStyle.setGameButtonStyles("saveAndExit", 50, 100);
+        saveButton.setBorder(Border.stroke(Color.BLACK));
+        hBox.getChildren().add(saveButton);
+        saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    Menu.startMainMenu(User.getUserByUsername(map.getOwnerUsername()));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        Tab tab = new Tab("Exit", hBox);
+        return tab;
+    }
+    public void makeTheMap(Pane root) {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.pannableProperty().set(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        scrollPane.setMaxHeight(600);
+        System.out.println(root.getHeight() + " wi: " + root.getWidth());
+        scrollPane.setMaxWidth(1368);
+        root.getChildren().add(scrollPane);
+        //scrollPane.setBackground(new Background(new BackgroundImage()));
+        mapPane = new Pane();
+        scrollPane.setContent(mapPane);
+        int i = 0;
+        for (Block block : map.getBlocks()) {
+            System.out.println(i++);
+            Rectangle rectangle = new Rectangle(INSET + block.getX() * BLOCK_SIZE, INSET + block.getY() * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            rectangle.setFill(new ImagePattern(block.getFieldType().getFieldImage()));
+            mapPane.getChildren().add(rectangle);
+            if (block.hasABuilding()) {
+                setMapBlockImageView(mapPane, block.getBuilding().getBuildingType().getImage(), block, true);
+            }
+            if (block.getTree() != null) {
+                setMapBlockImageView(mapPane, block.getTree().getImage(), block, true);
+            }
+            if (block.hasBase() || map.isABase(block.x, block.y)) {
+                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
+            }
+            setRectangleSettings(rectangle, block);
+        }
+    }
     public Tab getTreeTab() {
         HBox hBox = new HBox();
         hBox.setSpacing(20);
@@ -88,23 +151,18 @@ public class MapMenu extends Menu {
         return new Tab("tree", hBox);
     }
 
-    public int getTheRightAxes(double x, int inset, int BLOCK_SIZE) {
-        x -= inset;
-        return (int) x / BLOCK_SIZE;
-    }
-
     public Tab getTabForTexture() {
         HBox hBox = new HBox();
         hBox.setSpacing(20);
         hBox.setAlignment(Pos.CENTER);
         hBox.setPadding(new Insets(30, 20, 30, 20));
-        int i = 0;
+        //int i = 0;
         for (FieldType value : FieldType.values()) {
-            if(++i > 2) break;
+            //if(++i > 2) break;
             ImageView imageView = new ImageView(value.getFieldImage());
             //imageView.setFitWidth(); //todo make image bigger
-            imageView.setFitWidth(100);
-            imageView.setFitHeight(100);
+            imageView.setFitWidth(60);
+            imageView.setFitHeight(60);
             hBox.getChildren().add(imageView);
 
             imageView.setOnDragDetected(event -> {
@@ -112,44 +170,44 @@ public class MapMenu extends Menu {
                 ClipboardContent content = new ClipboardContent();
                 content.putImage(imageView.snapshot(new SnapshotParameters(),null));
                 selectedTree = Tree.getTreeByImage(imageView.getImage());
-                System.out.println(selectedTree);
-                System.out.println("drag ditected");
+                selectedFieldType = FieldType.getFieldTypeByImage(imageView.getImage());
                 //event.setDragDetect(true);
                 db.setContent(content);
                 event.consume();
             });
         }
-        Tab tab = new Tab("texture", hBox);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(hBox);
+        scrollPane.setPannable(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        Tab tab = new Tab("texture", scrollPane);
         return tab;
     }
+    public Tab getTabForBase() {
+        HBox hBox = new HBox();
+        hBox.setSpacing(20);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setPadding(new Insets(30, 20, 30, 20));
 
-    public void makeTheMap(Pane root) {
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setMaxHeight(600);
-        System.out.println(root.getHeight() + " wi: " + root.getWidth());
-        scrollPane.setMaxWidth(1200);
-        root.getChildren().add(scrollPane);
-        //scrollPane.setBackground(new Background(new BackgroundImage()));
-        mapPane = new Pane();
-        scrollPane.setContent(mapPane);
-        int i = 0;
-        for (Block block : map.getBlocks()) {
-            System.out.println(i++);
-            Rectangle rectangle = new Rectangle(INSET + block.getX() * BLOCK_SIZE, INSET + block.getY() * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-            rectangle.setFill(new ImagePattern(block.getFieldType().getFieldImage()));
-            mapPane.getChildren().add(rectangle);
-            if (block.hasABuilding()) {
-                setMapBlockImageView(mapPane, block.getBuilding().getBuildingType().getImage(), block, true);
-            }
-            if (block.getTree() != null) {
-                setMapBlockImageView(mapPane, block.getTree().getImage(), block, true);
-            }
-            if (block.hasBase()) {
-                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
-            }
-            setRectangleSettings(rectangle, block);
-        }
+        ImageView imageView = new ImageView(BuildingType.BASE.getImage());
+        //imageView.setFitWidth(); //todo make image bigger
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(100);
+
+        imageView.setOnDragDetected(event -> {
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(imageView.snapshot(new SnapshotParameters(),null));
+            hasSelectedBase = true;
+            db.setContent(content);
+            event.consume();
+        });
+        hBox.getChildren().add(imageView);
+        return new Tab("Base", hBox);
     }
+
+
+
 
     public ImageView setMapBlockImageView(Pane pane, Image image, Block block, boolean isForMap) {
         ImageView imageView = new ImageView(image);
@@ -167,19 +225,12 @@ public class MapMenu extends Menu {
         rectangle.setOnDragOver(event -> {
             event.acceptTransferModes(TransferMode.ANY);
             if(event.getSource() == rectangle) return;
-            if(getBlockByRectangle(rectangle).isOccupied()) rectangle.setStroke(Color.rgb(138, 39, 36));
+            if(getBlockByRectangle(rectangle).isOccupied(map)) rectangle.setStroke(Color.rgb(138, 39, 36));
             else rectangle.setStroke(Color.rgb(109, 161, 26));
             //System.out.println("drag over");
             event.consume();
         });
 
-//            rectangle.setOnDragEntered(event -> {
-//                if (event.getGestureSource() != rectangle && event.getDragboard().hasString()) {
-//                    rectangle.setStyle("-fx-border-width:2px;-fx-border-color:black;-fx-opacity:.4;-fx-background-color:"+event.getDragboard().getString());
-//                }
-//                System.out.println("drag entered");
-//                event.consume();
-//            });
 
         rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -194,15 +245,6 @@ public class MapMenu extends Menu {
             });
             }
         });
-
-//            rectangle.setOnDragExited(event -> {
-//                if(!event.isAccepted()) {
-//                    rectangle.setStyle("-fx-border-width:2px;-fx-border-color:black;");
-//                    System.out.println("drag exited");
-//                    event.consume();
-//                }
-//            });
-
         rectangle.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
@@ -214,25 +256,45 @@ public class MapMenu extends Menu {
             if(selectedTree != null) {
                 int x = getTheRightAxes(rectangle.getX(), INSET, BLOCK_SIZE);
                 int y = getTheRightAxes(rectangle.getY(), INSET, BLOCK_SIZE);
-                System.out.println("rectanglex:" + rectangle.getX() + "y: " + rectangle.getY());
-                System.out.println("x: " + x +"y: " + y);
                 Block block1 = map.getBlockByLocation(x, y);
-                System.out.println(block1.x + " y; " + block1.y);
-                if(block1.isOccupied()) return;
-                System.out.println("done");
+                //System.out.println(block1.x + " y; " + block1.y);
+                if(block1.isOccupied(map)){
+                    selectedTree = null;
+                    return;
+                }
+                //System.out.println("done");
                 setMapBlockImageView(mapPane, selectedTree.getImage(), block1, true);
                 map.getBlockByLocation(x, y).setTree(selectedTree);
                 selectedTree = null;
             }
+            if(selectedFieldType != null) {
+                int x = getTheRightAxes(rectangle.getX(), INSET, BLOCK_SIZE);
+                int y = getTheRightAxes(rectangle.getY(), INSET, BLOCK_SIZE);
+                Block block1 = map.getBlockByLocation(x, y);
+                if(block1.isOccupied(map)) {
+                    selectedFieldType = null;
+                    return;
+                }
+                setMapBlockImageView(mapPane, selectedFieldType.getFieldImage(), block1, true);
+                map.getBlockByLocation(x, y).setFieldType(selectedFieldType);
+                selectedFieldType = null;
+            }
+            if(hasSelectedBase) {
+                int x = getTheRightAxes(rectangle.getX(), INSET, BLOCK_SIZE);
+                int y = getTheRightAxes(rectangle.getY(), INSET, BLOCK_SIZE);
+                Block block1 = map.getBlockByLocation(x, y);
+                if(block1.isOccupied(map)){
+                    hasSelectedBase = false;
+                    return;
+                }
+                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block1, true);
+                Map.makeNewBase(map, x, y);
+                hasSelectedBase = false;
+            }
             event.setDropCompleted(success);
             event.consume();
         });
-//            rectangle.setOnMousePressed(new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent mouseEvent) {
-//
-//                }
-//            });
+
         rectangle.hoverProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean isNowHover) {
@@ -257,6 +319,12 @@ public class MapMenu extends Menu {
         int y = (int) (y1 - 200) / BLOCK_SIZE;
         return map.getBlockByLocation(x, y);
     }
+
+    public int getTheRightAxes(double x, int inset, int BLOCK_SIZE) {
+        x -= inset;
+        return (int) x / BLOCK_SIZE;
+    }
+
 
     public Block getBlockByRectangle(Rectangle rectangle) {
         return getBlockByRectangleBounds(rectangle.getX(), rectangle.getY());

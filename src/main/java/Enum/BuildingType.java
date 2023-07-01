@@ -69,8 +69,15 @@ public enum BuildingType {
         this.buildingUrl = url;
     }
     public Image getImage() {
-        Image image = new Image(BuildingType.class.getResource("/Images/buildings/" + this.getBuildingUrl()).toExternalForm(), 40, 40, false, true);
+        Image image = new Image(BuildingType.class.getResource("/Images/buildings/" + this.getBuildingUrl()).toExternalForm(), 60, 60, false, true);
         return image;
+    }
+    public static BuildingType getBuildingByImage(Image image) {
+        String url = image.getUrl();
+        for (BuildingType value : BuildingType.values()) {
+            if(url.contains(value.buildingUrl)) return value;
+        }
+        return null;
     }
 
     public String getName() {

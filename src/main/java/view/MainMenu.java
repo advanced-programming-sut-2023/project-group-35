@@ -19,9 +19,8 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import model.*;
 
-import java.io.IOException;
+import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainMenu extends Menu{
@@ -89,7 +88,7 @@ public class MainMenu extends Menu{
     public Label getMapLabel(String mapName, Rectangle mapRec, int i) {
         Label label = new Label(mapName);
         label.setLabelFor(mapRec);
-        label.setLayoutX(i + 130 + 60);
+        label.setLayoutX(i * 130 + 60);
         label.setLayoutY(170);
         label.setBackground(new Background(new BackgroundFill(Color.rgb(173, 146, 10), CornerRadii.EMPTY, Insets.EMPTY)));
         label.setTextFill(Color.rgb(125, 21, 42));
@@ -144,11 +143,8 @@ public class MainMenu extends Menu{
         profileButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                ProfileMenu profileMenu = new ProfileMenu(loggedInUser);
-                profileMenu.setUserController(userController);
-                profileMenu.setLoggedInUser(loggedInUser);
                 try {
-                    new ProfileMenu(loggedInUser).start(Menu.stage);
+                    Menu.startProfileMenu(userController);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -170,14 +166,20 @@ public class MainMenu extends Menu{
         if(sureToStartGame.get()) {
             System.out.println("here");
             StartGameMenu startGameMenu = new StartGameMenu();
-            startGameMenu.setGameController(new GameController(new Game(loggedInUser, selectedMap)));
-            startGameMenu.setPlayingUser(loggedInUser);
+            Map map = selectedMap.clone();
+            startGameMenu.setGameController(new GameController(new Game(loggedInUser, map)));
+            startGameMenu.setLoggedInUser(loggedInUser);
             startGameMenu.start(Menu.stage);
         }
     }
     public void logout() throws Exception {
         AtomicBoolean sureToLogOut = Menu.alertForConfirmation("logout", "Are You Sure You Want To Logout?", "logout");
-        if(sureToLogOut.get()) new LoginMenu().start(Menu.stage);
+        System.out.println("sure to logout" + sureToLogOut.get());
+        if(sureToLogOut.get()) {
+            new LoginMenu().start(Menu.stage);
+            FileWriter fileWriter = new FileWriter("loggedIn.txt");
+            fileWriter.close();
+        }
     }
 
     public Button addButton(VBox box, String name) {
@@ -188,7 +190,7 @@ public class MainMenu extends Menu{
 
 
     public void buildNewMapButton(Pane pane, int dimension) {
-        Button button = InitStyle.setGameButtonStyles("new map" + dimension + "", 30, 80);
+        Button button = InitStyle.setGameButtonStyles("new map" + dimension + "", 40, 110);
         button.setLayoutX(130 * 4 + 30);
         button.setLayoutY(dimension == 200? 170 : 220);
         pane.getChildren().add(button);

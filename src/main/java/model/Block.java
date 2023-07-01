@@ -66,12 +66,29 @@ public class Block {
         this.setFieldType(FieldType.Ground);
     }
 
-    public boolean isOccupied() {
-        if(this.building != null) return true;
-        if(this.getFieldType().equals(FieldType.Rock)) return true;
-        if(this.getTree() != null) return true;
-        if(!this.getFieldType().isSuitableForBuilding) return true;
-        //todo what else?
+    public boolean isOccupied(Map map) {
+        if(this.building != null) {
+            System.out.println("building");
+            return true;
+        }
+        if(this.getFieldType().equals(FieldType.Rock)) {
+            System.out.println("rock");
+            return true;
+        }
+        if(this.getTree() != null) {
+            System.out.println("tree");
+            return true;
+        }
+        if(!this.getFieldType().isSuitableForBuilding) {
+            System.out.println("not suitable");
+            return true;
+        }
+        for (Block baseBlock : map.getBaseBlocks()) {
+            if(baseBlock.equals(this)){
+                System.out.println("base");
+                return true;
+            }
+        }
         return false;
     }
 
@@ -188,5 +205,7 @@ public class Block {
 
     public void setMilitaryUnits(ArrayList<MilitaryUnit> militaryUnits) {
         this.militaryUnits = militaryUnits;
+
     }
+
 }

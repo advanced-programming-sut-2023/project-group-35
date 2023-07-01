@@ -522,10 +522,7 @@ public class ProfileMenu extends Menu{
 
 //    }
 
-    public ProfileMenu(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
-        userController.setLoggedInUser(loggedInUser);
-    }
+
 
 
     /*private String extractSlogan(String text) {
@@ -541,6 +538,7 @@ public class ProfileMenu extends Menu{
 
     public void setUserController(UserController userController) {
         this.userController = userController;
+        this.loggedInUser = userController.getLoggedInUser();
     }
 
     public void setLoggedInUser(User loggedInUser) {

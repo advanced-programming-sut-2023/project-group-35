@@ -43,16 +43,14 @@ public class Menu extends Application {
         stage.setFullScreen(true);
 
         String fromFile = Files.readString(Paths.get("loggedIn.txt"));
-        System.out.println(fromFile);
+        System.out.println("loggedIn: " + fromFile);
 
-        System.out.println(fromFile.length());
         User user;
         if ((user = User.getUserByUsername(fromFile)) != null) {
             UserController userController = new UserController();
             userController.setLoggedInUser(user);
             startMainMenu(userController);
         } else {
-            System.out.println("here");
             new LoginMenu().start(Menu.stage);
         }
     }
@@ -68,7 +66,11 @@ public class Menu extends Application {
         mainMenu.setUserController(userController);
         mainMenu.start(Menu.stage);
     }
-
+    public static void startProfileMenu(UserController userController) throws Exception {
+        ProfileMenu profileMenu = new ProfileMenu();
+        profileMenu.setUserController(userController);
+        profileMenu.start(Menu.stage);
+    }
 
         //System.out.println(reader.toString());
 
@@ -165,13 +167,13 @@ public class Menu extends Application {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.YES) {
                 try {
-                    toReturn.set(false);
+                    toReturn.set(true);
 
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             } else if(response == ButtonType.CANCEL)
-                toReturn.set(true);
+                toReturn.set(false);
         });
         return toReturn;
     }

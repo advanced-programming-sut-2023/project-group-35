@@ -302,8 +302,9 @@ public class UserController {
                 if (jsonArray == null) return;
                 for (JsonElement jsonElement : jsonArray)
                     User.getUsers().add(gson.fromJson(jsonElement, User.class));
+                for (User user : User.getUsers()) {
+                    System.out.println(user.getUserName());
+                }
             }
-
-
         }
 

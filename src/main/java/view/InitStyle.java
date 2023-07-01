@@ -1,8 +1,10 @@
 package view;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import Enum.*;
@@ -11,6 +13,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
@@ -27,13 +30,20 @@ public class InitStyle {
     public static void setBackGroundColor(Label label , Color color) {
         label.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
     }
+    public static Image makeImageBySize(String address, int width, int height ) {
+        return new Image(ImageEnum.class.getResource(address).toExternalForm(), width, height, false, true);
+    }
     public static Button setGameButtonStyles(String name, int height, int width) {
         Button button = new Button(name);
         button.setStyle("-fx-border-color: black");
+        button.setFont(Font.font("New Times Roman", FontWeight.BOLD, 13));
+        //button.setStyle("-fx-text-fill: Times Roman");
+//        button.setBorder(new Border());
         button.setPrefHeight(height);
         button.setPrefWidth(width);
-        button.setStyle("-fx-background-radius: 10");
-        button.setStyle("-fx-border-radius: 10");
+        //button.setStyle("-fx-background-radius: 15px");
+
+        //button.setStyle("-fx-border-radius: 10px");
         button.setTextFill(Color.rgb(230, 217, 156));
         button.setBackground(new Background(new BackgroundFill(buttonBackGround, CornerRadii.EMPTY, Insets.EMPTY)));
         return button;
@@ -47,5 +57,19 @@ public class InitStyle {
         toolTip.setAnchorX(10);
         toolTip.setAnchorY(10);
         return toolTip;
+    }
+    public static HBox createHbox() {
+        HBox hBox = new HBox();
+        hBox.setSpacing(20);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setPadding(new Insets(30, 20, 30, 20));
+        return hBox;
+    }
+    public static ImageView getImageView(Image image, int height, int width) {
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        imageView.setFitHeight(height);
+        imageView.setFitWidth(width);
+        return imageView;
     }
 }

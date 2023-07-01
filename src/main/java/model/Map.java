@@ -11,9 +11,9 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
-public class Map {
+public class Map implements Cloneable{
     //User owner;
-    String username;
+    String ownerUsername;
     String name;
     public int dimensions;
     private final ArrayList<Block> blocks = new ArrayList<>();
@@ -21,11 +21,15 @@ public class Map {
     //private final ArrayList<Base> baseBuildings = new ArrayList<>();
     private final ArrayList<Block> baseBlocks = new ArrayList<>();
 
+    public ArrayList<Block> getBaseBlocks() {
+        return baseBlocks;
+    }
+
     public static final ArrayList<Map> templateMaps = new ArrayList<>();
 
 
-    public Map(String username, int dimensions,String name) {
-        this.username = username;
+    public Map(String ownerUsername, int dimensions, String name) {
+        this.ownerUsername = ownerUsername;
         this.dimensions= dimensions;
         addBlocks(dimensions);
         this.name = name;
@@ -33,7 +37,9 @@ public class Map {
     public static Map generateDefaultMap(String username) {
         Map map = new Map(username,200, "default");
         makeNewBase(map, 10, 10);
+        makeNewBase(map, 10, 20);
         makeNewBase(map, 20, 20);
+        System.out.println("bases: " + map.getNumberOfBases());
         return map;
     }
     public static void makeNewBase(Map map, int x, int y) {
@@ -41,7 +47,14 @@ public class Map {
         //Base base = new Base(BuildingType.BASE, null, block);
         //block.setBuilding(base);
         //map.getBaseBuildings().add(base);
+        block.setHasBase(true);
         map.baseBlocks.add(block);
+    }
+    public static void removeBaseOutSideTheGame(Map map, int x , int y) {
+        map.baseBlocks.remove(map.getBlockByLocation(x, y));
+    }
+    public static void removeBase(Map map, Reign reign) {
+        //todo if nessesary
     }
 
     public void setName(String name) {
@@ -52,8 +65,8 @@ public class Map {
         map.setName(name);
     }
     public void addBlocks(int dim) {
-        for(int i = 1; i < dim; i++) {
-            for(int j = 1; j < dim; j++) {
+        for(int i = 0; i < dim; i++) {
+            for(int j = 0; j < dim; j++) {
                 blocks.add(new Block(i , j, FieldType.Ground));
             }
         }
@@ -65,7 +78,7 @@ public class Map {
         for (Direction value : Direction.values()) {
             if(!value.isMajor) continue;
             Block block1 = this.getNeighborBlock(block, value);
-            if(!block1.isOccupied()) {
+            if(!block1.isOccupied(this)) {
                 block1.setBuilding(new StoreHouse(BuildingType.STOCK_PILE, reign, block));
                 break;
             }
@@ -178,4 +191,17 @@ public class Map {
         return name;
     }
 
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
+
+    @Override
+    public Map clone() {
+        try {
+            Map clone = (Map) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

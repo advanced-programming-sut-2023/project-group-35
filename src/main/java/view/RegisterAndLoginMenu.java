@@ -111,6 +111,8 @@ public class RegisterAndLoginMenu extends Menu {
                     }
                 }
                 if (t1.length() < s.length()) password = password.substring(0, Math.max(password.length() - 1, 0));
+                if(t1.length() == 0) password = "";
+
 
                 String result = UserController.checkPasswordErrors(password);
                 if (result.equals("perfect")) {
@@ -132,6 +134,7 @@ public class RegisterAndLoginMenu extends Menu {
                     }
                 }
                 if (t1.length() < s.length()) confirmPass = confirmPass.substring(0, Math.max(confirmPass.length() - 1, 0));
+                if(t1.length() == 0) confirmPass = "";
             }
         });
         emailField.textProperty().addListener(new ChangeListener<String>() {
