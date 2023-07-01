@@ -1,6 +1,8 @@
 package view;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.*;
 import java.util.Random;
 import java.util.Scanner;
@@ -9,12 +11,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import Enum.*;
 import controller.MapController;
+import controller.UserController;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
+import model.Map;
+import model.User;
+import org.testng.reporters.jq.Main;
 
 public class Menu extends Application {
     public static final Scanner scanner = new Scanner(System.in);
@@ -32,25 +38,54 @@ public class Menu extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        UserController.loadTheData();
         Menu.stage = stage;
         stage.setFullScreen(true);
-//        File tempFile = new File("loggedIn.txt");
-//        boolean exists = tempFile.exists();
+
+        String fromFile = Files.readString(Paths.get("loggedIn.txt"));
+        System.out.println(fromFile);
+
+        System.out.println(fromFile.length());
+        User user;
+        if ((user = User.getUserByUsername(fromFile)) != null) {
+            UserController userController = new UserController();
+            userController.setLoggedInUser(user);
+            startMainMenu(userController);
+        } else {
+            System.out.println("here");
+            new LoginMenu().start(Menu.stage);
+        }
+    }
+    public static void startMainMenu(UserController userController) throws Exception {
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.setUserController(userController);
+        mainMenu.start(Menu.stage);
+    }
+    public static void startMainMenu(User loggedInUser) throws Exception {
+        UserController userController = new UserController();
+        userController.setLoggedInUser(loggedInUser);
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.setUserController(userController);
+        mainMenu.start(Menu.stage);
+    }
+
+
+        //System.out.println(reader.toString());
+
+        //boolean exists = tempFile.exists();
 //        Menu menu = new RegisterAndLoginMenu(new UserController());
-//        if(exists){
-//            String nameOfLoggedIn = tempFile.toString();
+        //if(exists){
+        //    String isLoggedIn = tempFile.toString();
+        //    System.out.println(isLoggedIn);
+
 //            UserController userController = new UserController();
 //            userController.setLoggedInUser(User.getUserByUsername(nameOfLoggedIn));
 //            menu = new MainMenu(userController);
-//        }
-//        menu.run();
-        //new RegisterAndLoginMenu().start(Menu.stage);
-        //new LoginMenu().start(Menu.stage);
-        MapMenu mapMenu = new MapMenu();
-        //mapMenu.setMapController(new MapController());
-        mapMenu.start(Menu.stage);
+       // }
 
-    }
+
+
+
 
     public void run() throws IOException, NoSuchAlgorithmException {
 

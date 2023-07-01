@@ -1,34 +1,141 @@
 package view;
 
 import controller.GameController;
-import controller.UnitController;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import model.*;
 import Enum.*;
 
-import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StartGameMenu extends Menu{
-    //private User playingUser;
+    private User playingUser;
     private int leftUsersToAdd;
-    private final GameController gameController;
+    private int addedNumber;
+    private GameController gameController;
 
-    public StartGameMenu(User starter) {
-        //this.playingUser = starter;
-        leftUsersToAdd = starter.getMap().getNumberOfBases() - 1;
-        gameController = new GameController(new Game(starter, starter.getMap()));
-        for (Block block : starter.getMap().getBlocks()) {
-            if(block.getStructures() == null) block.setStructures(new ArrayList<>());
-            if(block.getMilitaryUnits() == null) block.setMilitaryUnits(new ArrayList<>());
-        }
-        gameController.setUnitController();
+    public void setPlayingUser(User playingUser) {
+        this.playingUser = playingUser;
     }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+    public static int LayoutX;
+    public static int LayoutY;
+    public static int HEIGHT;
+    public static int WIDTH;
+    private Button startButton;
 
     @Override
     public void start(Stage stage) throws Exception {
-
+        Pane root = new Pane();
+        InitStyle.setBackGround(root, ImageEnum.START_GAME_MENU);
+        root.setPrefHeight(850);
+        root.setPrefWidth(1300);
+        initTextFieldAndButton(root);
+        backAndForwardButton(root);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
+    public void initTextFieldAndButton(Pane root) {
+        TextField textField = new TextField();
+        textField.setPromptText("enter the username you're looking for");
+        textField.setLayoutX(LayoutX);
+        textField.setLayoutY(LayoutY - 60);
+        textField.setPrefHeight(HEIGHT);
+        textField.setPrefWidth(WIDTH);
+        Button button = new Button("Find");
+        button.setLayoutX(LayoutX + WIDTH + 10);
+        button.setLayoutY(LayoutY);
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                User user = User.getUserByUsername(textField.getText());
+                if(user != null) {
+                    gameController.getGame().addReign(user);
+                    Label label = getLabel(user);
+                    Circle circle = getAvatarImage(user);
+                    root.getChildren().add(circle);
+                    root.getChildren().add(label);
+                    leftUsersToAdd--;
+                    addedNumber++;
+                    if(leftUsersToAdd == 0) {
+                        startButton.setDisable(false);
+                        button.setDisable(true);
+                    }
+                } else {
+                    Menu.buildInformationAlert("Username Was Not Found!");
+                }
+            }
+        });
+    }
+    public void backAndForwardButton(Pane pane) {
+        HBox hBox = new HBox();
+        hBox.setSpacing(20);
+        hBox.setLayoutX(LayoutX + 20);
+        hBox.setLayoutY(500);
+        Button back = InitStyle.setGameButtonStyles("back", 30, 50);
+        back.setOnMouseClicked(e -> {
+            try {
+                backIfSure();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        startButton = InitStyle.setGameButtonStyles("Start", HEIGHT, 50);
+        hBox.getChildren().addAll(back, startButton);
+        startButton.setDisable(true);
+        startButton.setOnMouseClicked(e -> {
+            try {
+                startGame();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+    public void startGame() throws Exception {
+        GameMenu gameMenu = new GameMenu();
+        gameMenu.setGameController(gameController);
+        new GameMenu().start(Menu.stage);
+    }
+    public Label getLabel(User user) {
+        Label label = new Label(user.getUserName());
+        label.setPrefHeight(HEIGHT);
+        label.setPrefWidth(WIDTH);
+        label.setLayoutX(LayoutX);
+        label.setLayoutY(LayoutY + addedNumber * (HEIGHT + 20));
+        return label;
+    }
+    public Circle getAvatarImage(User user) {
+        Circle circle = new Circle(30, LayoutX - 50, LayoutY + addedNumber * (HEIGHT + 20));
+        try {
+            circle.setFill(new ImagePattern(new Image(user.getAvatarUrl())));
+        } catch (IllegalArgumentException e) {
+            circle.setFill(new ImagePattern(ImageEnum.getImage(ImageEnum.DEFAULT_AVATAR,false)));
+        }
+        return circle;
+
+    }
+    public void backIfSure() throws Exception {
+        AtomicBoolean sureToExit = Menu.alertForConfirmation("exit", "Are You Sure You Want to Exit?", "back");
+        if (sureToExit.get()) {
+            Menu.startMainMenu(playingUser);
+        }
+    }
 //    public void run() {
 //        System.out.println("YOU ARE IN THE START GAME MENU");
 //        System.out.println("print back to go back to main menu");

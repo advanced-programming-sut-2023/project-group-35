@@ -20,20 +20,19 @@ public enum FieldType {
     plain(null , false, true,false),
     moat(null , false, false,false); // can' struct but unpassable
 
-    private String fieldURL;
-
+    //private String fieldURL;
+    private Image fieldImage;
     public boolean isSuitableForBuilding;
     public final boolean canTroopPass;
     public final boolean isAquatic;
+    FieldType(String fieldURL, boolean isSuitableForBuilding, boolean canTroopPass, boolean isAquatic) {
+        if(fieldURL != null)
+            this.fieldImage = new Image(FieldType.class.getResource("/Images/field/" + fieldURL).toExternalForm());
+        this.isSuitableForBuilding = isSuitableForBuilding;
+        this.canTroopPass = canTroopPass;
+        this.isAquatic = isAquatic;
+    }
 
-//    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-//    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
-//    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
-//    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
-//    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
-//    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-//    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-//    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
     public static FieldType getFieldType(String name) {
         for (FieldType value : FieldType.values()) {
             if(value.getName().equals(name)) return value;
@@ -44,8 +43,10 @@ public enum FieldType {
         return this.name().toLowerCase().replaceAll("_", " ");
     }
     public Image getFieldImage() {
-        Image image = new Image(FieldType.class.getResource("/Images/field/" + this.fieldURL).toExternalForm());
-        return image;
+//        Image image = new Image(FieldType.class.getResource("/Images/field/" + this.fieldURL).toExternalForm());
+//        System.out.println(this.fieldURL);
+//        return image;
+        return this.fieldImage;
     }
 
 
@@ -67,10 +68,5 @@ public enum FieldType {
     // ghabel sakht o saz
 
 
-    FieldType(String fieldURL, boolean isSuitableForBuilding, boolean canTroopPass, boolean isAquatic) {
-        this.fieldURL = fieldURL;
-        this.isSuitableForBuilding = isSuitableForBuilding;
-        this.canTroopPass = canTroopPass;
-        this.isAquatic = isAquatic;
-    }
+
 }
