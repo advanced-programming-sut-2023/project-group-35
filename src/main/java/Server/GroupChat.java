@@ -14,10 +14,22 @@ import static Server.GlobalChat.groupChats;
 
 public class GroupChat {
     public final ArrayList<SentMessage> messages = new ArrayList<>();
-    public final HashSet<User> userHashSet = new HashSet<>();
+    public final HashSet<User> userHashSet;
+
+    public String nameOfGroup;
     static{
         loadTheDataOfGroups();
     }
+
+    public GroupChat(String nameOfGroup,HashSet<User> userHashSet) {
+        this.nameOfGroup = nameOfGroup;
+        this.userHashSet = userHashSet;
+    }
+
+    public String getNameOfGroup() {
+        return nameOfGroup;
+    }
+
     public static void saveTheDataOfGroups() {
         Gson gson = new Gson();
         String json = gson.toJson(groupChats);

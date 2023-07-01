@@ -78,7 +78,7 @@ public class Connection extends Thread{
                     else if (input.equals("private chat"))
                         new PrivateChatMenu(dataOutputStream, dataInputStream, currentUser).privateChat();
                     else if (input.equals("group chat"))
-                        new GroupChatMenu(dataOutputStream, dataInputStream, currentUser).GroupChat();
+                        new GroupChatServerMenu(dataOutputStream, dataInputStream, currentUser).GroupChat();
                     else if (input.equals("scoreboard")){
                         ScoreBoardMenu scoreBoardMenu = new ScoreBoardMenu(dataOutputStream, dataInputStream);
                         scoreBoardMenu.start();
