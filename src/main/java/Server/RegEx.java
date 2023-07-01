@@ -16,7 +16,14 @@ public enum RegEx {
     SHOW_MESSAGES("\\s*show\\s*messages\\s*"),
     SEND_MESSAGE("\\s*send\\s+-m (?<message>.*)\\s*"),
     DELETE_MESSAGE("\\s*delete message -i (?<id>\\d+)\\s*"),
+    DELETE_FOR_ME("\\s*delete message for me -i (?<id>\\d+)\\s*"),
     EDIT_MESSAGE("\\s*edit message -i (?<id>\\d+) -m (?<newContent>.*)\\s*"),
+    SHOW_PENDING("\\s*show pending list\\s*"),
+    SHOW_FREINDS("\\s*show friends\\s*"),
+    SHOW_DETAILS("\\s*show details -u (?<name>\\d+)\\s*"),
+    SEND_REQUEST("\\s*send request -u (?<name>\\d+)\\s*"),
+    ACCEPT_REQUEST("\\s*send request -u (?<name>\\d+)\\s*"),
+    REJECT_REQUEST("\\s*send request -u (?<name>\\d+)\\s*"),
     GET_CHATS("get chats");
 
 
