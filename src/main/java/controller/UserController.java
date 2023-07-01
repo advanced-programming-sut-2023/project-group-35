@@ -42,8 +42,7 @@ public class UserController {
         this.loggedInUser = loggedInUser;
     }
 
-    public String register(String username, String password, String nickName, String email, String slogan,
-                           SecurityQuestion securityQuestion, String answer) throws IOException, NoSuchAlgorithmException {
+    public String register(String username, String password, String nickName, String email, String slogan, SecurityQuestion securityQuestion, String answer) throws IOException, NoSuchAlgorithmException {
        // else if (!userName.matches("\\w+")) is this the right format for username?
 
         User userToBeAdded = new User(username, turnPasswordToSha256(password),
@@ -84,7 +83,7 @@ public class UserController {
         //if (stayLoggedIn) {
         FileWriter fileWriter = new FileWriter("loggedIn.txt");
 //        fileWriter.write(loggedInUser.getUserName());
-        if(!stayLoggedIn) fileWriter.write("false");
+        if (!stayLoggedIn) fileWriter.write("false");
         else {
             fileWriter.write(loggedInUser.getUserName());
             //fileWriter.write(String.valueOf(stayLoggedIn));
@@ -94,7 +93,7 @@ public class UserController {
         //loggedInUser.setAttemptsNumber(0);
 
         return ResponseToUser.LOGGED_IN_SUCCESSFULLY;
-
+    }
     public String forgotMyPassword(String userName,String password) throws NoSuchAlgorithmException, IOException {
         if (User.getUserByUsername(userName) == null)
             return "No such user exists!";
@@ -161,6 +160,7 @@ public class UserController {
             loggedInUser.setPassword(turnPasswordToSha256(newPass));
             return "your password changed!";
         }
+    }
     public String changePassword(String newPass, String confirmPass) throws NoSuchAlgorithmException, IOException {
         String result;
         if(newPass.equals(confirmPass)) return "please check the confirmation again";
