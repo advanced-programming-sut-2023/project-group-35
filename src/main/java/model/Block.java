@@ -174,7 +174,7 @@ public class Block {
         building = null;
     }
 
-    public boolean isHasBase() {
+    public boolean hasBase() {
         return hasBase;
     }
 
