@@ -144,6 +144,9 @@ public class MapMenu extends Menu {
             if (block.getTree() != null) {
                 setMapBlockImageView(mapPane, block.getTree().getImage(), block, true);
             }
+            if (block.hasBase()) {
+                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
+            }
             setRectangleSettings(rectangle, block);
         }
     }

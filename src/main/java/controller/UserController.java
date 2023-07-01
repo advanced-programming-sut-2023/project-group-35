@@ -42,8 +42,7 @@ public class UserController {
         this.loggedInUser = loggedInUser;
     }
 
-    public String register(String username, String password, String nickName, String email, String slogan,
-                           SecurityQuestion securityQuestion, String answer) throws IOException, NoSuchAlgorithmException {
+    public String register(String username, String password, String nickName, String email, String slogan, SecurityQuestion securityQuestion, String answer) throws IOException, NoSuchAlgorithmException {
        // else if (!userName.matches("\\w+")) is this the right format for username?
 
         User userToBeAdded = new User(username, turnPasswordToSha256(password),
