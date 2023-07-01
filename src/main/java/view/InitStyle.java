@@ -2,9 +2,7 @@ package view;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import Enum.*;
@@ -16,8 +14,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
-import javax.swing.*;
-import java.awt.*;
+
+
 
 
 public class InitStyle {
@@ -25,6 +23,9 @@ public class InitStyle {
     public static void setBackGround(Pane pane, ImageEnum imageEnum) {
         BackgroundSize backgroundSize = new BackgroundSize(-1.0, -1.0, true, true, true, false);
         pane.setBackground(new Background(new BackgroundImage(ImageEnum.getImage(imageEnum, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+    }
+    public static void setBackGroundColor(Label label , Color color) {
+        label.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
     }
     public static Button setGameButtonStyles(String name, int height, int width) {
         Button button = new Button(name);

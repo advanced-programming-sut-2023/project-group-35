@@ -60,38 +60,38 @@ public class Connection extends Thread{
         while (true) {
             currentUser = new LoginMenuServerController(dataOutputStream, dataInputStream).goInit();
             if (currentUser == null) return;
-            handleUser();
+            //handleUser();
         }
     }
-    public void handleUser(){
-        try {
-            dataOutputStream.writeUTF("Choose Where To Go!");
-            while (true) {
-                if(dataInputStream.available()!=0) {
-                    String input = dataInputStream.readUTF();
-                    if(input.equals("friendship menu"))
-                        new FriendshipMenu(dataOutputStream,dataInputStream,currentUser).friendShipMenuHandler();
-                    else if(input.equals("lobby"))
-                        new GamesMenu(dataOutputStream,dataInputStream,currentUser);
-                    else if (input.equals("global chat"))
-                        new GlobalChatServerMenu(dataOutputStream, dataInputStream, currentUser).startGlobal();
-                    else if (input.equals("private chat"))
-                        new PrivateChatMenu(dataOutputStream, dataInputStream, currentUser).privateChat();
-                    else if (input.equals("group chat"))
-                        new GroupChatMenu(dataOutputStream, dataInputStream, currentUser).GroupChat();
-                    else if (input.equals("scoreboard")){
-                        ScoreBoardMenu scoreBoardMenu = new ScoreBoardMenu(dataOutputStream, dataInputStream);
-                        scoreBoardMenu.start();
-                        scoreBoardMenu.join();
-                    }
-                    else if (input.matches("\\s*logout\\s*")) return;
-                    else dataOutputStream.writeUTF("invalid input");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public void handleUser(){
+//        try {
+//            dataOutputStream.writeUTF("Choose Where To Go!");
+//            while (true) {
+//                if(dataInputStream.available()!=0) {
+//                    String input = dataInputStream.readUTF();
+//                    if(input.equals("friendship menu"))
+//                        new FriendshipMenu(dataOutputStream,dataInputStream,currentUser).friendShipMenuHandler();
+//                    else if(input.equals("lobby"))
+//                        new GamesMenu(dataOutputStream,dataInputStream,currentUser);
+//                    else if (input.equals("global chat"))
+//                        new GlobalChatServerMenu(dataOutputStream, dataInputStream, currentUser).startGlobal();
+//                    else if (input.equals("private chat"))
+//                        new PrivateChatMenu(dataOutputStream, dataInputStream, currentUser).privateChat();
+//                    else if (input.equals("group chat"))
+//                        new GroupChatMenu(dataOutputStream, dataInputStream, currentUser).GroupChat();
+//                    else if (input.equals("scoreboard")){
+//                        ScoreBoardMenu scoreBoardMenu = new ScoreBoardMenu(dataOutputStream, dataInputStream);
+//                        scoreBoardMenu.start();
+//                        scoreBoardMenu.join();
+//                    }
+//                    else if (input.matches("\\s*logout\\s*")) return;
+//                    else dataOutputStream.writeUTF("invalid input");
+//                }
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

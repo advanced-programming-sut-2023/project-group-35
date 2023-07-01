@@ -1,6 +1,6 @@
 package Server;
 
-import com.beust.ah.A;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -41,6 +41,32 @@ public class GroupChat {
         JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
         for (JsonElement jsonElement : jsonArray)
             groupChats.add(gson.fromJson(jsonElement, GroupChat.class));
+    }
+    public static boolean deleteMessage(SentMessage message, User currentUser,GroupChat groupChat) {
+        if (!message.getSender().getUserName().equals(currentUser.getUserName()))
+            return false;
+        groupChat.messages.remove(message);
+        saveTheDataOfGroups();
+        return true;
+    }
+
+
+    public static boolean editMessage(SentMessage message, User currentUser, String newMessage) {
+        if (!message.getSender().getUserName().equals(currentUser.getUserName()))
+            return false;
+        message.setMessage(newMessage);
+        saveTheDataOfGroups();
+        return true;
+    }
+    public static void sendMessage(SentMessage message,GroupChat groupChat) {
+        groupChat.messages.remove(message);
+        saveTheDataOfGroups();
+    }
+    public static SentMessage getSentMessageById(int id,GroupChat groupChat){
+        for(SentMessage sentMessage: groupChat.messages){
+            if(sentMessage.getId() == id) return sentMessage;
+        }
+        return null;
     }
 
 

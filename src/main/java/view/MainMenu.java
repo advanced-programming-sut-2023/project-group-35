@@ -144,11 +144,11 @@ public class MainMenu extends Menu{
         profileButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                ProfileMenu profileMenu = new ProfileMenu();
+                ProfileMenu profileMenu = new ProfileMenu(loggedInUser);
                 profileMenu.setUserController(userController);
                 profileMenu.setLoggedInUser(loggedInUser);
                 try {
-                    new ProfileMenu().start(Menu.stage);
+                    new ProfileMenu(loggedInUser).start(Menu.stage);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

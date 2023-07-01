@@ -1,6 +1,5 @@
 package view;
 
-import com.beust.ah.A;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
