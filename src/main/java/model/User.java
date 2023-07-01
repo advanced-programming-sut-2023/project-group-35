@@ -16,6 +16,20 @@ public class User implements Comparable {
     private int attemptsNumber;
     private long lastAttemptForLogin;
     private String sloganOfUser;
+    private String avatarUrl;
+
+    private final ArrayList<Map> maps = new ArrayList<>();
+
+    public ArrayList<Map> getMaps() {
+        return maps;
+    }
+//private Map map;
+
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
     private Map map;
     public String avatar;
     public String lastEntrance = null;
@@ -33,7 +47,9 @@ public class User implements Comparable {
         this.highScore = 0;
         this.attemptsNumber = 0;
         this.lastAttemptForLogin = System.currentTimeMillis();
+        maps.add(Map.generateDefaultMap(this.getUserName()));
     }
+
 
     public String getAvatar() {
         return avatar;
@@ -138,13 +154,13 @@ public class User implements Comparable {
         return lastAttemptForLogin;
     }
 
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
+//    public Map getMap() {
+//        return map;
+//    }
+//
+//    public void setMap(Map map) {
+//        this.map = map;
+//    }
 
     public void setLastAttemptForLogin(long lastAttemptForLogin) {
         this.lastAttemptForLogin = lastAttemptForLogin;

@@ -3,14 +3,11 @@ package controller;
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -19,7 +16,6 @@ import Enum.*;
 import view.MainMenu;
 import view.RegisterAndLoginMenu;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 
 public class UserController {
@@ -38,79 +34,66 @@ public class UserController {
     }
 
     public UserController() {
-        loadTheData();
-        Map.loadTheMap();
+        //loadTheData();
+        //Map.loadTheMap();
     }
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
 
-    public String register(String password,String userName,String nickName,String passwordConfirm,String email,
-                           String slogan) throws IOException, NoSuchAlgorithmException {
-        nickName = checkForQuotation(nickName);
-        if (password.equals("random")) {
-           // password = RegisterAndLoginMenu.getRandomPassword();
-           // if (RegisterAndLoginMenu.checkPassword(password))
-                System.out.println("It was entered correctly.");
-                passwordConfirm = password;
-        }
-        if (slogan != null && slogan.equals("Random")) {
-            slogan = generateRandomSlogan();
-        }
-        if (slogan != null && slogan.length() < 1)
-            return "there is an empty field!";
-        SecurityQuestion securityQuestion = null;
-        String answerToSecurity = null;
-        if (userName.length() < 1 || password.length() < 1 || email.length() < 1 || nickName.length() < 1)
-            return "There is some field empty!";
-        else if (!userName.matches("\\w+"))
-            return "Invalid username format!";
-        else if (User.getUserByUsername(userName) != null) {
-          //  String suggestedUserName = RegisterAndLoginMenu.suggestNewName(userName);
-        //    userName = suggestedUserName;
-        }
-        if (!RegisterAndLoginMenu.checkPasswordErrors(password))
-            return "so you got the error...";
-        if (passwordConfirm != null && !passwordConfirm.trim().equals(password.trim()))
-            return "You didn't repeat the password correctly";
-        if (User.getUserByEmail(email) != null)
-            return "Email already exists in Server!";
-        else if (!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))
-            return "Invalid Email format";
-       // securityQuestion = RegisterAndLoginMenu.getSafetyQuestion();
-        //answerToSecurity = RegisterAndLoginMenu.getAnswerOfQuestion();
-        User userToBeAdded = new User(userName, turnPasswordToSha256(password),
-                nickName, email, securityQuestion, answerToSecurity, slogan);
+    public String register(String username, String password, String nickName, String email, String slogan,
+                           SecurityQuestion securityQuestion, String answer) throws IOException, NoSuchAlgorithmException {
+       // else if (!userName.matches("\\w+")) is this the right format for username?
+
+        User userToBeAdded = new User(username, turnPasswordToSha256(password),
+                nickName, email, securityQuestion, answer, slogan);
         User.addUser(userToBeAdded);
-        return "Sign up was successful,we have " + userName + " on board now";
+        saveTheData();
+        return "Sign up was successful,we have " + username + " on board now";
     }
 
-    public String login(String userName,String password,boolean isLoggedIn) throws NoSuchAlgorithmException, IOException {
-        password = checkForQuotation(password);
-        userName = checkForQuotation(userName);
-        if (User.getUserByUsername(userName) == null)
-            return "No such user found!";
-        else if ((-1 * User.getUserByUsername(userName).getLastAttemptForLogin() + System.currentTimeMillis()) <=
-                User.getUserByUsername(userName).getAttemptsNumber() * 1000)
-            return "wait few seconds before another try";
-        else if (!turnPasswordToSha256(password).equals(User.getUserByUsername(userName).getPassword())) {
-            User.getUserByUsername(userName).addNumberOfAttempts();
-            User.getUserByUsername(userName).setLastAttemptForLogin(System.currentTimeMillis());
-            return "Password didn't match";
-        } else {
-            loggedInUser = User.getUserByUsername(userName);
-            if (isLoggedIn) {
-                FileWriter fileWriter = new FileWriter("loggedIn.txt");
-                fileWriter.write(loggedInUser.getUserName());
-                fileWriter.close();
-            }
-            loggedInUser.setAttemptsNumber(0);
-            setLoggedInUser(loggedInUser);
-            return "logged in successfully";
 
+    public ResponseToUser isUsernameFormatCorrect(String username) {
+        if(username.length() < 5) return ResponseToUser.SHORT_USERNAME;
+        if(username.matches(".*[@#$%].*")) return ResponseToUser.INVALID_FORMAT_FOR_USERNAME;
+        if(User.getUserByUsername(username) != null) return ResponseToUser.USERNAME_EXISTS;
+        return ResponseToUser.CORRECT_FIELD;
+    }
+
+    public ResponseToUser checkTheEmail(String email) {
+        if (!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))
+            return ResponseToUser.INVALID_EMAIL_FORMAT;
+        if (User.getUserByEmail(email) != null)
+            return ResponseToUser.EMAIL_EXISTS;
+        return ResponseToUser.CORRECT_FIELD;
+    }
+    public ResponseToUser login(String username, String password, boolean stayLoggedIn) throws NoSuchAlgorithmException, IOException {
+
+        if (User.getUserByUsername(username) == null)
+            return ResponseToUser.USERNAME_NOT_FOUND;
+//        else if ((-1 * User.getUserByUsername(userName).getLastAttemptForLogin() + System.currentTimeMillis()) <=
+//                User.getUserByUsername(userName).getAttemptsNumber() * 1000)
+//            return "wait few seconds before another try";
+        if (!turnPasswordToSha256(password).equals(User.getUserByUsername(username).getPassword())) {
+//            User.getUserByUsername(userName).addNumberOfAttempts();
+//            User.getUserByUsername(userName).setLastAttemptForLogin(System.currentTimeMillis());
+            return ResponseToUser.WRONG_PASSWORD;
         }
-    }
+        loggedInUser = User.getUserByUsername(username);
+        //if (stayLoggedIn) {
+        FileWriter fileWriter = new FileWriter("loggedIn.txt");
+//        fileWriter.write(loggedInUser.getUserName());
+        if(!stayLoggedIn) fileWriter.write("false");
+        else {
+            fileWriter.write(loggedInUser.getUserName());
+            //fileWriter.write(String.valueOf(stayLoggedIn));
+            fileWriter.close();
+        }
+        //}
+        //loggedInUser.setAttemptsNumber(0);
+
+        return ResponseToUser.LOGGED_IN_SUCCESSFULLY;
 
     public String forgotMyPassword(String userName,String password) throws NoSuchAlgorithmException, IOException {
         if (User.getUserByUsername(userName) == null)
@@ -126,8 +109,25 @@ public class UserController {
 
     }
 
+//    public String forgotMyPassword(Matcher matcher) throws NoSuchAlgorithmException, IOException {
+//        String userName = matcher.group("username");
+//        String password = matcher.group("password");
+//        if (User.getUserByUsername(userName) == null)
+//            return "No such user exists!";
+//        else if (!RegisterAndLoginMenu.checkTheSecurityHitAndPass(User.getUserByUsername(userName)))
+//            return "you didn't answered security question correctly";
+//        else if (!checkPasswordErrors(password))
+//            return "you get the error...";
+//        else {
+//            User.getUserByUsername(userName).setPassword(turnPasswordToSha256(password));
+//            return "password changed successfully";
+//        }
+//
+//    }
+
     public String usernameChange(String newUserName) {
         newUserName = checkForQuotation(newUserName);
+        if(User.getUserByUsername(newUserName) != null) return "this username already exitst";
         if (!newUserName.matches("\\w+") || newUserName.length() < 1)
             return "Invalid username format!";
         else if(User.getUserByUsername(newUserName) != null)
@@ -161,8 +161,31 @@ public class UserController {
             loggedInUser.setPassword(turnPasswordToSha256(newPass));
             return "your password changed!";
         }
+    public String changePassword(String newPass, String confirmPass) throws NoSuchAlgorithmException, IOException {
+        String result;
+        if(newPass.equals(confirmPass)) return "please check the confirmation again";
+        if (!(result = checkPasswordErrors(newPass)).equals("perfect")) return result;
+        loggedInUser.setPassword(turnPasswordToSha256(newPass));
+        return "your password changed successfully!";
+
     }
 
+    public static String checkPasswordErrors(String password) {
+        if (password.length() < 6) {
+            return "Your Password should be at least 6 characters";
+        } else if (!password.matches(".*[A-Z].*")) {
+            return "Your Password must have an uppercase letter!";
+        } else if (!password.matches(".*[a-z].*")) {
+            return "Your Password must have a lowercase letter!";
+        } else if (!password.matches(".*[0-9].*")) {
+            return "Password is not strong enough, must have a number!";
+        } else if (!password.matches(".*[!@#$%^&*\\(\\)].*")) {
+            return "Your Password must have a character from <!@#$%^&*()>!";
+        }
+        return "perfect";
+    }
+    public String emailChange(Matcher matcher) {
+        String email = matcher.group("email");
     public String emailChange(String email) {
         if (User.getUserByEmail(email) != null)
             return "this email is already in database";
@@ -178,7 +201,7 @@ public class UserController {
         Random randomNumber = new Random();
         int numberChosen = randomNumber.nextInt(3);
         int counter = 0;
-        for (Slogans slogan : Slogans.values()) {
+        for (Slogan slogan : Slogan.values()) {
             if (counter < numberChosen + 1 && counter > numberChosen) {
                 System.out.println("Your new slogan is: " + slogan.getSlogan());
                 return slogan.getSlogan();
@@ -228,24 +251,24 @@ public class UserController {
     }
 
 
-    public void chooseMap() {
-        while (true) {
-            String mapName = MainMenu.getMapFromUser(Map.getMapList());
-            Map map = Map.getTemplateMapByName(mapName);
-            if (map != null) {
-                loggedInUser.setMap(map);
-                break;
-            }
-        }
-    }
-    public void createMap(){
-        System.out.println("enter map name:");
-        Scanner scanner = new Scanner(System.in);
-        String name = scanner.nextLine();
-        Map newMap = new Map(loggedInUser,100,name);
-        loggedInUser.setMap(newMap);
-        Map.getTemplateMaps().add(newMap);
-    }
+//    public void chooseMap() {
+//        while (true) {
+//            String mapName = MainMenu.getMapFromUser(Map.getMapList());
+//            Map map = Map.getTemplateMapByName(mapName);
+//            if (map != null) {
+//                loggedInUser.setMap(map);
+//                break;
+//            }
+//        }
+//    }
+//    public void createMap(){
+//        System.out.println("enter map name:");
+//        Scanner scanner = new Scanner(System.in);
+//        String name = scanner.nextLine();
+//        Map newMap = new Map(loggedInUser,100,name);
+//        loggedInUser.setMap(newMap);
+//        Map.getTemplateMaps().add(newMap);
+//    }
 
     public static String turnPasswordToSha256(String password) throws NoSuchAlgorithmException, IOException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -277,7 +300,10 @@ public class UserController {
         }
         Gson gson = new Gson();
         JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+        if(jsonArray == null) return;
         for (JsonElement jsonElement : jsonArray)
             User.getUsers().add(gson.fromJson(jsonElement, User.class));
     }
+
+
 }

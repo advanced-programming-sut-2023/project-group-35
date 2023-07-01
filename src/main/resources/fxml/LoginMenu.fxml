@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginMenu">
+   <children>
+      <VBox layoutX="103.0" layoutY="290.0" prefHeight="232.0" prefWidth="383.0" stylesheets="@../CSS/style.css">
+         <children>
+            <AnchorPane prefHeight="257.0" prefWidth="383.0">
+               <children>
+                  <CheckBox fx:id="stayLoggedInCheckBox" layoutX="36.0" layoutY="122.0" mnemonicParsing="false" text="stayLoggedIn" />
+                  <Label fx:id="passwordLabel" layoutX="46.0" layoutY="97.0" prefHeight="23.0" prefWidth="270.0" styleClass="warning-label" />
+                  <TextField fx:id="usernameField" layoutX="28.0" layoutY="14.0" prefHeight="27.0" prefWidth="327.0" promptText="username" />
+                  <TextField fx:id="passwordField" layoutX="28.0" layoutY="70.0" prefHeight="27.0" prefWidth="327.0" promptText="password" />
+                  <Button fx:id="loginButton" layoutX="72.0" layoutY="160.0" mnemonicParsing="false" onMouseClicked="#login" prefHeight="38.0" prefWidth="231.0" text="login" />
+                  <HBox layoutX="80.0" layoutY="198.0" prefHeight="23.0" prefWidth="223.0">
+                     <children>
+                        <Label prefHeight="23.0" prefWidth="120.0" text="dont have an account?" />
+                        <Hyperlink onMouseClicked="#startRegisterMenu" text="register" />
+                     </children>
+                  </HBox>
+                  <Hyperlink layoutX="122.0" layoutY="221.0" onMouseClicked="#passwordRecovery" style="-fx-font-family: aaa;" text="Forgot Your Password?" />
+                  <Label fx:id="usernameLabel" layoutX="46.0" layoutY="41.0" prefHeight="20.0" prefWidth="270.0" styleClass="warning-label" />
+                  <Label fx:id="timeLabel" layoutX="78.0" layoutY="143.0" prefHeight="17.0" prefWidth="223.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -3,36 +3,45 @@ package model;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import model.*;
 import Enum.*;
+import model.buildings.Base;
 import model.buildings.Building;
 import model.buildings.StoreHouse;
 
-import javax.swing.plaf.synth.Region;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
 public class Map {
-    User owner;
+    //User owner;
+    String username;
     String name;
     public int dimensions;
-
-
-
     private final ArrayList<Block> blocks = new ArrayList<>();
 
-    private final ArrayList<Block> baseBlocks = new ArrayList<>();
+    private final ArrayList<Base> baseBuildings = new ArrayList<>();
 
     public static final ArrayList<Map> templateMaps = new ArrayList<>();
 
 
-    public Map(User owner , int dimensions,String name) {
-        this.owner = owner;
+    public Map(String username, int dimensions,String name) {
+        this.username = username;
         this.dimensions= dimensions;
         addBlocks(dimensions);
         this.name = name;
+    }
+    public static Map generateDefaultMap(String username) {
+        Map map = new Map(username,200, "default");
+        makeNewBase(map, 10, 10);
+        makeNewBase(map, 20, 20);
+        return map;
+    }
+    public static void makeNewBase(Map map, int x, int y) {
+        Block block = map.getBlockByLocation(x, y);
+        Base base = new Base(BuildingType.BASE, null, block);
+        block.setBuilding(base);
+        map.getBaseBuildings().add(base);
     }
 
     public void setName(String name) {
@@ -48,6 +57,19 @@ public class Map {
                 blocks.add(new Block(i , j, FieldType.Ground));
             }
         }
+    }
+    public void addRegin(Reign reign) {
+        Base base = baseBuildings.get(0);
+        base.setOwner(reign);
+        for (Direction value : Direction.values()) {
+            if(!value.isMajor) continue;
+            Block block = this.getNeighborBlock(base.getBlock(), value);
+            if(!block.isOccupied()) {
+                block.setBuilding(new StoreHouse(BuildingType.STOCK_PILE, reign, block));
+                break;
+            }
+        }
+        baseBuildings.remove(0);
     }
     public static Map getTemplateMapByName(String name) {
         ArrayList<Integer> indexes = new ArrayList<>();
@@ -97,26 +119,16 @@ public class Map {
         return null;
     }
 
-    public void addRegin(Reign reign) {
-        Block block = baseBlocks.get(0);
-        block.setBuilding(new Building(BuildingType.BASE, reign, block));
-        for (Direction value : Direction.values()) {
-            if(!value.isMajor) continue;
-            if(!this.getNeighborBlock(block, value).isOccupied()) {
-                block.setBuilding(new StoreHouse(BuildingType.STOCK_PILE, reign, block));
-            }
-        }
-        baseBlocks.remove(0);
-    }
     public ArrayList<Block> getBlocks() {
         return blocks;
     }
 
-    public ArrayList<Block> getBaseBlocks() {
-        return baseBlocks;
+    public ArrayList<Base> getBaseBuildings() {
+        return baseBuildings;
     }
     public boolean isABase(int x , int y) {
-        for (Block block : baseBlocks) {
+        for (Base base : baseBuildings) {
+            Block block = base.getBlock();
             if(block.x == x && block.y == y) return true;
         }
         if(getBlockByLocation(x,y).isHasBase())
@@ -132,7 +144,7 @@ public class Map {
         return false;
     }
     public int getNumberOfBases() {
-        return baseBlocks.size();
+        return baseBuildings.size();
     }
     public static void addTemplateMap(Map map){
         templateMaps.add(map);
@@ -157,4 +169,8 @@ public class Map {
         }
 
     }
+    public String getName() {
+        return name;
+    }
+
 }

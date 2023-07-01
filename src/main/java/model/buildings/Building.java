@@ -11,12 +11,16 @@ public class Building {
     private Reign owner;
     private int hp;
 
+    public void setOwner(Reign owner) {
+        this.owner = owner;
+    }
+
     public Building(BuildingType buildingType, Reign owner, Block block) {
         this.buildingType = buildingType;
         this.block = block;
         this.owner = owner;
         this.hp = buildingType.hp;
-        owner.getBuildings().add(this);
+        if(owner != null) owner.getBuildings().add(this);
         block.setBuilding(this);
     }
 
