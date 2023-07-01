@@ -58,11 +58,11 @@ public class ScoreBoard extends Menu {
         }
         return backUp;
     }
-    public ArrayList<User> sortIt(ArrayList<User> input){
+    public static ArrayList<User> sortIt(ArrayList<User> input){
         Collections.sort(input,User::compareTo);
         return input;
     }
-    public ArrayList<String>fillData(ArrayList<User> input){
+    public static ArrayList<String>fillData(ArrayList<User> input){
         String output = "";
         ArrayList<String> goneOut = new ArrayList<>();
         for(User cUser:input){

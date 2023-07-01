@@ -23,6 +23,7 @@ public class Connection extends Thread{
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
         connections.add(this);
     }
+
     public static void purgeThemAll(){
         Iterator iterator = connections.iterator();
         Connection connection = null;
@@ -80,9 +81,9 @@ public class Connection extends Thread{
                     else if (input.equals("group chat"))
                         new GroupChatServerMenu(dataOutputStream, dataInputStream, currentUser).startGroupChat();
                     else if (input.equals("scoreboard")){
-                        ScoreBoardMenu scoreBoardMenu = new ScoreBoardMenu(dataOutputStream, dataInputStream);
-                        scoreBoardMenu.start();
-                        scoreBoardMenu.join();
+                        ScoreBoardServerMenu scoreBoardServerMenu = new ScoreBoardServerMenu(dataOutputStream, dataInputStream);
+                        scoreBoardServerMenu.start();
+                        scoreBoardServerMenu.join();
                     }
                     else if (input.matches("\\s*logout\\s*")) return;
                     else dataOutputStream.writeUTF("invalid input");
