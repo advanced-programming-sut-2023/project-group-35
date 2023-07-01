@@ -1,5 +1,7 @@
 package model;
 import Enum.*;
+import controller.UserController;
+
 import java.util.*;
 
 public class User implements Comparable {
@@ -16,6 +18,7 @@ public class User implements Comparable {
     private String sloganOfUser;
     private Map map;
     public String avatar;
+    public String lastEntrance = null;
     private static final ArrayList<User> users = new ArrayList<>();
 
     public User(String userName, String password, String nickName,
@@ -156,6 +159,18 @@ public class User implements Comparable {
     }
     public void addScore(int score) {
         if(score > highScore) highScore = score;
+    }
+    public void updateEnteringTime(){
+        Calendar calendar = Calendar.getInstance();
+        int minutes = calendar.get(Calendar.MINUTE);
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        String mmTime, hhTime;
+        if (minutes < 10) mmTime = "0" + minutes;
+        else mmTime = Integer.toString(minutes);
+        if (hours < 10) hhTime = "0" + hours;
+        else hhTime = Integer.toString(hours);
+        lastEntrance = hhTime + ":" + mmTime;
+        UserController.saveTheData();
     }
 
     @Override

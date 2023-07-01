@@ -57,6 +57,10 @@ public class ShopMenu extends Menu{
     @FXML
     public void initialize(){
         pointer = 0;
+
+        setImages(pointer);
+    }
+    /*public void addWatcher(){
         amountOF.textProprty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -66,8 +70,7 @@ public class ShopMenu extends Menu{
                 }
             }
         });
-        setImages(pointer);
-    }
+    }*/
 
     @Override
     public void start(Stage stage) throws Exception {
