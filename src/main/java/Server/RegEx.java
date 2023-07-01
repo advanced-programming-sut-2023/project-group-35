@@ -16,6 +16,7 @@ public enum RegEx {
     SHOW_MESSAGES("\\s*show\\s*messages\\s*"),
     SEND_MESSAGE("\\s*send\\s+-m (?<message>.*)\\s*"),
     DELETE_MESSAGE("\\s*delete message -i (?<id>\\d+)\\s*"),
+    DELETE_FOR_ME("\\s*delete message for me -i (?<id>\\d+)\\s*"),
     EDIT_MESSAGE("\\s*edit message -i (?<id>\\d+) -m (?<newContent>.*)\\s*"),
     GET_CHATS("get chats");
 
