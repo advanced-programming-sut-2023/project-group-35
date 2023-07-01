@@ -54,6 +54,12 @@ public class GroupChat {
         for (JsonElement jsonElement : jsonArray)
             groupChats.add(gson.fromJson(jsonElement, GroupChat.class));
     }
+    public static SentMessage getSentMessageByIdGroupVersion(int id,GroupChat groupChat){
+        for(SentMessage sentMessage:groupChat.messages){
+            if(sentMessage.getId() == id) return sentMessage;
+        }
+        return null;
+    }
 
 
 
