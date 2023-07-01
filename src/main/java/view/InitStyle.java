@@ -24,7 +24,7 @@ public class InitStyle {
     public static Color buttonBackGround = Color.rgb(146, 31, 22);
     public static void setBackGround(Pane pane, ImageEnum imageEnum) {
         BackgroundSize backgroundSize = new BackgroundSize(-1.0, -1.0, true, true, true, false);
-        pane.setBackground(new Background(new BackgroundImage(ImageEnum.getImage(imageEnum, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize)));
+        pane.setBackground(new Background(new BackgroundImage(ImageEnum.getImage(imageEnum, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
     }
     public static Button setGameButtonStyles(String name, int height, int width) {
         Button button = new Button(name);

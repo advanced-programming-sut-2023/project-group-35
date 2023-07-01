@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import model.User;
 import Enum.*;
 public class ProfileMenu extends Menu{
-    private UserController profileMenu = new UserController();
+    private UserController userController = new UserController();
     private User loggedInUser;
 
     @Override
@@ -53,24 +53,25 @@ public class ProfileMenu extends Menu{
 //
 //    }
 
-    public ProfileMenu(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
-        profileMenu.setLoggedInUser(loggedInUser);
-    }
+
 
 
     private String extractSlogan(String text) {
         String slogan = null;
         if (Commands.getMatcher(text, Commands.SLOGAN) != null) {
             Matcher sloganMarcher = Commands.getMatcher(text, Commands.SLOGAN);
-            slogan = profileMenu.checkForQuotation(sloganMarcher.group("slogan"));
+            slogan = userController.checkForQuotation(sloganMarcher.group("slogan"));
             if (slogan.length() < 1)
                 return null;
         }
         return slogan;
     }
 
+    public void setUserController(UserController userController) {
+        this.userController = userController;
+    }
 
-
-
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
 }

@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -50,6 +51,7 @@ public class RegisterAndLoginMenu extends Menu {
     public Label emailControllerLabel;
     public ChoiceBox sloganChoiceBox;
     public Label registerResultLabel;
+    public ImageView showHideIv;
     private String password = "";
     private String confirmPass = "";
     private String captchaNumber;
@@ -82,6 +84,9 @@ public class RegisterAndLoginMenu extends Menu {
     public void initialize() {
         initializeHashmapFields();
         initSloganChoiceBox();
+        showHideIv.setImage(new Image(RegisterAndLoginMenu.class.getResource("/Images/download.jpg").toExternalForm()));
+
+        showHideIv.setBlendMode(BlendMode.LIGHTEN);
         usernameField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String old, String now) {
@@ -183,17 +188,17 @@ public class RegisterAndLoginMenu extends Menu {
     }
 
     public void register(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
-//        if (!checkIfFieldsAreFilled()) {
-//            Menu.buildInformationAlert("please fill out the text fields first");
-//        } else if (!areFieldsFilledCorrectly()) {
-//            Menu.buildInformationAlert("please correct the fields with red alert");
-//        } else if (!password.equals(confirmPass)) {
-//            Menu.buildInformationAlert("password and confirmation are not the same");
-//        } else {
+        if (!checkIfFieldsAreFilled()) {
+            Menu.buildInformationAlert("please fill out the text fields first");
+        } else if (!areFieldsFilledCorrectly()) {
+            Menu.buildInformationAlert("please correct the fields with red alert");
+        } else if (!password.equals(confirmPass)) {
+            Menu.buildInformationAlert("password and confirmation are not the same");
+        } else {
             pickTheSecurityQuestion();
 
         System.out.println("getting out");
-       // }
+        }
     }
 
     public void showAndHidePasswordField(MouseEvent mouseEvent) {
@@ -268,9 +273,9 @@ public class RegisterAndLoginMenu extends Menu {
                 } else if(captchaTextField.getText().isEmpty()) {
                     Menu.buildInformationAlert("please write the captcha number");
                     //popup.show(Menu.stage);
-                } else if(!captchaTextField.getText().equals(captchaNum)) {
+                } else if(!captchaTextField.getText().equals(captchaNumber)) {
                     System.out.println("written:<" + captchaTextField.getText() + ">");
-                    System.out.println("captchanum: <" + captchaNum + ">");
+                    System.out.println("captchanum: <" + captchaNumber + ">");
                     Menu.buildInformationAlert("the captcha is not correct!\nplease try again!");
                     try {
                         generateRandomCaptcha(imageView);
@@ -288,9 +293,11 @@ public class RegisterAndLoginMenu extends Menu {
                                 answerToSecurityQuestion = securityQuestionTextField.getText();
                                 String result = userController.register(usernameField.getText(), password, nicknameField.getText(), emailField.getText(), sloganField.getText(), securityQuestion, answerToSecurityQuestion);
                                 System.out.println("done");
+                                clearFields();
                                 alert.close();
                                 popup.hide();
                                 registerResultLabel.setText(result);
+
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
@@ -302,8 +309,6 @@ public class RegisterAndLoginMenu extends Menu {
                 }
             }
         });
-
-
 
         VBox box = new VBox();
         box.setAlignment(Pos.CENTER);
@@ -327,6 +332,17 @@ public class RegisterAndLoginMenu extends Menu {
         popup.show(Menu.stage);
     }
 
+    public void clearFields() {
+        usernameField.setText("");
+        passwordField.setText("");
+        confirmPasswordField.setText("");
+        nicknameField.setText("");
+        sloganField.setText("");
+        emailField.setText("");
+        usernameControllerLabel.setText("");
+        passwordControllerLabel.setText("");
+        emailControllerLabel.setText("");
+    }
     public boolean checkIfFieldsAreFilled() {
         boolean canProceed = true;
         if (isFieldEmpty(usernameField, usernameControllerLabel)) canProceed = false;
@@ -415,12 +431,14 @@ public class RegisterAndLoginMenu extends Menu {
             File[] files = file.listFiles();
             File captcha = files[new Random().nextInt(files.length)];
             String captchaName = captcha.getName();
-            System.out.println(captchaName);
+            System.out.println("captchaname:" + captchaName);
+            System.out.println("number of ccaptcha: " + getNumberOfCaptcha(captchaName));
             URL url1 = RegisterAndLoginMenu.class.getResource("/Images/captcha/" + captchaName);
             Image image = new Image(url1.toExternalForm());
             System.out.println("url: " + image.getUrl());
             imageView.setImage(image);
             captchaNumber = getNumberOfCaptcha(captchaName);
+            System.out.println("just set captcha to :" + captchaNumber );
             return getNumberOfCaptcha(captchaName);
         }
         return null;

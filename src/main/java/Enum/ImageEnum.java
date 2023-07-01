@@ -9,8 +9,10 @@ public enum ImageEnum {
     LOGIN_MENU_IMAGE("/loginMenuImage.jpg"),
     REGISTER_MENU_IMAGE("/registerMenuImage.jpg"),
     MAIN_MENU_IMAGE("/mainMenuImage.jpg"),
-    DEFAULT_MAP_IMAGE(""),
-    UNSELECTED_MAP_IMAGE(""),
+    DEFAULT_MAP_IMAGE("/map/default.PNG"),
+    START_GAME_MENU("/startGameMenu.jpg"),
+    DEFAULT_AVATAR("/user.png"),
+    //UNSELECTED_MAP_IMAGE(""),
     ;
 
     ImageEnum(String imageUrl) {

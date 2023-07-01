@@ -51,6 +51,7 @@ public class LoginMenu extends Application  {
         InitStyle.setBackGround(loginPane, ImageEnum.LOGIN_MENU_IMAGE);
         stage.setScene(new Scene(loginPane));
         stage.show();
+
     }
 
     public void login(MouseEvent mouseEvent) throws Exception {
@@ -77,14 +78,11 @@ public class LoginMenu extends Application  {
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(failedAttempts * 10), actionEvent -> loginButton.setDisable(false)));
             timeline.setCycleCount(1);
             timeline.play();
-
         }
         else {
             timeLabel.setText("success");
             timeLabel.setTextFill(Color.rgb(22, 145 , 22));
-//            MainMenu menu = new MainMenu();
-//            menu.setController(userController);
-//            menu.start(Menu.stage);
+            Menu.startMainMenu(userController);
         }
     }
 

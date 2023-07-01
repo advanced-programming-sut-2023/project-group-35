@@ -4,7 +4,6 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -37,11 +36,7 @@
                <children>
                   <TextField fx:id="confirmPasswordField" layoutY="-5.0" prefHeight="34.0" prefWidth="209.0" promptText="confirm password" />
                   <Label fx:id="confirmPasswordController" layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="245.0" />
-                  <ImageView fitHeight="17.0" fitWidth="32.0" layoutX="230.0" layoutY="6.0" onMouseClicked="#showAndHidePasswordField" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/showHide.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="showHideIv" fitHeight="25.0" fitWidth="32.0" layoutX="227.0" layoutY="-2.0" onMouseClicked="#showAndHidePasswordField" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="74.0" prefWidth="306.0">

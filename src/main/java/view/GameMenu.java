@@ -6,9 +6,9 @@ import javafx.stage.Stage;
 import model.Reign;
 
 public class GameMenu extends Menu{
-    private final GameController gameController;
+    private GameController gameController;
 
-    public GameMenu(GameController gameController) {
+    public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
 

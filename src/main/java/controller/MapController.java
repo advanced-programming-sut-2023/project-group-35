@@ -97,139 +97,139 @@ public class MapController {
 //        return map.getBlockByLocation(x, y).BlockInfo(true);
 //    }
 
-    public String setNewBase(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        if (!areCoordinatesValid(x, y))
-            return "location is not valid!";
-        if (map.getBlockByLocation(x, y) == null) return ResponseToUser.INDEX.text;
-        if (map.isABase(x, y)) return "this block already is a base";
-        if (map.getBlockByLocation(x, y).isOccupied()) return "this block is occupied";
-        if (map.getBaseBlocks().size() > 7) return "you have 8 bases you can't add more";
-        if (map.getBlockByLocation(x, y).isOccupied())
-            return "not good location for base!";
+//    public String setNewBase(Matcher matcher) {
+//        int x = Integer.parseInt(matcher.group("x"));
+//        int y = Integer.parseInt(matcher.group("y"));
+//        if (!areCoordinatesValid(x, y))
+//            return "location is not valid!";
+//        if (map.getBlockByLocation(x, y) == null) return ResponseToUser.INDEX.text;
+//        if (map.isABase(x, y)) return "this block already is a base";
+//        if (map.getBlockByLocation(x, y).isOccupied()) return "this block is occupied";
+//        if (map.getBaseBlocks().size() > 7) return "you have 8 bases you can't add more";
+//        if (map.getBlockByLocation(x, y).isOccupied())
+//            return "not good location for base!";
+//
+//        map.getBaseBlocks().add(map.getBlockByLocation(x, y));
+//        map.getBlockByLocation(x,y).setHasBase(true);
+//        return "base was added successfully";
+//    }
 
-        map.getBaseBlocks().add(map.getBlockByLocation(x, y));
-        map.getBlockByLocation(x,y).setHasBase(true);
-        return "base was added successfully";
-    }
+//    public String removeBase(Matcher matcher) {
+//        if (!map.isABase(x, y)) return "there is no base in this block";
+//        if (isInTheGame) {
+//            return "wtf dude,you will be literally god with this option while this is my swamp and i'm drowsy...zzz";
+//        }
+//        map.getBaseBlocks().remove(map.getBlockByLocation(x, y));
+//        return "the base was successfully removed";
+//    }
 
-    public String removeBase(Matcher matcher) {
-        if (!map.isABase(x, y)) return "there is no base in this block";
-        if (isInTheGame) {
-            return "wtf dude,you will be literally god with this option while this is my swamp and i'm drowsy...zzz";
-        }
-        map.getBaseBlocks().remove(map.getBlockByLocation(x, y));
-        return "the base was successfully removed";
-    }
+//    public String setTextureOfBlock(Matcher matcher) {
+//        int x = Integer.parseInt(matcher.group("x"));
+//        int y = Integer.parseInt(matcher.group("y"));
+//        if (!areCoordinatesValid(x, y))
+//            return "no valid point!";
+//        FieldType fieldType = FieldType.getFieldType(UserController.checkForQuotation(matcher.group("type")));
+//        if (fieldType == null)
+//            return "no valid field type!";
+//        if (isInTheGame) return "you can't change the texture of the blocks in the game";
+//        if (map.isABase(x, y)) return "there is a base here, you can't change the texture";
+//        map.getBlockByLocation(x, y).setFieldType(fieldType);
+//        return "the texture is now set";
+//    }
 
-    public String setTextureOfBlock(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        if (!areCoordinatesValid(x, y))
-            return "no valid point!";
-        FieldType fieldType = FieldType.getFieldType(UserController.checkForQuotation(matcher.group("type")));
-        if (fieldType == null)
-            return "no valid field type!";
-        if (isInTheGame) return "you can't change the texture of the blocks in the game";
-        if (map.isABase(x, y)) return "there is a base here, you can't change the texture";
-        map.getBlockByLocation(x, y).setFieldType(fieldType);
-        return "the texture is now set";
-    }
+//    public String setTextureOfArea(Matcher matcher) {
+//        FieldType fieldType = FieldType.getFieldType(UserController.checkForQuotation(matcher.group("type")));
+//        int x2 = Integer.parseInt(matcher.group("x2"));
+//        int x1 = Integer.parseInt(matcher.group("x1"));
+//        int y1 = Integer.parseInt(matcher.group("y1"));
+//        int y2 = Integer.parseInt(matcher.group("y2"));
+//        if (isInTheGame) return "you can't change the texture of the blocks in the game";
+//        for (int i = x1; i <= x2; i++) {
+//            for (int j = y1; j <= y2; j++) {
+//                if (map.getBlockByLocation(x, y) != null && map.getBlockByLocation(x, y).getBuilding() == null)
+//                    map.getBlockByLocation(i, j).setFieldType(fieldType);
+//            }
+//        }
+//        return "the textures are successfully set";
+//    }
 
-    public String setTextureOfArea(Matcher matcher) {
-        FieldType fieldType = FieldType.getFieldType(UserController.checkForQuotation(matcher.group("type")));
-        int x2 = Integer.parseInt(matcher.group("x2"));
-        int x1 = Integer.parseInt(matcher.group("x1"));
-        int y1 = Integer.parseInt(matcher.group("y1"));
-        int y2 = Integer.parseInt(matcher.group("y2"));
-        if (isInTheGame) return "you can't change the texture of the blocks in the game";
-        for (int i = x1; i <= x2; i++) {
-            for (int j = y1; j <= y2; j++) {
-                if (map.getBlockByLocation(x, y) != null && map.getBlockByLocation(x, y).getBuilding() == null)
-                    map.getBlockByLocation(i, j).setFieldType(fieldType);
-            }
-        }
-        return "the textures are successfully set";
-    }
+//    public String dropBuilding(Matcher matcher) {
+//        int x = Integer.parseInt(matcher.group("x"));
+//        int y = Integer.parseInt(matcher.group("y"));
+//        if (!areCoordinatesValid(x, y))
+//            return "your point is not valid!";
+//        Block block = map.getBlockByLocation(x, y);
+//        if (block.getBuilding() == null)
+//            return "there is already building in that point!";
+//        if (block.isOccupied())
+//            return "you can't build anything here!";
+//        BuildingType buildingType = BuildingType.getBuildingTypeByName(UserController.checkForQuotation(matcher.group("type")));
+//        if (buildingType == null)
+//            return "your chosen building is not valid!";
+//        Building buildingToAdd = new Building(buildingType, reignPlaying, block);
+//
+//        if (reignPlaying == null) {
+//            block.setBuilding(buildingToAdd);
+//        } else {
+//            block.setBuilding(buildingToAdd);
+//            reignPlaying.addBuilding(buildingToAdd);
+//        }
+//        return "building dropped with success!";
+//    }
 
-    public String dropBuilding(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        if (!areCoordinatesValid(x, y))
-            return "your point is not valid!";
-        Block block = map.getBlockByLocation(x, y);
-        if (block.getBuilding() == null)
-            return "there is already building in that point!";
-        if (block.isOccupied())
-            return "you can't build anything here!";
-        BuildingType buildingType = BuildingType.getBuildingTypeByName(UserController.checkForQuotation(matcher.group("type")));
-        if (buildingType == null)
-            return "your chosen building is not valid!";
-        Building buildingToAdd = new Building(buildingType, reignPlaying, block);
-
-        if (reignPlaying == null) {
-            block.setBuilding(buildingToAdd);
-        } else {
-            block.setBuilding(buildingToAdd);
-            reignPlaying.addBuilding(buildingToAdd);
-        }
-        return "building dropped with success!";
-    }
-
-    public String dropUnit(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        UnitType unitType = UnitType.getUnitTypeByName(UserController.checkForQuotation(matcher.group("type")));
-        int amount = Integer.parseInt(matcher.group("amount"));
-        if (!areCoordinatesValid(x, y))
-            return "there is no valid point!";
-        else if (unitType == null)
-            return "there is no valid unit Type";
-        else if (amount < 1)
-            return "no valid amount!";
-        else if (!isInTheGame)
-            return "You are not playing!";
-        else {
-            MilitaryUnit militaryUnit = new MilitaryUnit(unitType, reignPlaying, map.getBlockByLocation(x, y), amount);
-            reignPlaying.getMilitaryUnits().add(militaryUnit);
-            map.getBlockByLocation(x, y).addUnit(militaryUnit);
-            return "Units were deployed(cheater00)!";
-        }
-    }
+//    public String dropUnit(Matcher matcher) {
+//        int x = Integer.parseInt(matcher.group("x"));
+//        int y = Integer.parseInt(matcher.group("y"));
+//        UnitType unitType = UnitType.getUnitTypeByName(UserController.checkForQuotation(matcher.group("type")));
+//        int amount = Integer.parseInt(matcher.group("amount"));
+//        if (!areCoordinatesValid(x, y))
+//            return "there is no valid point!";
+//        else if (unitType == null)
+//            return "there is no valid unit Type";
+//        else if (amount < 1)
+//            return "no valid amount!";
+//        else if (!isInTheGame)
+//            return "You are not playing!";
+//        else {
+//            MilitaryUnit militaryUnit = new MilitaryUnit(unitType, reignPlaying, map.getBlockByLocation(x, y), amount);
+//            reignPlaying.getMilitaryUnits().add(militaryUnit);
+//            map.getBlockByLocation(x, y).addUnit(militaryUnit);
+//            return "Units were deployed(cheater00)!";
+//        }
+//    }
 
 
-    public String dropRock(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        if(!areCoordinatesValid(x,y))
-            return "location is not valid!";
-        Direction direction = Direction.getDirectionByName(matcher.group("direction"));
-        if(direction == null)
-            return "direction not valid!";
-        Block block = map.getBlockByLocation(x,y);
-        if((block.getBuilding() != null) && (block.getMilitaryUnits() != null))
-            return "there are already some buildings and units in block!";
-        else{
-            block.setFieldType(FieldType.Rock);
-            return "an step toward new stone age!";
-        }
-    }
+//    public String dropRock(Matcher matcher) {
+//        int x = Integer.parseInt(matcher.group("x"));
+//        int y = Integer.parseInt(matcher.group("y"));
+//        if(!areCoordinatesValid(x,y))
+//            return "location is not valid!";
+//        Direction direction = Direction.getDirectionByName(matcher.group("direction"));
+//        if(direction == null)
+//            return "direction not valid!";
+//        Block block = map.getBlockByLocation(x,y);
+//        if((block.getBuilding() != null) && (block.getMilitaryUnits() != null))
+//            return "there are already some buildings and units in block!";
+//        else{
+//            block.setFieldType(FieldType.Rock);
+//            return "an step toward new stone age!";
+//        }
+//    }
 
-    public String dropTree(Matcher matcher) {
-        Tree tree = Tree.getTreeByName(matcher.group("tree"));
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        if(!areCoordinatesValid(x,y))
-            return "location is not valid!";
-        if(tree == null)
-            return "No such tree exists!";
-        Block block = map.getBlockByLocation(x, y);
-        if(block == null) return "index out of bounds";
-        if(block.isOccupied()) return ResponseToUser.OCCUPIED.text;
-        block.setTree(tree);
-        return "tree was dropped successfully";
-    }
+//    public String dropTree() {
+//        Tree tree = Tree.getTreeByName(matcher.group("tree"));
+//        int x = Integer.parseInt(matcher.group("x"));
+//        int y = Integer.parseInt(matcher.group("y"));
+//        if(!areCoordinatesValid(x,y))
+//            return "location is not valid!";
+//        if(tree == null)
+//            return "No such tree exists!";
+//        Block block = map.getBlockByLocation(x, y);
+//        if(block == null) return "index out of bounds";
+//        if(block.isOccupied()) return ResponseToUser.OCCUPIED.text;
+//        block.setTree(tree);
+//        return "tree was dropped successfully";
+//    }
 
     public String clearBlock(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));

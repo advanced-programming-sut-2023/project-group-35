@@ -52,7 +52,6 @@ public class Block {
         }
 
         return output;
-
     }
     public void clearBlock(Reign playing) {
         if(building != null && building.getOwner().equals(playing)) building = null;

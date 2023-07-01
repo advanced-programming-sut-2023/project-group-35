@@ -49,7 +49,7 @@ public class UserController {
         User userToBeAdded = new User(username, turnPasswordToSha256(password),
                 nickName, email, securityQuestion, answer, slogan);
         User.addUser(userToBeAdded);
-        //saveTheData();
+        saveTheData();
         return "Sign up was successful,we have " + username + " on board now";
     }
 
@@ -81,13 +81,18 @@ public class UserController {
             return ResponseToUser.WRONG_PASSWORD;
         }
         loggedInUser = User.getUserByUsername(username);
-        if (stayLoggedIn) {
-            FileWriter fileWriter = new FileWriter("loggedIn.txt");
+        //if (stayLoggedIn) {
+        FileWriter fileWriter = new FileWriter("loggedIn.txt");
+//        fileWriter.write(loggedInUser.getUserName());
+        if(!stayLoggedIn) fileWriter.write("false");
+        else {
             fileWriter.write(loggedInUser.getUserName());
+            //fileWriter.write(String.valueOf(stayLoggedIn));
             fileWriter.close();
         }
+        //}
         //loggedInUser.setAttemptsNumber(0);
-        setLoggedInUser(loggedInUser);
+
         return ResponseToUser.LOGGED_IN_SUCCESSFULLY;
 
 
@@ -270,6 +275,7 @@ public class UserController {
         }
         Gson gson = new Gson();
         JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+        if(jsonArray == null) return;
         for (JsonElement jsonElement : jsonArray)
             User.getUsers().add(gson.fromJson(jsonElement, User.class));
     }
