@@ -1,25 +1,22 @@
 package view;
 
-import java.awt.*;
-import java.awt.Color;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
-import java.util.regex.Matcher;
 
-import com.sun.javafx.charts.Legend;
 import controller.UserController;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
@@ -28,13 +25,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.User;
-import Enum.*;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class ProfileMenu extends Menu{
-    private UserController profileMenu = new UserController();
+    public javafx.scene.control.Button chooseFromDeviceButton;
+    private UserController userController = new UserController();
     private User loggedInUser;
     private static Pane pane;
     private Scene scene;
@@ -92,8 +86,6 @@ public class ProfileMenu extends Menu{
     Button changeSlogan;
     @FXML
     Button changePassword;
-    @FXML
-    Button chooseFromDeviceButton;
     @FXML
     Button chooseAnExistingAvatarButton;
     @FXML
@@ -176,17 +168,18 @@ public class ProfileMenu extends Menu{
                 textFieldToShowPassword.setText(t1);
                 if (t1 == null || t1.isEmpty()) {
                     passwordWarningLabel.setText("Enter password");
-                    passwordWarningLabel.setBackground(Color.RED);
+                    InitStyle.setBackGroundColor(passwordWarningLabel, Color.rgb(184, 4, 4));
                 } else if (!RegisterAndLoginMenu.checkPasswordErrors(t1)) {
                     passwordWarningLabel.setText("Weak!");
-                    passwordWarningLabel.setBackground(Color.RED);
+                    InitStyle.setBackGroundColor(passwordWarningLabel, Color.rgb(184, 4, 4));
                 }
                 else{
                     passwordWarningLabel.setText("Strong enough!");
-                    passwordWarningLabel.setBackground(Color.RED);
+                    InitStyle.setBackGroundColor(passwordWarningLabel, Color.rgb(184, 4, 4));
                 }
             }
         });
+
         textFieldToShowPassword.textProperty().addListener(new javafx.beans.value.ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
@@ -226,7 +219,7 @@ public class ProfileMenu extends Menu{
 
     }
     public void resetAll(){
-        profileMenu.setLoggedInUser(loggedInUser);
+        userController.setLoggedInUser(loggedInUser);
         submitUsername.setVisible(false);
         submitNickname.setVisible(false);
         submitEmail.setVisible(false);
@@ -234,14 +227,14 @@ public class ProfileMenu extends Menu{
         submitPassword.setVisible(false);
         chooseAnExistingAvatarButton.setVisible(false);
         chooseFromDeviceButton.setVisible(false);
-        usernameTextField.setText(profileMenu.getLoggedInUser().getUserName());
+        usernameTextField.setText(userController.getLoggedInUser().getUserName());
         usernameTextField.setDisable(true);
-        nicknameTextField.setText(profileMenu.getLoggedInUser().getNickName());
+        nicknameTextField.setText(userController.getLoggedInUser().getNickName());
         nicknameTextField.setDisable(true);
-        emailTextField.setText(profileMenu.getLoggedInUser().getEmail());
+        emailTextField.setText(userController.getLoggedInUser().getEmail());
         emailTextField.setDisable(true);
-        if(profileMenu.getLoggedInUser().getSloganOfUser() != null) {
-            sloganTextField.setText(profileMenu.getLoggedInUser().getSloganOfUser());
+        if(userController.getLoggedInUser().getSloganOfUser() != null) {
+            sloganTextField.setText(userController.getLoggedInUser().getSloganOfUser());
             sloganTextField.setDisable(true);
         }
         else{
@@ -340,7 +333,7 @@ public class ProfileMenu extends Menu{
     public void submitUsername(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfUsername = new Alert(Alert.AlertType.ERROR);
         alertOfUsername.setTitle("User Name");
-        String res = profileMenu.usernameChange(usernameTextField.getText());
+        String res = userController.usernameChange(usernameTextField.getText());
             if(res.equals("Invalid username format!")) {
                 alertOfUsername.setHeaderText("Invalid!");
             }else if(res.equals("This name already Exists!")){
@@ -352,14 +345,14 @@ public class ProfileMenu extends Menu{
         stage.setFullScreen(false);
         alertOfUsername.showAndWait();
         stage.setFullScreen(true);
-        usernameTextField.setText(profileMenu.getLoggedInUser().getUserName());
+        usernameTextField.setText(userController.getLoggedInUser().getUserName());
         usernameWarningLabel.setText("");
     }
     @FXML
     public void submitEmail(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfEmail = new Alert(Alert.AlertType.ERROR);
         alertOfEmail.setTitle("Email");
-        String res = profileMenu.emailChange(emailTextField.getText());
+        String res = userController.emailChange(emailTextField.getText());
         if(res.equals("Invalid Email format!")) {
             alertOfEmail.setHeaderText("Invalid!");
         }else if(res.equals("this email is already in database!")){
@@ -371,14 +364,14 @@ public class ProfileMenu extends Menu{
         stage.setFullScreen(false);
         alertOfEmail.showAndWait();
         stage.setFullScreen(true);
-        emailTextField.setText(profileMenu.getLoggedInUser().getEmail());
+        emailTextField.setText(userController.getLoggedInUser().getEmail());
         emailWarningLabel.setText("");
     }
     @FXML
     public void submitNickname(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfNickname = new Alert(Alert.AlertType.ERROR);
         alertOfNickname.setTitle("NickName");
-        String res = profileMenu.nicknameChange(nicknameTextField.getText());
+        String res = userController.nicknameChange(nicknameTextField.getText());
         if(res.equals("Invalid username format!")) {
             alertOfNickname.setHeaderText("Invalid!");
         }
@@ -389,14 +382,14 @@ public class ProfileMenu extends Menu{
         stage.setFullScreen(false);
         alertOfNickname.showAndWait();
         stage.setFullScreen(true);
-        nicknameTextField.setText(profileMenu.getLoggedInUser().getNickName());
+        nicknameTextField.setText(userController.getLoggedInUser().getNickName());
         nicknameWarningLabel.setText("");
     }
     @FXML
     public void submitSlogan(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfSlogan = new Alert(Alert.AlertType.ERROR);
         alertOfSlogan.setTitle("Slogan");
-        String res = profileMenu.changeOrRemoveSlogan(sloganTextField.getText());
+        String res = userController.changeOrRemoveSlogan(sloganTextField.getText());
         if(res.equals("you have no slogan to remove!")) {
             alertOfSlogan.setHeaderText("Invalid Try!");
         }else if(res.equals("your slogan removed")){
@@ -410,15 +403,15 @@ public class ProfileMenu extends Menu{
         stage.setFullScreen(false);
         alertOfSlogan.showAndWait();
         stage.setFullScreen(true);
-        if(profileMenu.getLoggedInUser().getSloganOfUser() != null)
-        sloganTextField.setText(profileMenu.getLoggedInUser().getSloganOfUser());
+        if(userController.getLoggedInUser().getSloganOfUser() != null)
+        sloganTextField.setText(userController.getLoggedInUser().getSloganOfUser());
         else sloganTextField.setText("Doesn't has slogan!");
     }
     @FXML
     public void SubmitPassword(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfPassword = new Alert(Alert.AlertType.ERROR);
         alertOfPassword.setTitle("Password");
-        String res = profileMenu.passwordChanger(oldPasswordTextField.getText(),
+        String res = userController.passwordChanger(oldPasswordTextField.getText(),
                passwordTextField.getText(),confirmationTextField.getText());
         if(res.equals("You entered wrong password!")) {
             alertOfPassword.setHeaderText("Invalid Try!");
@@ -439,7 +432,7 @@ public class ProfileMenu extends Menu{
         passwordTextField.setText("");
         passwordWarningLabel.setText("");
         oldPasswordText.setText("");
-        oldPasswordTextField.setText(profileMenu.getLoggedInUser().getPassword());
+        oldPasswordTextField.setText(userController.getLoggedInUser().getPassword());
         confirmationTextField.setText("");
         confirmationText.setText("");
     }
@@ -459,7 +452,7 @@ public class ProfileMenu extends Menu{
                 image = null;
             }
         }
-        profileMenu.getLoggedInUser().setAvatar(image.getName());
+        userController.getLoggedInUser().setAvatar(image.getName());
         avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/1.jpeg").toString()+
                 loggedInUser.avatar,
                 Screen.getPrimary().getBounds().getHeight(),
@@ -473,7 +466,7 @@ public class ProfileMenu extends Menu{
         File image = fileChooser.showOpenDialog(stage);
         stage.setFullScreen(true);
         if (image != null) {
-            profileMenu.getLoggedInUser().setAvatar(image.getName());
+            userController.getLoggedInUser().setAvatar(image.getName());
             avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/1.jpeg").toString()+
                     loggedInUser.avatar,
                     Screen.getPrimary().getBounds().getHeight(),
@@ -531,7 +524,7 @@ public class ProfileMenu extends Menu{
 
     public ProfileMenu(User loggedInUser) {
         this.loggedInUser = loggedInUser;
-        profileMenu.setLoggedInUser(loggedInUser);
+        userController.setLoggedInUser(loggedInUser);
     }
 
 

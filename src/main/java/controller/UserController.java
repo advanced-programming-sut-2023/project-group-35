@@ -161,94 +161,93 @@ public class UserController {
             return "your password changed!";
         }
     }
-    public String changePassword(String newPass, String confirmPass) throws NoSuchAlgorithmException, IOException {
-        String result;
-        if(newPass.equals(confirmPass)) return "please check the confirmation again";
-        if (!(result = checkPasswordErrors(newPass)).equals("perfect")) return result;
-        loggedInUser.setPassword(turnPasswordToSha256(newPass));
-        return "your password changed successfully!";
+            public String changePassword (String newPass, String confirmPass) throws NoSuchAlgorithmException, IOException {
+            String result;
+            if (newPass.equals(confirmPass)) return "please check the confirmation again";
+            if (!(result = checkPasswordErrors(newPass)).equals("perfect")) return result;
+            loggedInUser.setPassword(turnPasswordToSha256(newPass));
+            return "your password changed successfully!";
 
-    }
-
-    public static String checkPasswordErrors(String password) {
-        if (password.length() < 6) {
-            return "Your Password should be at least 6 characters";
-        } else if (!password.matches(".*[A-Z].*")) {
-            return "Your Password must have an uppercase letter!";
-        } else if (!password.matches(".*[a-z].*")) {
-            return "Your Password must have a lowercase letter!";
-        } else if (!password.matches(".*[0-9].*")) {
-            return "Password is not strong enough, must have a number!";
-        } else if (!password.matches(".*[!@#$%^&*\\(\\)].*")) {
-            return "Your Password must have a character from <!@#$%^&*()>!";
         }
-        return "perfect";
-    }
-    public String emailChange(Matcher matcher) {
-        String email = matcher.group("email");
-    public String emailChange(String email) {
-        if (User.getUserByEmail(email) != null)
-            return "this email is already in database";
-        else if (!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))
-            return "Invalid Email format";
-        else {
-            loggedInUser.setEmail(email);
-            return "your email changed!";
-        }
-    }
 
-    public String generateRandomSlogan() {
-        Random randomNumber = new Random();
-        int numberChosen = randomNumber.nextInt(3);
-        int counter = 0;
-        for (Slogan slogan : Slogan.values()) {
-            if (counter < numberChosen + 1 && counter > numberChosen) {
-                System.out.println("Your new slogan is: " + slogan.getSlogan());
-                return slogan.getSlogan();
+            public static String checkPasswordErrors (String password){
+            if (password.length() < 6) {
+                return "Your Password should be at least 6 characters";
+            } else if (!password.matches(".*[A-Z].*")) {
+                return "Your Password must have an uppercase letter!";
+            } else if (!password.matches(".*[a-z].*")) {
+                return "Your Password must have a lowercase letter!";
+            } else if (!password.matches(".*[0-9].*")) {
+                return "Password is not strong enough, must have a number!";
+            } else if (!password.matches(".*[!@#$%^&*\\(\\)].*")) {
+                return "Your Password must have a character from <!@#$%^&*()>!";
             }
+            return "perfect";
         }
-        System.out.println("Your new slogan is: this shouldn't happens");
-        return "this shouldn't happens";
-    }
 
-    public String changeOrRemoveSlogan(String slogan) {
-        if (loggedInUser.getSloganOfUser() == null && (slogan == null || slogan.length() < 1))
-            return "you have no slogan to remove!";
-        if (slogan == null || slogan.length() < 1) {
-            loggedInUser.setSloganOfUser(null);
-            return "your slogan removed!";
-        } else {
-            loggedInUser.setSloganOfUser(slogan);
-            return "your slogan changed!";
-        }
-    }
+            public String emailChange (String email){
+                if (User.getUserByEmail(email) != null)
+                    return "this email is already in database";
+                else if (!email.matches("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"))
+                    return "Invalid Email format";
+                else {
+                    loggedInUser.setEmail(email);
+                    return "your email changed!";
+                }
+            }
 
-    public int displayHighScore() {
-        return loggedInUser.getHighScore();
-    }
+            public String generateRandomSlogan () {
+                Random randomNumber = new Random();
+                int numberChosen = randomNumber.nextInt(3);
+                int counter = 0;
+                for (Slogan slogan : Slogan.values()) {
+                    if (counter < numberChosen + 1 && counter > numberChosen) {
+                        System.out.println("Your new slogan is: " + slogan.getSlogan());
+                        return slogan.getSlogan();
+                    }
+                }
+                System.out.println("Your new slogan is: this shouldn't happens");
+                return "this shouldn't happens";
+            }
 
-    public int displayRank() {
-        int rankOfUser = 1;
-        for (User user : User.getUsers())
-            if (loggedInUser.getHighScore() < user.getHighScore()) rankOfUser++;
-        return rankOfUser;
-    }
+            public String changeOrRemoveSlogan (String slogan){
+                if (loggedInUser.getSloganOfUser() == null && (slogan == null || slogan.length() < 1))
+                    return "you have no slogan to remove!";
+                if (slogan == null || slogan.length() < 1) {
+                    loggedInUser.setSloganOfUser(null);
+                    return "your slogan removed!";
+                } else {
+                    loggedInUser.setSloganOfUser(slogan);
+                    return "your slogan changed!";
+                }
+            }
 
-    public String displaySlogan() {
-        if (loggedInUser.getSloganOfUser() == null)
-            return "you don't have an slogan!\nuse <profile change slogan> to choose a slogan!";
-        return loggedInUser.getSloganOfUser();
-    }
+            public int displayHighScore() {
+                return loggedInUser.getHighScore();
+            }
 
-    public String displayProfile() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Your NickName: " + loggedInUser.getNickName() + "\n");
-        stringBuilder.append("Your Slogan: " + loggedInUser.getSloganOfUser() + "\n");
-        stringBuilder.append("Your highscore is " + loggedInUser.getHighScore() + "\n");
-        stringBuilder.append("Your rank between users is <" + displayRank() + ">");
-        String out = stringBuilder.toString();
-        return out;
-    }
+            public int displayRank () {
+                int rankOfUser = 1;
+                for (User user : User.getUsers())
+                    if (loggedInUser.getHighScore() < user.getHighScore()) rankOfUser++;
+                return rankOfUser;
+            }
+
+            public String displaySlogan () {
+                if (loggedInUser.getSloganOfUser() == null)
+                    return "you don't have an slogan!\nuse <profile change slogan> to choose a slogan!";
+                return loggedInUser.getSloganOfUser();
+            }
+
+            public String displayProfile () {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("Your NickName: " + loggedInUser.getNickName() + "\n");
+                stringBuilder.append("Your Slogan: " + loggedInUser.getSloganOfUser() + "\n");
+                stringBuilder.append("Your highscore is " + loggedInUser.getHighScore() + "\n");
+                stringBuilder.append("Your rank between users is <" + displayRank() + ">");
+                String out = stringBuilder.toString();
+                return out;
+            }
 
 
 //    public void chooseMap() {
@@ -270,40 +269,41 @@ public class UserController {
 //        Map.getTemplateMaps().add(newMap);
 //    }
 
-    public static String turnPasswordToSha256(String password) throws NoSuchAlgorithmException, IOException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        ;
-        md.update(password.getBytes(StandardCharsets.UTF_8));
-        byte[] digest = md.digest();
-        String hex = String.format("%064x", new BigInteger(1, digest));
-        return hex;
-    }
+            public static String turnPasswordToSha256 (String password) throws NoSuchAlgorithmException, IOException {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                ;
+                md.update(password.getBytes(StandardCharsets.UTF_8));
+                byte[] digest = md.digest();
+                String hex = String.format("%064x", new BigInteger(1, digest));
+                return hex;
+            }
 
-    public static void saveTheData() {
-        Gson gson = new Gson();
-        String json = gson.toJson(User.getUsers());
-        try {
-            FileWriter myWriter = new FileWriter("dataBase.json");
-            myWriter.write(json);
-            myWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            public static void saveTheData () {
+                Gson gson = new Gson();
+                String json = gson.toJson(User.getUsers());
+                try {
+                    FileWriter myWriter = new FileWriter("dataBase.json");
+                    myWriter.write(json);
+                    myWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public static void loadTheData () {
+                Reader reader;
+                try {
+                    reader = new FileReader("dataBase.json");
+                } catch (FileNotFoundException e) {
+                    return;
+                }
+                Gson gson = new Gson();
+                JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
+                if (jsonArray == null) return;
+                for (JsonElement jsonElement : jsonArray)
+                    User.getUsers().add(gson.fromJson(jsonElement, User.class));
+            }
+
+
         }
-    }
 
-    public static void loadTheData() {
-        Reader reader;
-        try {
-            reader = new FileReader("dataBase.json");
-        } catch (FileNotFoundException e) {
-            return;
-        }
-        Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
-        if(jsonArray == null) return;
-        for (JsonElement jsonElement : jsonArray)
-            User.getUsers().add(gson.fromJson(jsonElement, User.class));
-    }
-
-
-}
