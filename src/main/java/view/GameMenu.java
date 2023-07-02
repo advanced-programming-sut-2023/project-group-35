@@ -40,6 +40,7 @@ public class GameMenu extends Menu{
     private GameTabMenuMode menuMode = GameTabMenuMode.DROP_BUILDING;
     public static int MENU_ITEM_SIZE = 60;
     public static int BuildingImageSize;
+    public static int MapPaneHeight = 700;
     public static int SCREEN_HEIGHT = 912;
     public static int SCREEN_WIDTH = 1368;
     private BuildingType selectedBuildingType;
@@ -47,21 +48,20 @@ public class GameMenu extends Menu{
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
-        //this.gameMap = gameController.getMap();
-        //System.out.println("game map:" + gameMap);
     }
 
     public void setGameMap(Map gameMap) {
         this.gameMap = gameMap;
-        if(gameMap == null) System.out.println("game map null in set game map");
+        //if(gameMap == null) System.out.println("game map null in set game map");
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        if(gameMap == null) System.out.println("null bood in start");
-        if(gameController == null) System.out.println("game conroller ham null in sart");
-        if(gameController.getMap() == null) System.out.println("map of game controller ham null");
-        stage.setFullScreen(true);
+        //if(gameMap == null) System.out.println("null bood in start");
+        //if(gameController == null) System.out.println("game conroller ham null in sart");
+        //if(gameController.getMap() == null) System.out.println("map of game controller ham null");
+        //gameMap = gameController.getMap();
+       // stage.setFullScreen(true);
         Pane root = new Pane();
         initializeMap(root);
         initMenuPane(root);
@@ -75,7 +75,7 @@ public class GameMenu extends Menu{
     public void initMenuPane(Pane root) {
         Pane pane = new Pane();
         root.getChildren().add(pane);
-        pane.setLayoutY(600);
+        pane.setLayoutY(MapPaneHeight);
         pane.setLayoutX(0);
 //        pane.setPrefWidth(root.getPrefWidth());
         pane.setPrefWidth(SCREEN_WIDTH);
@@ -83,14 +83,15 @@ public class GameMenu extends Menu{
         //pane.setBackground(new Background(new BackgroundFill(Color.rgb(212, 195, 142), CornerRadii.EMPTY, Insets.EMPTY)));
         HBox hBox = new HBox();
         pane.getChildren().add(hBox);
-        ImageView tabMenuIcon = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.TAB_MENU_IMAGE, false),SCREEN_HEIGHT - 600, SCREEN_WIDTH / 3);
+        ImageView tabMenuIcon = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.TAB_MENU_IMAGE, false),SCREEN_HEIGHT - MapPaneHeight, SCREEN_WIDTH / 3);
+        ImageView tabMenuIcon1 = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.TAB_MENU_IMAGE, false),SCREEN_HEIGHT - MapPaneHeight, SCREEN_WIDTH / 3);
         Pane menuPane = new Pane();
-        //pane.setPrefWidth(SCREEN_WIDTH / 3);
-        menuPane.setPrefHeight(SCREEN_HEIGHT - 600);
+        pane.setPrefWidth(SCREEN_WIDTH / 3);
+        menuPane.setPrefHeight(SCREEN_HEIGHT - MapPaneHeight);
         //InitStyle.setBackGround(pane, ImageEnum.BACK_GROUND);
         hBox.getChildren().add(tabMenuIcon);
         hBox.getChildren().add(menuPane);
-        hBox.getChildren().add(tabMenuIcon);
+        hBox.getChildren().add(tabMenuIcon1);
         this.menuPane = menuPane;
     }
     public void initializeMap(Pane root){
@@ -98,7 +99,7 @@ public class GameMenu extends Menu{
         scrollPane.pannableProperty().set(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setMaxHeight(600);
+        scrollPane.setMaxHeight(MapPaneHeight);
 //        System.out.println(root.getHeight() + " wi: " + root.getWidth());
         scrollPane.setMaxWidth(1368);
 
@@ -201,6 +202,7 @@ public class GameMenu extends Menu{
 
     public TabPane createBuildingsTabPane() {
         TabPane tabPane = new TabPane();
+        tabPane.setPrefWidth(SCREEN_WIDTH / 3);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabPane.getTabs().add(getBuildingTabFor("1.png", BuildingType.BARRACK, BuildingType.MERCENARY_CAMP, BuildingType.ARMOURY, BuildingType.BIG_STONE_GATEHOUSE, BuildingType.SMALL_STONE_GATE, BuildingType.LOOKOUT_TOWER,BuildingType.LOOKOUT_TOWER, BuildingType.PERIMETER_TOWER, BuildingType.CIRCLE_TOWER, BuildingType.SQUARE_TOWER, BuildingType.ENGINEER_GUILD));
         tabPane.getTabs().add(getBuildingTabFor("2.png", BuildingType.STOCK_PILE, BuildingType.WOOD_CUTTER, BuildingType.STONE_MINE, BuildingType.IRON_MINE, BuildingType.PITCH_RIG, BuildingType.SHOP));

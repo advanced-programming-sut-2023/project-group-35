@@ -132,7 +132,8 @@ public class StartGameMenu extends Menu{
         GameMenu gameMenu = new GameMenu();
         gameMenu.setGameController(gameController);
         gameMenu.setGameMap(gameController.getMap());
-        new GameMenu().start(Menu.stage);
+//        new GameMenu().start(Menu.stage);
+        gameMenu.start(Menu.stage);
     }
     public Label getLabel(User user) {
         Label label = new Label();
