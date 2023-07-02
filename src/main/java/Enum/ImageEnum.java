@@ -12,6 +12,10 @@ public enum ImageEnum {
     DEFAULT_MAP_IMAGE("/map/default.PNG"),
     START_GAME_MENU("/startGameMenu.jpg"),
     DEFAULT_AVATAR("/user.png"),
+    TAB_MENU_IMAGE("/tabMenu.jpg"),
+    BACK_GROUND("backGround.png"),
+    REPAIR_ICON(""),
+    DELETE_ICON(""),
     //UNSELECTED_MAP_IMAGE(""),
     ;
 

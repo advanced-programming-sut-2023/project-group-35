@@ -104,9 +104,9 @@ Reign {
     }
 
     public int getResourceCapacity(Resource resource) {
-        System.out.println(resource);
+        System.out.println("resource" + resource);
         int x = resourceCapacity.get(resource);
-        System.out.println(x);
+        System.out.println("capacity" + x);
         return x;
     }
 

@@ -38,7 +38,7 @@ public enum Resource {
     }
 
     public BuildingType getStoredInBuilding() {
-        if(this.equals(SWORD)) System.out.println(this.storedInBuilding);
+        if(this.equals(SWORD)) System.out.println("stored in building: " + this.storedInBuilding);
         return this.storedInBuilding;
     }
 

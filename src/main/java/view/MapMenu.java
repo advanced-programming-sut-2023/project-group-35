@@ -113,13 +113,13 @@ public class MapMenu extends Menu {
             rectangle.setFill(new ImagePattern(block.getFieldType().getFieldImage()));
             mapPane.getChildren().add(rectangle);
             if (block.hasABuilding()) {
-                setMapBlockImageView(mapPane, block.getBuilding().getBuildingType().getImage(), block, true);
+                InitStyle.setMapBlockImageView(mapPane, block.getBuilding().getBuildingType().getImage(), block, true);
             }
             if (block.getTree() != null) {
-                setMapBlockImageView(mapPane, block.getTree().getImage(), block, true);
+                InitStyle.setMapBlockImageView(mapPane, block.getTree().getImage(), block, true);
             }
             if (block.hasBase() || map.isABase(block.x, block.y)) {
-                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
+                InitStyle.setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
             }
             setRectangleSettings(rectangle, block);
         }
@@ -209,17 +209,7 @@ public class MapMenu extends Menu {
 
 
 
-    public ImageView setMapBlockImageView(Pane pane, Image image, Block block, boolean isForMap) {
-        ImageView imageView = new ImageView(image);
-        imageView.setX(block.getX() * BLOCK_SIZE + INSET);
-        imageView.setY(block.getY() * BLOCK_SIZE + INSET);
-        if(isForMap) {
-            imageView.setFitHeight(BLOCK_SIZE);
-            imageView.setFitWidth(BLOCK_SIZE);
-        }
-        pane.getChildren().add(imageView);
-        return imageView;
-    }
+
 
     public void setRectangleSettings(Rectangle rectangle, Block block) {
         rectangle.setOnDragOver(event -> {
@@ -263,20 +253,17 @@ public class MapMenu extends Menu {
                     return;
                 }
                 //System.out.println("done");
-                setMapBlockImageView(mapPane, selectedTree.getImage(), block1, true);
+                InitStyle.setMapBlockImageView(mapPane, selectedTree.getImage(), block1, true);
                 map.getBlockByLocation(x, y).setTree(selectedTree);
                 selectedTree = null;
             }
             if(selectedFieldType != null) {
-                int x = getTheRightAxes(rectangle.getX(), INSET, BLOCK_SIZE);
-                int y = getTheRightAxes(rectangle.getY(), INSET, BLOCK_SIZE);
-                Block block1 = map.getBlockByLocation(x, y);
-                if(block1.isOccupied(map)) {
+                if(block.isOccupied(map)) {
                     selectedFieldType = null;
                     return;
                 }
-                setMapBlockImageView(mapPane, selectedFieldType.getFieldImage(), block1, true);
-                map.getBlockByLocation(x, y).setFieldType(selectedFieldType);
+                rectangle.setFill(InitStyle.getImagePattern(selectedFieldType.getFieldImage(), BLOCK_SIZE, BLOCK_SIZE));
+                block.setFieldType(selectedFieldType);
                 selectedFieldType = null;
             }
             if(hasSelectedBase) {
@@ -287,7 +274,7 @@ public class MapMenu extends Menu {
                     hasSelectedBase = false;
                     return;
                 }
-                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block1, true);
+                InitStyle.setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block1, true);
                 Map.makeNewBase(map, x, y);
                 hasSelectedBase = false;
             }
@@ -295,6 +282,18 @@ public class MapMenu extends Menu {
             event.consume();
         });
 
+        rectangle.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean isFocused) {
+                if(isFocused) {
+                    rectangle.setStroke(Color.rgb(224, 66, 18));
+                    rectangle.setStrokeWidth(5);
+                } else {
+                    rectangle.setStroke(null);
+                    rectangle.setStrokeWidth(0);
+                }
+            }
+        });
         rectangle.hoverProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean isNowHover) {
@@ -310,15 +309,12 @@ public class MapMenu extends Menu {
     public ImageView makeTheCopy(Rectangle rectangle) {
         Image image = ((ImagePattern) rectangle.getFill()).getImage(); // check if right
         ImageView imageView = new ImageView(image);
-        imageView.setOpacity(0.5); //todo check
+        imageView.setOpacity(0.5); //todo c
+        // heck
         return imageView;
     }
 
-    public Block getBlockByRectangleBounds(double x1, double y1) {
-        int x = (int) (x1 - 200) / BLOCK_SIZE;
-        int y = (int) (y1 - 200) / BLOCK_SIZE;
-        return map.getBlockByLocation(x, y);
-    }
+
 
     public int getTheRightAxes(double x, int inset, int BLOCK_SIZE) {
         x -= inset;
@@ -327,7 +323,9 @@ public class MapMenu extends Menu {
 
 
     public Block getBlockByRectangle(Rectangle rectangle) {
-        return getBlockByRectangleBounds(rectangle.getX(), rectangle.getY());
+        int x = (int) (rectangle.getX() - INSET) / BLOCK_SIZE;
+        int y = (int) (rectangle.getY() - INSET) / BLOCK_SIZE;
+        return map.getBlockByLocation(x, y);
     }
     public void setMapController(MapController mapController) {
         this.mapController = mapController;

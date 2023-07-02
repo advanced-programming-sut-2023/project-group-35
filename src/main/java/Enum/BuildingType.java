@@ -79,6 +79,12 @@ public enum BuildingType {
         }
         return null;
     }
+    public  boolean isEqualToAnyOf(BuildingType... buildingTypes) {
+        for (BuildingType buildingType : buildingTypes) {
+            if(buildingType.equals(this)) return true;
+        }
+        return false;
+    }
 
     public String getName() {
         String tmp = this.name().toLowerCase();
