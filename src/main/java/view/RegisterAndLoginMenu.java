@@ -207,7 +207,6 @@ public class RegisterAndLoginMenu extends Menu {
     public void showAndHidePasswordField(MouseEvent mouseEvent) {
         System.out.println("here");
         System.out.println(password);
-        //todo background for hide/unhide
         if (isPasswordShowing) {
             passwordField.setText(buildBulletString(password.length()));
             confirmPasswordField.setText(buildBulletString(confirmPass.length()));

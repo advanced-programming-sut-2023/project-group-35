@@ -4,16 +4,13 @@ import controller.*;
 import Enum.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -22,7 +19,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Block;
 import model.Map;
-import model.Reign;
+import model.buildings.Building;
+import model.people.MilitaryUnit;
+import org.testng.internal.EclipseInterface;
+
+import java.util.ArrayList;
 
 import static view.MapMenu.BLOCK_SIZE;
 
@@ -31,25 +32,40 @@ public class GameMenu extends Menu{
     private GameController gameController;
     private Pane mapPane;
     private Pane menuPane;
+    private TabPane buildingTabPane;
     private Map gameMap;
     private Rectangle selectedRectangle;
+    private Building selectedBuilding; //todo make sure to turn back to null
+    private MilitaryUnit selectedUnit; //todo make sure to turn back to null
+    private GameTabMenuMode menuMode = GameTabMenuMode.DROP_BUILDING;
+    public static int MENU_ITEM_SIZE = 60;
     public static int BuildingImageSize;
-    public static int screenHeight = 912;
-    public static int screenWidth = 1368;
-    private BuildingType selectedBuilding;
+    public static int MapPaneHeight = 700;
+    public static int SCREEN_HEIGHT = 912;
+    public static int SCREEN_WIDTH = 1368;
+    private BuildingType selectedBuildingType;
 
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
-        this.gameMap = gameController.getMap();
+    }
+
+    public void setGameMap(Map gameMap) {
+        this.gameMap = gameMap;
+        //if(gameMap == null) System.out.println("game map null in set game map");
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setFullScreen(true);
+        //if(gameMap == null) System.out.println("null bood in start");
+        //if(gameController == null) System.out.println("game conroller ham null in sart");
+        //if(gameController.getMap() == null) System.out.println("map of game controller ham null");
+        //gameMap = gameController.getMap();
+       // stage.setFullScreen(true);
         Pane root = new Pane();
         initializeMap(root);
         initMenuPane(root);
+        buildingTabPane = createBuildingsTabPane();
         initializeMenuBar();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -59,20 +75,31 @@ public class GameMenu extends Menu{
     public void initMenuPane(Pane root) {
         Pane pane = new Pane();
         root.getChildren().add(pane);
-        pane.setLayoutY(600);
+        pane.setLayoutY(MapPaneHeight);
         pane.setLayoutX(0);
 //        pane.setPrefWidth(root.getPrefWidth());
-        pane.setPrefWidth(screenWidth);
+        pane.setPrefWidth(SCREEN_WIDTH);
         pane.setPrefHeight(200);
-        pane.setBackground(new Background(new BackgroundFill(Color.rgb(212, 195, 142), CornerRadii.EMPTY, Insets.EMPTY)));
-        menuPane = pane;
+        //pane.setBackground(new Background(new BackgroundFill(Color.rgb(212, 195, 142), CornerRadii.EMPTY, Insets.EMPTY)));
+        HBox hBox = new HBox();
+        pane.getChildren().add(hBox);
+        ImageView tabMenuIcon = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.TAB_MENU_IMAGE, false),SCREEN_HEIGHT - MapPaneHeight, SCREEN_WIDTH / 3);
+        ImageView tabMenuIcon1 = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.TAB_MENU_IMAGE, false),SCREEN_HEIGHT - MapPaneHeight, SCREEN_WIDTH / 3);
+        Pane menuPane = new Pane();
+        pane.setPrefWidth(SCREEN_WIDTH / 3);
+        menuPane.setPrefHeight(SCREEN_HEIGHT - MapPaneHeight);
+        //InitStyle.setBackGround(pane, ImageEnum.BACK_GROUND);
+        hBox.getChildren().add(tabMenuIcon);
+        hBox.getChildren().add(menuPane);
+        hBox.getChildren().add(tabMenuIcon1);
+        this.menuPane = menuPane;
     }
     public void initializeMap(Pane root){
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.pannableProperty().set(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setMaxHeight(600);
+        scrollPane.setMaxHeight(MapPaneHeight);
 //        System.out.println(root.getHeight() + " wi: " + root.getWidth());
         scrollPane.setMaxWidth(1368);
 
@@ -83,41 +110,99 @@ public class GameMenu extends Menu{
         int i = 0;
         for (Block block : gameMap.getBlocks()) {
             System.out.println(i++);
-            Rectangle rectangle = new Rectangle(block.getX() * BLOCK_SIZE,  block.getY() * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+           // Rectangle rectangle = new Rectangle(block.getX() * BLOCK_SIZE,  block.getY() * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            rectBlock rectangle = new rectBlock(block, block.getX() * BLOCK_SIZE,  block.getY() * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
             rectangle.setFill(new ImagePattern(block.getFieldType().getFieldImage()));
             mapPane.getChildren().add(rectangle);
-            if (block.hasABuilding()) {
-                setMapBlockImageView(mapPane, block.getBuilding().getBuildingType().getImage(), block, true);
-            }
+//            if (block.hasABuilding()) {
+//                ImageView building = setMapBlockImageView(mapPane, block.getBuilding().getBuildingType().getImage(), block, true);
+//                rectangle.setBuildingView(building);
+//            }
             if (block.getTree() != null) {
-                setMapBlockImageView(mapPane, block.getTree().getImage(), block, true);
+                ImageView treeView = setMapBlockImageView(mapPane, block.getTree().getImage(), block, true);
+                rectangle.setTreeView(treeView);
             }
             if (block.hasBase() || gameMap.isABase(block.x, block.y)) {
-                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
+                ImageView baseView = setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
+                rectangle.setBuildingView(baseView);
             }
             setRectangleSettings(rectangle, block);
         }
     }
-    public ImageView setMapBlockImageView(Pane pane, Image image, Block block, boolean isForMap) {
-        ImageView imageView = new ImageView(image);
-        imageView.setX(block.getX() * BLOCK_SIZE);
-        imageView.setY(block.getY() * BLOCK_SIZE);
-        if(isForMap) {
-            imageView.setFitHeight(BLOCK_SIZE);
-            imageView.setFitWidth(BLOCK_SIZE);
-        }
-        pane.getChildren().add(imageView);
-        return imageView;
-    }
     private void initializeMenuBar() {
+        if(menuMode.equals(GameTabMenuMode.DROP_BUILDING)) menuPane.getChildren().add(buildingTabPane);
+        else if(menuMode.equals(GameTabMenuMode.BUILDING_SELECTED)) menuPane.getChildren().add(getBuildingSelectedMenu(selectedBuilding));
+        //else menuPane.getChildren().add(getUnitSelectedMenu());
 
-        menuPane.getChildren().add(new Button("ala"));
-        TabPane buildingsTabPane = createBuildingsTabPane();
-        menuPane.getChildren().add(buildingsTabPane);
+    }
+    public TabPane getBuildingSelectedMenu(Building selected) {
+        HBox hBox = InitStyle.createHbox();
+        BuildingType type = selected.getBuildingType();
+        if(type.isEqualToAnyOf(BuildingType.MERCENARY_CAMP, BuildingType.BARRACK, BuildingType.ENGINEER_GUILD, BuildingType.CATHEDRAL)) {
+            hBox.getChildren().add(getUnitsTabCreatedByBuilding(type));
+        }
+        hBox.getChildren().add(createBuildingsOptions());
+
+        //if(type.isEqualToAnyOf(BuildingType.INN)) //todo
+        //if(type.isEqualToAnyOf()
+        TabPane tabPane = new TabPane();
+        tabPane.getTabs().add(new Tab("buildingSelect" + hBox));
+        return tabPane;
+    }
+    public VBox createBuildingsOptions() {
+        VBox box = new VBox();
+        box.setSpacing(10);
+        //box.setBackground();
+        Circle repair = createIcon(ImageEnum.REPAIR_ICON);
+        repair.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String result = BuildingController.repair(selectedBuilding);
+                Menu.buildInformationAlert(result);
+            }
+        });
+        // todo rest like delete
+        box.getChildren().add(repair);
+        return box;
+    }
+
+    public Circle createIcon(ImageEnum image) {
+        Circle circle = new Circle(10);
+        circle.setFill(new ImagePattern(ImageEnum.getImage(image, false), 0, 0, 10, 10, false));
+        return circle;
+    }
+
+    public ScrollPane getUnitsTabCreatedByBuilding(BuildingType buildingType) {
+        ArrayList<UnitType> units = UnitType.getUnitsProducedIn(buildingType);
+        HBox hBox = InitStyle.createHbox();
+        for (UnitType unit : units) {
+            ImageView imageView = InitStyle.getImageView(unit.getImage(), MENU_ITEM_SIZE, MENU_ITEM_SIZE);
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if(mouseEvent.getClickCount() > 1) createUnit(UnitType.getUnitByImage(imageView.getImage()));
+                }
+            });
+            hBox.getChildren().add(imageView);
+        }
+        //hBox.setMaxHeight(); needed??
+        ScrollPane scrollPane = InitStyle.makeScrollPane(true, ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setContent(hBox);
+        return scrollPane;
+    }
+
+    public void createUnit(UnitType unitType) {
+        String message;
+        int count = getUnitNumberFromUser();
+        if(count == -1) {
+            message = "you did not write a valid number!";
+        } else message = BuildingController.createUnit(selectedBuilding.getBlock(), unitType, count, gameController.getPlayingReign(), gameController.getGame());
+        Menu.buildInformationAlert(message);
     }
 
     public TabPane createBuildingsTabPane() {
         TabPane tabPane = new TabPane();
+        tabPane.setPrefWidth(SCREEN_WIDTH / 3);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabPane.getTabs().add(getBuildingTabFor("1.png", BuildingType.BARRACK, BuildingType.MERCENARY_CAMP, BuildingType.ARMOURY, BuildingType.BIG_STONE_GATEHOUSE, BuildingType.SMALL_STONE_GATE, BuildingType.LOOKOUT_TOWER,BuildingType.LOOKOUT_TOWER, BuildingType.PERIMETER_TOWER, BuildingType.CIRCLE_TOWER, BuildingType.SQUARE_TOWER, BuildingType.ENGINEER_GUILD));
         tabPane.getTabs().add(getBuildingTabFor("2.png", BuildingType.STOCK_PILE, BuildingType.WOOD_CUTTER, BuildingType.STONE_MINE, BuildingType.IRON_MINE, BuildingType.PITCH_RIG, BuildingType.SHOP));
@@ -125,9 +210,9 @@ public class GameMenu extends Menu{
         tabPane.getTabs().add(getBuildingTabFor("4.png", BuildingType.HOVEL, BuildingType.CHURCH, BuildingType.CATHEDRAL));
         tabPane.getTabs().add(getBuildingTabFor("5.png", BuildingType.FLETCHER, BuildingType.POLE_TURNER, BuildingType.BLACK_SMITH, BuildingType.ARMOURER));
         tabPane.getTabs().add(getBuildingTabFor("6.png", BuildingType.FOOD_STOCK_PILE, BuildingType.BAKERY, BuildingType.BREWERY, BuildingType.MILL, BuildingType.INN));
-
         return tabPane;
     }
+
     public Tab getBuildingTabFor(String iconUrl, BuildingType...buildingTypes) {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setPannable(true);
@@ -141,8 +226,8 @@ public class GameMenu extends Menu{
                 Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.putImage(imageView.snapshot(new SnapshotParameters(),null));
-                selectedBuilding = BuildingType.getBuildingByImage(imageView.getImage());
-                System.out.println("selected building; " + selectedBuilding);
+                selectedBuildingType = BuildingType.getBuildingByImage(imageView.getImage());
+                System.out.println("selected building; " + selectedBuildingType);
                 //event.setDragDetect(true);
                 db.setContent(content);
                 event.consume();
@@ -152,134 +237,142 @@ public class GameMenu extends Menu{
         tab.setContent(scrollPane);
         return tab;
     }
+
     public void setTabMenuIcon(Tab tab, Image image) {
         Circle circle = new Circle(10);
         circle.setFill(new ImagePattern(image, 0, 0, 10, 10, false));
         tab.setGraphic(circle);
     }
 
-    public static Integer askUserTheUnitToSelect(String units) {
-        System.out.println("you have more than one unit in this block!");
-        System.out.println("which one do you want to select?");
-        System.out.println(units);
-        return scanner.nextInt();
-    }
-
-    public boolean isUserSureToFinishTurn() {
-        while(true) {
-            System.out.println("are you sure you want to finish your turn?");
-            input = scanner.nextLine();
-            if(input.matches("\\s*yes\\s*")) return true;
-            if(input.matches("\\s*no\\s*")) return false;
-            System.out.println("please try again");
+    public void selectBlock(rectBlock rectangle) {
+        Block block = rectangle.getBlock();
+        ArrayList<GameTabMenuMode> modes = block.getModesOfBlock();
+        if(modes.size() == 0) return;
+        if(modes.size() == 1) {
+            if(block.hasABuilding()) {
+                selectedBuilding = block.getBuilding();
+                menuMode = GameTabMenuMode.BUILDING_SELECTED;
+            }
+        } if(modes.size() > 1) {
+            System.out.println("more than 1"); //todo contunue to select one
         }
-    }
-    public boolean isUserSureToQuitGame() {
-        while (true) {
-            System.out.println("are you sure you want to quit the game?");
-            System.out.println("remember if you quit the game you don't get any scores");
-            input = scanner.nextLine();
-            if(input.matches("\\s*yes\\s*")) return true;
-            if(input.matches("\\s*no\\s*")) return false;
-            System.out.println("I couldn't understand, please try again.");
-        }
+        initializeMenuBar();
     }
 
-
-    public static void announceDeadReign(Reign reign, int score) {
-        System.out.println("reign " + reign.getNickName() + "is now dead and out of the game!");
-        System.out.println("they could collect " + score + "scores!");
-    }
-
-    public void setRectangleSettings(Rectangle rectangle, Block block) {
+    public void setRectangleSettings(rectBlock rectangle, Block block) {
         //todo find another way to do it the right way
-
-//        rectangle.setOnDragOver(event -> {
-//            event.acceptTransferModes(TransferMode.ANY);
-//            if(event.getSource() == rectangle) return;
-//            if(getBlockByRectangle(rectangle).isOccupied(map)) rectangle.setStroke(javafx.scene.paint.Color.rgb(138, 39, 36));
-//            else rectangle.setStroke(javafx.scene.paint.Color.rgb(109, 161, 26));
-//            //System.out.println("drag over");
-//            event.consume();
-//        });
-//
-//
-//        rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                Tooltip.install(rectangle, InitStyle.BuildToolTip(block.getBlockInfo(true)));
-//                rectangle.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//                    @Override
-//                    public void handle(KeyEvent keyEvent) {
-//                        if(keyEvent.getCode().equals(KeyCode.DELETE)) block.clearBlock(null); //todo check if works correctly
-//                    }
-//
-//                });
-//            }
-//        });
-//        rectangle.setOnDragDropped(event -> {
-//            Dragboard db = event.getDragboard();
-//            boolean success = false;
-//            if (db.hasString()) {
-//                rectangle.setStyle("-fx-border-width:2px;-fx-border-color:black;-fx-background-color: "+db.getString());
-//                success = true;
-//            }
-//            System.out.println("drag dropped");
-////            if(selectedTree != null) {
-////                int x = getTheRightAxes(rectangle.getX(), INSET, BLOCK_SIZE);
-////                int y = getTheRightAxes(rectangle.getY(), INSET, BLOCK_SIZE);
-////                Block block1 = gameMap.getBlockByLocation(x, y);
-////                //System.out.println(block1.x + " y; " + block1.y);
-////                if(block1.isOccupied(gameMap)){
-////                    selectedTree = null;
-////                    return;
-////                }
-////                //System.out.println("done");
-////                setMapBlockImageView(mapPane, selectedTree.getImage(), block1, true);
-////                gameMap.getBlockByLocation(x, y).setTree(selectedTree);
-////                selectedTree = null;
-////            }
-//            if(selectedFieldType != null) {
-//                int x = getTheRightAxes(rectangle.getX(), INSET, BLOCK_SIZE);
-//                int y = getTheRightAxes(rectangle.getY(), INSET, BLOCK_SIZE);
-//                Block block1 = gameMap.getBlockByLocation(x, y);
-//                if(block1.isOccupied(gameMap)) {
-//                    selectedFieldType = null;
-//                    return;
-//                }
-//                setMapBlockImageView(mapPane, selectedFieldType.getFieldImage(), block1, true);
-//                gameMap.getBlockByLocation(x, y).setFieldType(selectedFieldType);
-//                selectedFieldType = null;
-//            }
-//            if(hasSelectedBase) {
-//                int x = getTheRightAxes(rectangle.getX(), INSET, BLOCK_SIZE);
-//                int y = getTheRightAxes(rectangle.getY(), INSET, BLOCK_SIZE);
-//                Block block1 = gameMap.getBlockByLocation(x, y);
-//                if(block1.isOccupied(gameMap)){
-//                    hasSelectedBase = false;
-//                    return;
-//                }
-//                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block1, true);
-//                Map.makeNewBase(gameMap, x, y);
-//                hasSelectedBase = false;
-//            }
-//            event.setDropCompleted(success);
-//            event.consume();
-//        });
-
         rectangle.hoverProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean isNowHover) {
                 if (isNowHover) {
                     rectangle.setStroke(Color.rgb(102, 97, 73));
-                    selectedRectangle = rectangle;
                 }
                 if (!isNowHover) rectangle.setStroke(null);
             }
         });
+
+        rectangle.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean isFocused) {
+                if(isFocused) {
+                    System.out.println("rectangle " + rectangle.getBlock().getX() + " ," + rectangle.getBlock().getY() + "selected");
+                    rectangle.setStroke(Color.rgb(224, 66, 18));
+                    rectangle.setStrokeWidth(5);
+                    selectedRectangle = rectangle;
+
+                } else resetRectangle(rectangle);
+            }
+        });
+
+        rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(mouseEvent.getClickCount() > 1) selectBlock(rectangle);
+                Tooltip.install(rectangle, InitStyle.BuildToolTip(block.getBlockInfo(true)));
+                rectangle.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent keyEvent) {
+                        if(keyEvent.getCode().equals(KeyCode.DELETE)) block.clearBlock(null); //todo check if works correctly
+                    }
+                });
+            }
+        });
+
+        rectangle.setOnDragOver(event -> {
+            event.acceptTransferModes(TransferMode.ANY);
+            if(event.getSource() == rectangle) return;
+            if(rectangle.getBlock().isOccupied(gameMap)) rectangle.setStroke(javafx.scene.paint.Color.rgb(138, 39, 36));
+            else rectangle.setStroke(javafx.scene.paint.Color.rgb(109, 161, 26));
+            System.out.println("drag over");
+            event.consume();
+        });
+
+        rectangle.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                rectangle.setStyle("-fx-border-width:2px;-fx-border-color:black;-fx-background-color: "+db.getString());
+                success = true;
+            }
+            System.out.println("drag dropped");
+
+            if(selectedRectangle != null && !selectedRectangle.equals(rectangle)) {
+                // todo handle select multiple block
+            }
+            if(selectedBuildingType != null) {
+                if(block.isOccupied(gameMap)){
+                    selectedBuildingType = null;
+                    return;
+                }
+                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
+//                Map.makeNewBase(gameMap, x, y);
+                String result = gameController.dropBuilding(selectedBuildingType, block);
+                Menu.buildInformationAlert(result);
+                selectedBuildingType = null;
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
     }
 
-    //    public void run() {
+    public int getUnitNumberFromUser() {
+        TextInputDialog numberDialog = new TextInputDialog("1");
+        numberDialog.setContentText("enter the number of units you want to build");
+        numberDialog.setTitle("Unit Number");
+        numberDialog.showAndWait();
+        String numberStr = numberDialog.getEditor().getText();
+        int number;
+        try{
+            number = Integer.parseInt(numberStr);
+        }catch (Exception e) {
+            return -1;
+        }
+        return number;
+    }
+
+    public ImageView setMapBlockImageView(Pane pane, Image image, Block block, boolean isForMap) {
+        ImageView imageView = new ImageView(image);
+        imageView.setX(block.getX() * BLOCK_SIZE);
+        imageView.setY(block.getY() * BLOCK_SIZE);
+        if(isForMap) {
+            imageView.setFitHeight(BLOCK_SIZE);
+            imageView.setFitWidth(BLOCK_SIZE);
+        }
+        pane.getChildren().add(imageView);
+        return imageView;
+    }
+
+    public void resetRectangle(Rectangle rectangle) {
+        rectangle.setStroke(null);
+        rectangle.setStrokeWidth(0);
+    }
+
+//    public Block getBlockByRectangle(Rectangle rectangle) {
+//        int x = (int) (rectangle.getX() - INSET) / BLOCK_SIZE;
+//        int y = (int) (rectangle.getY() - INSET) / BLOCK_SIZE;
+//        return gameMap.getBlockByLocation(x, y);
+//    } //todo get rectangleByBlock
+       //public void run() {
 //        System.out.println("welcome to another game of crusaders!\n You are in the game menu now!\nwrite down your command!");
 //        System.out.println("enter the menu you want to enter");
 //        System.out.println("reign menu");

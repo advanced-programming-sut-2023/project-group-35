@@ -72,8 +72,8 @@ public class Connection extends Thread{
                     String input = dataInputStream.readUTF();
                     if(input.equals("friendship menu"))
                         new FriendShipMenu(dataOutputStream,dataInputStream,currentUser).startFriendShip();
-                   /* else if(input.equals("lobby"))
-                        new GamesMenu(dataOutputStream,dataInputStream,currentUser);*/
+                    //else if(input.equals("lobby"))
+                        //new GamesMenu(dataOutputStream,dataInputStream,currentUser);
                     else if (input.equals("global chat"))
                         new GlobalChatServerMenu(dataOutputStream, dataInputStream, currentUser).startGlobal();
                     else if (input.equals("private chat"))

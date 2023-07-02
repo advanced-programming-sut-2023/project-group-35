@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import Enum.*;
 
-import model.people.Engineer;
 import model.people.MilitaryUnit;
 import view.GameMenu;
 
@@ -34,32 +33,22 @@ public class GameController {
         return "user added successfully";
     }
 
-    public String dropBuilding(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        if(!areCoordinatesCorrect(x, y)) return "coordinates are not correct";
-        BuildingType type = BuildingType.getBuildingTypeByName(UserController.checkForQuotation(matcher.group("type")));
-        if(type == null) return "wrong building type";
-        Block block = map.getBlockByLocation(x, y);
-        if (!block.getFieldType().isSuitableForBuilding)
-            return "the filed type is not suitable to drop building";
-        if(map.getBlockByLocation(x, y).hasABuilding()) return "there is already a building in this block";
-        if(map.getBlockByLocation(x, y).getStructures().size() > 0) {
+    public String dropBuilding(BuildingType type, Block block) {
+
+        if(map.getBlockByLocation(block.x, block.y).hasABuilding()) return "there is already a building in this block";
+        if(map.getBlockByLocation(block.x, block.y).getStructures().size() > 0) {
             return "drop building failed: there are some structures in this block";
         }
-        if(type.equals(BuildingType.BASE)) return "you can't build a new base inside a game";
+        //if(type.equals(BuildingType.BASE)) return "you can't build a new base inside a game";
         if(type.equals(BuildingType.PITCH_RIG) && !block.getFieldType().equals(FieldType.plain))
             return "you should build the pitch rig on a plain";
         if(type.goldCost > playingReign.getGold()) return "you do not have enough gold";
         if(playingReign.getResourceAmount(type.resourceToBuild) < type.resourceAmount)
             return "you do not have enough resources to build this building";
-        playingReign.spendGold(type.goldCost);
-        playingReign.changeResourceAmount(type.resourceToBuild, type.resourceAmount);
 
-        return BuildTheBuilding(type, block);
-
+        return buildTheBuilding(type, block);
     }
-    public String BuildTheBuilding(BuildingType type, Block block) {
+    public String buildTheBuilding(BuildingType type, Block block) {
         Building building = null;
         if(type.checkForEquals(BuildingType.SHOP, BuildingType.BARRACK, BuildingType.MERCENARY_CAMP, BuildingType.ENGINEER_GUILD)) {
             building = new Building(type, playingReign, block);
@@ -108,8 +97,8 @@ public class GameController {
             building = new dogCage(type, playingReign , block);
         }
         game.addBuilding(building);
-
-
+        playingReign.spendGold(type.goldCost);
+        playingReign.changeResourceAmount(type.resourceToBuild, type.resourceAmount);
         return "drop building successful";
     }
 
@@ -124,23 +113,23 @@ public class GameController {
         return "select building successful";
     }
 
-    public String selectUnit(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        if(!areCoordinatesCorrect(x , y)) return "the coordinates you have entered is not in the map";
-        if(game.getUnitsOfBlock(x, y).size() == 0) return "there is no unit in this block";
-        ArrayList<MilitaryUnit> units = game.getUnitsOfReignInBlock(playingReign , x , y);
-        if(units.size() == 0) return "you don't have any unit in this block";
-        if (units.size() > 1) {
-            int unitNumber = GameMenu.askUserTheUnitToSelect(printUnits(units));
-            if((units.get(unitNumber)) != null) game.setSelectedUnit(units.get(unitNumber));
-            else return "you did not choose the right number of the unit";
-        } else {
-            game.setSelectedUnit(units.get(0));
-            System.out.println(units.get(0).toString());
-        }
-        return "select units successful!";
-    }
+//    public String selectUnit(Matcher matcher) {
+//        int x = Integer.parseInt(matcher.group("x"));
+//        int y = Integer.parseInt(matcher.group("y"));
+//        if(!areCoordinatesCorrect(x , y)) return "the coordinates you have entered is not in the map";
+//        if(game.getUnitsOfBlock(x, y).size() == 0) return "there is no unit in this block";
+//        ArrayList<MilitaryUnit> units = game.getUnitsOfReignInBlock(playingReign , x , y);
+//        if(units.size() == 0) return "you don't have any unit in this block";
+//        if (units.size() > 1) {
+//            int unitNumber = GameMenu.askUserTheUnitToSelect(printUnits(units));
+//            if((units.get(unitNumber)) != null) game.setSelectedUnit(units.get(unitNumber));
+//            else return "you did not choose the right number of the unit";
+//        } else {
+//            game.setSelectedUnit(units.get(0));
+//            System.out.println(units.get(0).toString());
+//        }
+//        return "select units successful!";
+//    }
 
     public String printUnits(ArrayList<MilitaryUnit> units) {
         String output = "choose one of the units below by writing the ordinal number of the unit";
@@ -223,7 +212,7 @@ public class GameController {
         building.getOwner().getBuildings().remove(building);
         if(building instanceof Base){
             endReign(building.getOwner());
-            GameMenu.announceDeadReign(building.getOwner(), calculateAndGiveScore(building.getOwner()));
+            //GameMenu.announceDeadReign(building.getOwner(), calculateAndGiveScore(building.getOwner()));
         }
         if(game.getReigns().size() == 1) return "endGame";
         return "";

@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import Enum.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Tooltip;
@@ -16,9 +17,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import model.Block;
 
-
-
+import static view.MapMenu.BLOCK_SIZE;
+import static view.MapMenu.INSET;
 
 
 public class InitStyle {
@@ -70,6 +72,27 @@ public class InitStyle {
         imageView.setImage(image);
         imageView.setFitHeight(height);
         imageView.setFitWidth(width);
+        return imageView;
+    }
+    public static ImagePattern getImagePattern(Image image, int height, int width){
+        return new ImagePattern(image, 0, 0, height, width, false);
+    }
+    public static ScrollPane makeScrollPane(boolean pannable, ScrollPane.ScrollBarPolicy vBar, ScrollPane.ScrollBarPolicy hBar ) {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPannable(pannable);
+        scrollPane.setVbarPolicy(vBar);
+        scrollPane.setHbarPolicy(hBar);
+        return scrollPane;
+    }
+    public static ImageView setMapBlockImageView(Pane pane, Image image, Block block, boolean isForMap) {
+        ImageView imageView = new ImageView(image);
+        imageView.setX(block.getX() * BLOCK_SIZE + INSET);
+        imageView.setY(block.getY() * BLOCK_SIZE + INSET);
+        if(isForMap) {
+            imageView.setFitHeight(BLOCK_SIZE);
+            imageView.setFitWidth(BLOCK_SIZE);
+        }
+        pane.getChildren().add(imageView);
         return imageView;
     }
 }

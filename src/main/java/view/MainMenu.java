@@ -46,7 +46,7 @@ public class MainMenu extends Menu{
         this.userController = userController;
         loggedInUser = userController.getLoggedInUser();
         if(loggedInUser == null)
-            System.out.println("null");
+            System.out.println("logged in user null");
     }
 
     public void initializeMapImages(Pane pane) {
@@ -167,6 +167,7 @@ public class MainMenu extends Menu{
             System.out.println("here");
             StartGameMenu startGameMenu = new StartGameMenu();
             Map map = selectedMap.clone();
+            if(map == null) System.out.println("clone map null ee");
             startGameMenu.setGameController(new GameController(new Game(loggedInUser, map)));
             startGameMenu.setLoggedInUser(loggedInUser);
             startGameMenu.start(Menu.stage);

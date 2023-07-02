@@ -81,7 +81,9 @@ public class StartGameMenu extends Menu{
             @Override
             public void handle(MouseEvent mouseEvent) {
                 User user = User.getUserByUsername(textField.getText());
-                if(user != null) {
+                if(user == null) Menu.buildInformationAlert("Username Was Not Found!");
+                else if(gameController.getGame().isAlreadyInTheGame(user)) Menu.buildInformationAlert("this user is already in the game");
+                else {
                     gameController.getGame().addReign(user);
                     Label label = getLabel(user);
                     Circle circle = getAvatarImage(user);
@@ -95,8 +97,6 @@ public class StartGameMenu extends Menu{
                         startButton.setDisable(false);
                         button.setDisable(true);
                     }
-                } else {
-                    Menu.buildInformationAlert("Username Was Not Found!");
                 }
             }
         });
@@ -131,7 +131,9 @@ public class StartGameMenu extends Menu{
     public void startGame() throws Exception {
         GameMenu gameMenu = new GameMenu();
         gameMenu.setGameController(gameController);
-        new GameMenu().start(Menu.stage);
+        gameMenu.setGameMap(gameController.getMap());
+//        new GameMenu().start(Menu.stage);
+        gameMenu.start(Menu.stage);
     }
     public Label getLabel(User user) {
         Label label = new Label();
@@ -188,15 +190,15 @@ public class StartGameMenu extends Menu{
 //            else System.out.println(ResponseToUser.INVALID_COMMAND);
 //        }
 //    }
-    public void printLeftUsersToEnter() {
-        System.out.println("there are " + leftUsersToAdd + "users left to add");
-        System.out.println("print their username to add them");
-    }
-    public boolean isUserSureToExit() {
-        System.out.println("are you sure you want to exit start game menu?");
-        System.out.println("print yes to exit");
-        input = scanner.nextLine();
-        if(input.matches("\\s*yes\\s*")) return true;
-        return false;
-    }
+//    public void printLeftUsersToEnter() {
+//        System.out.println("there are " + leftUsersToAdd + "users left to add");
+//        System.out.println("print their username to add them");
+//    }
+//    public boolean isUserSureToExit() {
+//        System.out.println("are you sure you want to exit start game menu?");
+//        System.out.println("print yes to exit");
+//        input = scanner.nextLine();
+//        if(input.matches("\\s*yes\\s*")) return true;
+//        return false;
+//    }
 }

@@ -133,5 +133,11 @@ public class Game {
     public void setPlayingReign(Reign playingReign) {
         this.playingReign = playingReign;
     }
+    public boolean isAlreadyInTheGame(User user) {
+        for (User user1 : users) {
+            if(user.equals(user1)) return true;
+        }
+        return false;
+    }
 }
 

@@ -120,6 +120,14 @@ public class Block {
         return true;
     }
 
+    public ArrayList<GameTabMenuMode> getModesOfBlock() {
+        ArrayList<GameTabMenuMode> modes = new ArrayList<>();
+        if(this.hasABuilding()) modes.add(GameTabMenuMode.BUILDING_SELECTED);
+        for (MilitaryUnit unit : militaryUnits) {
+            modes.add(GameTabMenuMode.UNIT_SELECTED);
+        }
+        return modes;
+    }
 
 
     public ArrayList<MilitaryUnit> getMilitaryUnits() {
