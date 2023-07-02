@@ -33,6 +33,8 @@ public class User implements Comparable {
     private Map map;
     public String avatar;
     public String lastEntrance = null;
+    public ArrayList<String> friendsNames = new ArrayList<>();
+    public ArrayList<String> thoseInPendingNames = new ArrayList<>();
     private static final ArrayList<User> users = new ArrayList<>();
 
     public User(String userName, String password, String nickName,
@@ -187,6 +189,14 @@ public class User implements Comparable {
         else hhTime = Integer.toString(hours);
         lastEntrance = hhTime + ":" + mmTime;
         UserController.saveTheData();
+    }
+
+    public ArrayList<String> getFriendsNames() {
+        return friendsNames;
+    }
+
+    public ArrayList<String> getThoseInPendingNames() {
+        return thoseInPendingNames;
     }
 
     @Override

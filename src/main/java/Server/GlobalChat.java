@@ -64,6 +64,12 @@ public class GlobalChat {
         }
         return null;
     }
+    public static GroupChat getGroupChatByName(String name){
+        for(GroupChat sentMessage:groupChats){
+            if(sentMessage.getNameOfGroup().equals(name)) return sentMessage;
+        }
+        return null;
+    }
 
 
 
