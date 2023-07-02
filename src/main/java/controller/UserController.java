@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 
 
 public class UserController {
-    private User loggedInUser;
+    public static User loggedInUser;
 
     public static String checkForQuotation(String text) {
         if (text == null)
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     public void setLoggedInUser(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
+        UserController.loggedInUser = loggedInUser;
     }
 
     public String register(String username, String password, String nickName, String email, String slogan, SecurityQuestion securityQuestion, String answer) throws IOException, NoSuchAlgorithmException {

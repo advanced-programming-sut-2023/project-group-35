@@ -28,6 +28,7 @@ public class Menu extends Application {
     protected String result;
     protected Matcher matcher;
     protected static Stage stage;
+    public UserController userController = new UserController();
     public static Color successGreenColor = Color.rgb(30,103, 45);
     public static Color failRedColor = Color.rgb(145, 38, 32);
     public static int gameButtonHeight = 30;
@@ -49,6 +50,7 @@ public class Menu extends Application {
         if ((user = User.getUserByUsername(fromFile)) != null) {
             UserController userController = new UserController();
             userController.setLoggedInUser(user);
+            UserController.loggedInUser = user;
             startMainMenu(userController);
         } else {
             new LoginMenu().start(Menu.stage);
@@ -60,15 +62,17 @@ public class Menu extends Application {
         mainMenu.start(Menu.stage);
     }
     public static void startMainMenu(User loggedInUser) throws Exception {
-        UserController userController = new UserController();
-        userController.setLoggedInUser(loggedInUser);
         MainMenu mainMenu = new MainMenu();
-        mainMenu.setUserController(userController);
+        UserController userController1 = new UserController();
+        userController1.setLoggedInUser(UserController.loggedInUser);
+        mainMenu.setUserController(userController1);
         mainMenu.start(Menu.stage);
     }
-    public static void startProfileMenu(UserController userController) throws Exception {
+    public static void startProfileMenu(User loggedInUser) throws Exception {
         ProfileMenu profileMenu = new ProfileMenu();
-        profileMenu.setUserController(userController);
+        UserController userController1 = new UserController();
+        userController1.setLoggedInUser(loggedInUser);
+        profileMenu.setUserController(userController1);
         profileMenu.start(Menu.stage);
     }
 
