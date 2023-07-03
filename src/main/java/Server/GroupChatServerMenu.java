@@ -48,7 +48,9 @@ public class GroupChatServerMenu {
                     dataOutputStream.writeUTF("Main Menu");
                     dataOutputStream.flush();
                     return;
-                } else{
+                }else if(input.equals("where")){
+                    dataOutputStream.writeUTF("Group Chat");
+                }else{
                     dataOutputStream.writeUTF("invalid input");
                     dataOutputStream.flush();
                 }

@@ -72,7 +72,6 @@ public class RegisterAndLoginMenu extends Menu {
     public void start(Stage stage) throws Exception {
         stage.setFullScreen(true);
         AnchorPane pane = FXMLLoader.load(RegisterAndLoginMenu.class.getResource("/fxml/RegisterAndLoginMenu.fxml"));
-
         InitStyle.setBackGround(pane, ImageEnum.REGISTER_MENU_IMAGE);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
@@ -85,7 +84,6 @@ public class RegisterAndLoginMenu extends Menu {
         initializeHashmapFields();
         initSloganChoiceBox();
         showHideIv.setImage(new Image(RegisterAndLoginMenu.class.getResource("/Images/download.jpg").toExternalForm()));
-
         showHideIv.setBlendMode(BlendMode.LIGHTEN);
         usernameField.textProperty().addListener(new ChangeListener<String>() {
             @Override

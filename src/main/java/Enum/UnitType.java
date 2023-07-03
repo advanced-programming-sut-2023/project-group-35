@@ -18,7 +18,7 @@ public enum UnitType {
     ARABIANBOWS("arabianBow.png", BuildingType.MERCENARY_CAMP,null,null,10,10,15,3,5),
     SLAVE("slave.png", BuildingType.MERCENARY_CAMP,null,null,2,5,10,4,1),
     SLINGER("slinger.png", BuildingType.MERCENARY_CAMP,null,null,12,15,15,2,4),
-    ASSASIN("assasin.png", BuildingType.MERCENARY_CAMP,null,null,30,15,15,4,1),
+    ASSASIN("assassin.png", BuildingType.MERCENARY_CAMP,null,null,30,15,15,4,1),
     HORSEARCHER("horseArcher.png", BuildingType.MERCENARY_CAMP,null,null,20,15,25,5,6),
     ARABIANSWORDMAN("arabianSwordMan.png", BuildingType.MERCENARY_CAMP,null,null,20,20,15,3,1),
     FIRETHROWER("fireThrower.png", BuildingType.MERCENARY_CAMP,null,null,20,25,10,3,5),
@@ -29,7 +29,7 @@ public enum UnitType {
 
     //public final String name;
 
-    public final Image image;
+    public final Image image = null;
     public final BuildingType buildingProducedIn;
     public final Resource resourceToBuild;
     public final Resource secondResource;
@@ -54,7 +54,7 @@ public enum UnitType {
     UnitType(String url, BuildingType producedIn, Resource resourceToBuild,Resource secondResource, int cost,
              int attackPower, int defencePower, int speed, int range) {
         //this.name = name;
-        this.image = new Image(Menu.class.getResource("/Images/units/").toExternalForm(), 60, 60, false, true);
+        //this.image = new Image(Menu.class.getResource("/Images/units/" + url).toExternalForm(), 60, 60, false, true);
         this.buildingProducedIn = producedIn;
         this.resourceToBuild = resourceToBuild;
         this.secondResource = secondResource;

@@ -1,5 +1,7 @@
 package Enum;
 
+import Server.MasterServer;
+import controller.TradeController;
 import javafx.scene.image.Image;
 import model.buildings.Building;
 
@@ -17,7 +19,7 @@ public enum Tree {
     private ArrayList<Image> images = new ArrayList<>();
 
     Tree(String imageUrl) {
-        this.image = new Image(Tree.class.getResource("/Images/plant/" + imageUrl + "/0_0img0.png").toExternalForm());
+      //  this.image = new Image(MasterServer.class.getResource("/Images/plant/" + imageUrl + "/0_0img0.png").toExternalForm());
 //        for (int i = 0; i < 12; i++) {
 //            images.add(new Image(Tree.class.getResource("/Images/plant/" + imageUrl + (2 * i) + ".png").toExternalForm()))
 //        }

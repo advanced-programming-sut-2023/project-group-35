@@ -41,6 +41,9 @@ public class FriendShipMenu {
                     } else if (input.equals("Back")) {
                         break;
                     }
+                    else if(input.equals("where")){
+                        dataOutputStream.writeUTF("Friendship:Pendings");
+                    }
                 }
             }
             else if((matcher = RegEx.getMatcher(input,RegEx.SHOW_FREINDS)) != null){
@@ -50,6 +53,9 @@ public class FriendShipMenu {
                     input = dataInputStream.readUTF();
                     if((matcher = RegEx.getMatcher(input, RegEx.SHOW_DETAILS)) != null){
                         dataOutputStream.writeUTF(showDetails(Integer.parseInt(matcher.group("name")),loggedInUser.friendsNames));
+                    }
+                    else if(input.equals("where")){
+                        dataOutputStream.writeUTF("Friendship:Friends");
                     }
                      else if (input.equals("Back")) {
                         break;
@@ -64,10 +70,16 @@ public class FriendShipMenu {
                     if((matcher = RegEx.getMatcher(input, RegEx.SHOW_DETAILS)) != null){
                         dataOutputStream.writeUTF(showDetails(targetUser));
                     }
+                    else if(input.equals("where")){
+                        dataOutputStream.writeUTF("Friendship:sending");
+                    }
                     else if (input.equals("Back")) {
                         break;
                     }
                 }
+            }
+            else if(input.equals("where")){
+                dataOutputStream.writeUTF("FriendShip Menu");
             }
             else if(input.equals("Exit"))
                 break;

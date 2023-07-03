@@ -42,6 +42,14 @@ public class Lobby {
             users.add(user);
     }
 
+    public long getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(long creationTime) {
+        this.creationTime = creationTime;
+    }
+
     public void removeUser(User user) {
         users.remove(user);
     }

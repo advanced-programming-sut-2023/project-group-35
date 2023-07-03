@@ -20,10 +20,10 @@ public enum RegEx {
     EDIT_MESSAGE("\\s*edit message -i (?<id>\\d+) -m (?<newContent>.*)\\s*"),
     SHOW_PENDING("\\s*show pending list\\s*"),
     SHOW_FREINDS("\\s*show friends\\s*"),
-    SHOW_DETAILS("\\s*show details -u (?<name>\\d+)\\s*"),
-    SEND_REQUEST("\\s*send request -u (?<name>\\d+)\\s*"),
-    ACCEPT_REQUEST("\\s*send request -u (?<name>\\d+)\\s*"),
-    REJECT_REQUEST("\\s*send request -u (?<name>\\d+)\\s*"),
+    SHOW_DETAILS("\\s*show details -u (?<name>\\S+)\\s*"),
+    SEND_REQUEST("\\s*send request -u (?<name>\\S+)\\s*"),
+    ACCEPT_REQUEST("\\s*send request -u (?<name>\\S+)\\s*"),
+    REJECT_REQUEST("\\s*send request -u (?<name>\\S+)\\s*"),
     GET_CHATS("get chats");
 
 

@@ -76,17 +76,15 @@ public class LoginMenuServerController {
                 }
                 String username = matcher.group("username");
                 String res = trueSignUp(username,
-                        matcher.group("nickname"),
                         matcher.group("password"),
+                        matcher.group("nickname"),
                         matcher.group("email")
                 );
                 dataOutputStream.writeUTF(res);
                 if(res.equals("Success!")){
                  return User.getUserByUsername(username);
                 }
-                else{
-                    return null;
-                }
+
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -106,9 +104,9 @@ public class LoginMenuServerController {
     public String trueSignUp(String username,String password,String Nickname,String email){
         if (User.getUserByUsername(username) != null) return "username does'nt Exist";
         if (User.getUserByEmail(email) != null) return "Email does'nt Exist";
-        if (!RegisterAndLoginMenu.checkPasswordErrors(password))
+        if (RegisterAndLoginMenu.checkPasswordErrors(password) && false)
             return "Password is weak!";
-        if (!username.matches("\\d")) return "invalid username";
+        if (!username.matches("\\w+")) return "invalid username";
         try {
             password = UserController.turnPasswordToSha256(password);
             User user = new User(username,password,Nickname,

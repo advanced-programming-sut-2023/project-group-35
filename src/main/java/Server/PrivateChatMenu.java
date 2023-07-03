@@ -43,6 +43,9 @@ public class PrivateChatMenu {
                     dataOutputStream.writeUTF(editMessageInPV(matcher.group("id"), matcher.group("newContent"),currentUser,privateChat,privateChatForTarget));
                 else if((matcher = RegEx.getMatcher(input,RegEx.DELETE_FOR_ME)) != null)
                     dataOutputStream.writeUTF(deleteMessageInPV(matcher.group("id"),currentUser,privateChat,privateChatForTarget,false));
+                else if(input.equals("where")){
+                    dataOutputStream.writeUTF("PV");
+                }
                 else if (input.matches("\\s*exit\\s*")) {
                     dataOutputStream.writeUTF("enter main menu");
                     return;

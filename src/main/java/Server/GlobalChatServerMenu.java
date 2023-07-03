@@ -30,16 +30,25 @@ public class GlobalChatServerMenu {
                 String input = dataInputStream.readUTF();
                 if (RegEx.getMatcher(input, RegEx.SHOW_MESSAGES) != null)
                     dataOutputStream.writeUTF(showMessagesGlobalChat(loggedInUser));
-                else if ((matcher = RegEx.getMatcher(input,RegEx.SEND_MESSAGE)) != null)
-                    dataOutputStream.writeUTF(sendMessageGlobal(loggedInUser,matcher.group("message")));
-                else if ((matcher = RegEx.getMatcher(input,RegEx.DELETE_MESSAGE)) != null)
+                else if ((matcher = RegEx.getMatcher(input,RegEx.SEND_MESSAGE)) != null) {
+                    dataOutputStream.writeUTF(sendMessageGlobal(loggedInUser, matcher.group("message")));
+                    dataOutputStream.writeUTF(showMessagesGlobalChat(loggedInUser));
+                }
+                else if ((matcher = RegEx.getMatcher(input,RegEx.DELETE_MESSAGE)) != null) {
                     dataOutputStream.writeUTF(deleteGlobalMessage(loggedInUser, Integer.parseInt(matcher.group("id"))));
-                else if ((matcher = RegEx.getMatcher(input,RegEx.EDIT_MESSAGE)) != null)
-                    dataOutputStream.writeUTF(editGlobalMessage( matcher.group("newContent"),loggedInUser, Integer.parseInt(matcher.group("id"))));
+                    dataOutputStream.writeUTF(showMessagesGlobalChat(loggedInUser));
+                }
+                else if ((matcher = RegEx.getMatcher(input,RegEx.EDIT_MESSAGE)) != null) {
+                    dataOutputStream.writeUTF(editGlobalMessage(matcher.group("newContent"), loggedInUser, Integer.parseInt(matcher.group("id"))));
+                    dataOutputStream.writeUTF(showMessagesGlobalChat(loggedInUser));
+                }
                 else if (input.matches("\\s*exit\\s*")) {
                     dataOutputStream.writeUTF("Main Menu");
                     return;
-                }else
+                }else if(input.equals("where")){
+                    dataOutputStream.writeUTF("Global Chat");
+                }
+                else
                     dataOutputStream.writeUTF("invalid input");
             }
         } catch (IOException e) {
