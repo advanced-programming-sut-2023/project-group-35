@@ -117,12 +117,12 @@ public class ProfileMenu extends Menu{
         pane = pane1;
         stage.setScene(scene);
         stage.show();
-        initialized();
+        //initialized();
 
     }
-
-    public void initialized() {
-        System.out.println(1 + loggedInUser.getUserName());
+    @FXML
+    public void initialize() {
+        loggedInUser = UserController.loggedInUser;
         addListeners();
         setImage();
         resetAll();
@@ -130,9 +130,9 @@ public class ProfileMenu extends Menu{
 
     public void setImage(){
             if(loggedInUser.avatar == null){
-                loggedInUser.avatar = ProfileMenu.class.getResource("/Images/Avatar/1.jpeg").toString();
+                loggedInUser.avatar = "1.jpeg";
             }
-            avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/Avatar").toString()+
+            avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/Avatar/").toString()+
                     loggedInUser.avatar,
                     Screen.getPrimary().getBounds().getHeight(),
                     Screen.getPrimary().getBounds().getWidth(),false,false)));
@@ -484,6 +484,7 @@ public class ProfileMenu extends Menu{
     @FXML
     public void back(){
         try {
+            UserController.saveTheData();
             Menu.startMainMenu(UserController.loggedInUser);
         } catch (Exception e) {
             throw new RuntimeException(e);
