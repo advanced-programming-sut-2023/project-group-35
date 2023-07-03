@@ -55,6 +55,13 @@ public class Connection extends Thread{
         purgeThemAll();
         return connections;
     }
+    public static Connection getConnectionByName(String username){
+        ArrayList<Connection> fkAL = Connection.getConnections();
+        for(Connection cnc:fkAL){
+            if(cnc.getCurrentUser().getUserName().equals(username)) return cnc;
+        }
+        return null;
+    }
     @Override
     public void run() {
         UserController.loadTheData();
