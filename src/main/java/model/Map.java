@@ -39,16 +39,15 @@ public class Map implements Cloneable{
         makeNewBase(map, 10, 10);
         makeNewBase(map, 10, 20);
         makeNewBase(map, 20, 20);
+        User.getUserByUsername(username).getMaps().add(map);
         System.out.println("bases: " + map.getNumberOfBases());
         return map;
     }
     public static void makeNewBase(Map map, int x, int y) {
         Block block = map.getBlockByLocation(x, y);
-        //Base base = new Base(BuildingType.BASE, null, block);
-        //block.setBuilding(base);
-        //map.getBaseBuildings().add(base);
         block.setHasBase(true);
         map.baseBlocks.add(block);
+        System.out.println("added base: " + block.x + block.y);
     }
     public static void removeBaseOutSideTheGame(Map map, int x , int y) {
         map.baseBlocks.remove(map.getBlockByLocation(x, y));

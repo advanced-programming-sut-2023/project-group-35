@@ -80,6 +80,7 @@ public class Block {
             return true;
         }
         if(!this.getFieldType().isSuitableForBuilding) {
+            System.out.println("field type: " + this.getFieldType());
             System.out.println("not suitable");
             return true;
         }

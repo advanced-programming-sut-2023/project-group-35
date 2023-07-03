@@ -69,7 +69,7 @@ public enum BuildingType {
         this.buildingUrl = url;
     }
     public Image getImage() {
-        System.out.println(this.getBuildingUrl());
+        //System.out.println(this.getBuildingUrl());
         Image image = new Image(BuildingType.class.getResource("/Images/buildings/" + this.getBuildingUrl()).toExternalForm(), 60, 60, false, true);
         return image;
     }
