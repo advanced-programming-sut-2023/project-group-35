@@ -73,7 +73,6 @@ public class StartGameMenu extends Menu{
         root.getChildren().add(leftToAddLabel);
         leftToAddLabel.setTextFill(Color.rgb(230, 217, 156));
         leftToAddLabel.setFont(Font.font("times", FontWeight.BOLD, FontPosture.ITALIC, 16));
-
         Button button = InitStyle.setGameButtonStyles("find", BUTTON_HEIGHT, BUTTON_WIDTH);
         button.setLayoutX(LayoutX + WIDTH + 10);
         button.setLayoutY(LayoutY - 60);
@@ -115,7 +114,6 @@ public class StartGameMenu extends Menu{
                 throw new RuntimeException(ex);
             }
         });
-
         startButton = InitStyle.setGameButtonStyles("Start", 30, 50);
         hBox.getChildren().addAll(back, startButton);
         root.getChildren().add(hBox);
