@@ -39,12 +39,7 @@ public class MapMenu extends Menu {
         //stage.setFullScreen(false);
         Pane root = new Pane();
 
-//        for (Block baseBlock : map.getBaseBlocks()) {
-//            System.out.println("base: " + baseBlock.getY() + " x:" + baseBlock.getX());
-//        }
-//        System.out.println("size: " + map.getBaseBlocks().size());
         makeTheMap(root);
-        // menu
         initializeMenuItems(root);
 
 
@@ -105,10 +100,12 @@ public class MapMenu extends Menu {
         root.getChildren().add(scrollPane);
         //scrollPane.setBackground(new Background(new BackgroundImage()));
         mapPane = new Pane();
+        mapPane.setLayoutX(-200);
+        mapPane.setLayoutY(-200);
         scrollPane.setContent(mapPane);
         int i = 0;
         for (Block block : map.getBlocks()) {
-            System.out.println(i++);
+            //System.out.println(i++);
             Rectangle rectangle = new Rectangle(INSET + block.getX() * BLOCK_SIZE, INSET + block.getY() * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
             rectangle.setFill(new ImagePattern(block.getFieldType().getFieldImage()));
             mapPane.getChildren().add(rectangle);
@@ -123,6 +120,61 @@ public class MapMenu extends Menu {
             }
             setRectangleSettings(rectangle, block);
         }
+        zoomMap(root);
+
+    }
+    public void zoomMap(Pane root) {
+        final double[] zoom = {1};
+//        mapPane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//            @Override
+//            public void handle(KeyEvent keyEvent) {
+//                if(keyEvent.getCode().equals(KeyCode.I)) {
+//                    System.out.println("i");
+//                    if(zoom[0] < 1.8) {
+//                        mapPane.setScaleY(zoom[0] + 0.2);
+//                        mapPane.setScaleX(zoom[0] + 0.2);
+//                        zoom[0] = zoom[0] + 0.2;
+//                    }
+//                }
+//                if(keyEvent.getCode().equals(KeyCode.O)) {
+//                    System.out.println("o");
+//                    if(zoom[0] > 0.4) {
+//                        mapPane.setScaleX(zoom[0] - 0.2);
+//                        mapPane.setScaleY(zoom[0] + 0.2);
+//                        zoom[0] -= 0.2;
+//                    }
+//                }
+//            }
+//        });
+//        mapPane.requestFocus();
+        Button button = new Button("zoomIn");
+        button.setLayoutX(20);
+        button.setLayoutY(20);
+        root.getChildren().add(button);
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(zoom[0] + 0.05 < 1.5) {
+                    mapPane.setScaleY(zoom[0] + 0.05);
+                    mapPane.setScaleX(zoom[0] + 0.05);
+                    zoom[0] += 0.05;
+                }
+            }
+        });
+        Button button1 = new Button("zoomOut");
+        button1.setLayoutX(50);
+        button1.setLayoutY(20);
+        root.getChildren().add(button1);
+        button1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(zoom[0] - 0.05 > 0.8) {
+                    mapPane.setScaleY(zoom[0] - 0.05);
+                    mapPane.setScaleX(zoom[0] - 0.05);
+                    zoom[0] = zoom[0] - 0.05;
+                }
+            }
+        });
     }
     public Tab getTreeTab() {
         HBox hBox = new HBox();

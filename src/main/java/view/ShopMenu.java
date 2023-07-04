@@ -9,15 +9,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import model.Game;
 
-import java.awt.*;
 import java.net.URL;
 
 public class ShopMenu extends Menu{
@@ -49,19 +51,20 @@ public class ShopMenu extends Menu{
     private static Pane pane;
     private Scene scene;
     String allItems[]={"WOOD","STONE","WHEAT","APPLE","CHEESE","MEAT","PROCESSED_MEAT","IRON","HOP","BEAR","FLOUR","BREAD","HORSE","TAR","BOW","SPEAR","ARMOR","SWORD"};
+    public static Stage shopStage;
+    public static Game game;
 
-
-    public ShopMenu(ShopController shopController) {
+    public void setShopController(ShopController shopController) {
         this.shopController = shopController;
     }
+
     @FXML
     public void initialize(){
         pointer = 0;
-
         setImages(pointer);
     }
-    /*public void addWatcher(){
-        amountOF.textProprty().addListener(new ChangeListener<String>() {
+    public void addWatcher(){
+        amountOF.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
@@ -70,12 +73,12 @@ public class ShopMenu extends Menu{
                 }
             }
         });
-    }*/
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
+        ShopMenu.stage = stage;
         stage.setFullScreen(true);
-        this.stage = stage;
         URL url = ProfileMenu.class.getResource("/FXML/ShopMenu.fxml");
         Background background = new Background(new BackgroundImage(new Image(ProfileMenu.class.getResource("/Images/BG/bgPM.jpg").toString(),
                 Screen.getPrimary().getBounds().getHeight(), Screen.getPrimary().getBounds().getWidth(), false, false)
@@ -164,8 +167,11 @@ public class ShopMenu extends Menu{
     }
     public void enterTrade() throws Exception {
         stage.setFullScreen(false);
-        new TradeMenu(new TradeController(shopController.getGame())).start(new Stage());
+        TradeMenu tradeMenu = new TradeMenu();
+        tradeMenu.setTradeController(new TradeController(game));
+        tradeMenu.start(shopStage);
     }
+
 
     //todo price of buy and sell
 
