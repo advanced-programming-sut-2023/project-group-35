@@ -149,7 +149,7 @@ public class StartGameMenu extends Menu{
     public Circle getAvatarImage(User user) {
         Circle circle = new Circle(LayoutX, LayoutY + addedNumber * (HEIGHT + 20), 20);
         try {
-            circle.setFill(new ImagePattern(InitStyle.makeImageBySize(loggedInUser.getAvatar(), 20, 20)));
+            circle.setFill(new ImagePattern(InitStyle.makeImageBySize("Avatar/" + loggedInUser.getAvatar(), 20, 20)));
         } catch (NullPointerException e) {
             circle.setFill(new ImagePattern(ImageEnum.DEFAULT_AVATAR.getImageWithSize(20, 20)));
         }

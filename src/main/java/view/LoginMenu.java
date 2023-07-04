@@ -10,10 +10,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -116,7 +115,7 @@ public class LoginMenu extends Application  {
     }
 
     public void passwordRecovery(MouseEvent mouseEvent) {
-        if(usernameLabel.getText().length() == 0) {
+        if(usernameField.getText().length() == 0) {
             timeLabel.setText("please enter your username first");
             return;
         }
@@ -131,27 +130,41 @@ public class LoginMenu extends Application  {
             return;
         }
 
-
         TextField newPass = new TextField("new password");
         TextField confirmPass = new TextField("confirm password");
         Label label = new Label("");
         label.setTextFill(Color.rgb(166, 52, 27));
 
-        Button button = new Button("OK");
+        Button okButton = new Button("OK");
+        Button cancelButton = new Button("Cancel");
+        HBox hBox = new HBox();
+        hBox.getChildren().add(okButton);
+        hBox.getChildren().add(cancelButton);
+        hBox.setSpacing(20);
         VBox box = new VBox();
-        box.getChildren().addAll(newPass, confirmPass, label, button);
+        box.getChildren().addAll(newPass, confirmPass, label, hBox );
         box.setSpacing(15);
-        Pane pane = new Pane(box);
+        box.setLayoutX(600);
+        box.setLayoutY(150);
+        Pane pane = new Pane();
+        pane.getStylesheets().add(LoginMenu.class.getResource("/CSS/style.css").toExternalForm());
+        pane.getChildren().add(box);
+        pane.setMinHeight(600);
+        pane.setMinWidth(900);
+//        InitStyle.setBackGround(pane, ImageEnum.POPUP_BACKGROUND);
+        pane.setBackground(new Background(new BackgroundImage(new Image(LoginMenu.class.getResource("/Images/popupBackGround.PNG").toExternalForm()), BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         Popup popup = new Popup();
-        popup.setHeight(300);
-        popup.setWidth(400);
+//        popup.setHeight(600);
+//        popup.setWidth(900);
         popup.getContent().add(pane);
         popup.show(Menu.stage);
-        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+        okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 try {
-                    String result = userController.changePassword(newPass.getText(), confirmPass.getText());
+                    String result = userController.changePassword(newPass.getText(), confirmPass.getText(), user);
                     if(result.equals("your password changed successfully!")) {
                         Menu.buildInformationAlert(result);
                         popup.hide();
@@ -164,6 +177,12 @@ public class LoginMenu extends Application  {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            }
+        });
+        cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                popup.hide();
             }
         });
 

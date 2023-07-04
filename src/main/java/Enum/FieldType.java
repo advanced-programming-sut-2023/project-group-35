@@ -49,9 +49,7 @@ public enum FieldType {
         return this.name().toLowerCase().replaceAll("_", " ");
     }
     public Image getFieldImage() {
-//        Image image = new Image(FieldType.class.getResource("/Images/field/" + this.fieldURL).toExternalForm());
-//        return image;4
-        return fieldImage;
+        return this.fieldImage;
     }
 
 
