@@ -39,7 +39,7 @@ public class Map implements Cloneable{
         makeNewBase(map, 10, 10);
         makeNewBase(map, 10, 20);
         makeNewBase(map, 20, 20);
-        User.getUserByUsername(username).getMaps().add(map);
+
         System.out.println("bases: " + map.getNumberOfBases());
         return map;
     }

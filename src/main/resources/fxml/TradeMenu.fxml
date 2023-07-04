@@ -8,5 +8,6 @@
       <Button layoutX="235.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#openTheList" prefHeight="26.0" prefWidth="145.0" text="Make New Trade" />
       <Button layoutX="208.0" layoutY="175.0" mnemonicParsing="false" onMouseClicked="#openViewingPart" prefHeight="26.0" prefWidth="192.0" text="Show Current Trades" />
       <Button layoutX="198.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#showHistory" prefHeight="26.0" prefWidth="217.0" text="Show History Of Trades" />
+      <Button mnemonicParsing="false" onMouseClicked="#back" text="back" />
    </children>
 </AnchorPane>

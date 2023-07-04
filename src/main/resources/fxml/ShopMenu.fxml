@@ -19,5 +19,6 @@
       <ImageView fx:id="currentItem" fitHeight="150.0" fitWidth="150.0" layoutX="48.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="goldYouHave" layoutX="361.0" layoutY="180.0" wrappingWidth="199.9999999999999" />
       <Button fx:id="trade" layoutX="491.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#enterTrade" text="Enter Trade Menu" />
+      <Button layoutX="266.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#back" text="Back" />
    </children>
 </AnchorPane>

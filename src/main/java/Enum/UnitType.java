@@ -29,7 +29,7 @@ public enum UnitType {
 
     //public final String name;
 
-    public final Image image = null;
+    public final Image image;
     public final BuildingType buildingProducedIn;
     public final Resource resourceToBuild;
     public final Resource secondResource;
@@ -54,7 +54,7 @@ public enum UnitType {
     UnitType(String url, BuildingType producedIn, Resource resourceToBuild,Resource secondResource, int cost,
              int attackPower, int defencePower, int speed, int range) {
         //this.name = name;
-        //this.image = new Image(Menu.class.getResource("/Images/units/" + url).toExternalForm(), 60, 60, false, true);
+        this.image = new Image(Menu.class.getResource("/Images/units/" + url).toExternalForm(), 60, 60, false, true);
         this.buildingProducedIn = producedIn;
         this.resourceToBuild = resourceToBuild;
         this.secondResource = secondResource;

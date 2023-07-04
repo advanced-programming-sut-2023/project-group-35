@@ -1,5 +1,6 @@
 package view;
 
+import controller.ShopController;
 import controller.TradeController;
 import Enum.*;
 import javafx.collections.FXCollections;
@@ -301,6 +302,12 @@ public class TradeMenu extends Menu{
         stage.setScene(scene);
         stage.setTitle("Trade History");
         stage.show();
+    }
+    public void back() throws Exception {
+        stage.setFullScreen(false);
+        ShopMenu tradeMenu = new ShopMenu();
+        tradeMenu.setShopController(new ShopController(this.tradeController.getGame()));
+        tradeMenu.start(stage);
     }
 
     /*public void run() {

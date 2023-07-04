@@ -41,9 +41,12 @@ public class Menu extends Application {
         UserController.loadTheData();
         Menu.stage = stage;
         stage.setFullScreen(true);
-
-        String fromFile = Files.readString(Paths.get("loggedIn.txt"));
-        System.out.println("loggedIn: " + fromFile);
+        String fromFile = null;
+        try {
+            fromFile = Files.readString(Paths.get("loggedIn.txt"));
+            System.out.println("loggedIn: " + fromFile);
+        }
+        catch (Exception exp){}
 
         User user;
         if ((user = User.getUserByUsername(fromFile)) != null) {
@@ -78,11 +81,13 @@ public class Menu extends Application {
     public static void startReignMenu(Game game) throws Exception {
         ReignMenu reignMenu = new ReignMenu();
         reignMenu.setReignController(new ReignController(game));
-        reignMenu.start(stage);
+        Stage reign = new Stage();
+        reignMenu.start(reign);
     }
     public static void startShopMenu(Game game) throws Exception {
         ShopMenu shopMenu = new ShopMenu();
         shopMenu.setShopController(new ShopController(game));
+        ShopMenu.game = game;
         shopMenu.start(stage);
     }
         //System.out.println(reader.toString());

@@ -1,7 +1,9 @@
 package view;
 
+import controller.GameController;
 import controller.ReignController;
 import controller.UserController;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -12,6 +14,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -31,6 +34,7 @@ public class ReignMenu extends Menu{
     private ImageView popularityImageView;
     private ImageView popularityCImageView;
     private Label popularityChangeLabel;
+    public Stage reignStage = new Stage();
 
     public void setReignController(ReignController reignController) {
         this.reignController = reignController;
@@ -38,6 +42,7 @@ public class ReignMenu extends Menu{
 
     @Override
     public void start(Stage stage) throws Exception {
+            reignStage = stage;
             VBox root = new VBox();
             root.setSpacing(10);
             root.setPadding(new Insets(20));
@@ -52,9 +57,9 @@ public class ReignMenu extends Menu{
             });
             root.getChildren().addAll(button1, button2);
             Scene scene = new Scene(root, 300, 200);
-            stage.setTitle("Reign Menu");
-            stage.setScene(scene);
-            stage.show();
+            reignStage.setTitle("Reign Menu");
+            reignStage.setScene(scene);
+            reignStage.show();
     }
     public void openShowMenu(){
         BorderPane root = new BorderPane();
@@ -63,9 +68,9 @@ public class ReignMenu extends Menu{
         VBox criteriaSection = createCriteriaSection();
         root.setRight(criteriaSection);
         Scene scene = new Scene(root, 800, 600);
-        stage.setTitle("View Menu");
-        stage.setScene(scene);
-        stage.show();
+        reignStage.setTitle("View Menu");
+        reignStage.setScene(scene);
+        reignStage.show();
     }
     private VBox createPopularitySection() {
         VBox section = new VBox();
@@ -84,7 +89,19 @@ public class ReignMenu extends Menu{
         popularityCImageView = new ImageView(popularityChange);
         HBox imageContainer2 = new HBox(popularityCImageView);
         assignColorAndPicture(popularityChangeLabel,popularityChange,5);
-        section.getChildren().addAll(popularityLabel, imageContainer, popularityChangeLabel,imageContainer2);
+        Button button = new Button("Back");
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                   reignStage.close();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        );
+        section.getChildren().addAll(popularityLabel, imageContainer, popularityChangeLabel,imageContainer2,button);
         return section;
     }
     public void assignColorAndPicture(Label popularityLabel,Image currentPopularity,int size){
@@ -97,7 +114,6 @@ public class ReignMenu extends Menu{
         }else{
                 popularityLabel.setTextFill(Color.GREEN);
             currentPopularity = new Image(ProfileMenu.class.getResource("/Images/Masks/2.png").toString(),size,size,false,false);
-
         }
     }
     private VBox createCriteriaSection() {
@@ -112,7 +128,19 @@ public class ReignMenu extends Menu{
         factors.add(reignController.showPopularity());
         criteriaListView = new ListView<>();
         criteriaListView.getItems().addAll(factors);
-        section.getChildren().add(criteriaListView);
+        Button button = new Button("Back");
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                     @Override
+                                     public void handle(MouseEvent mouseEvent) {
+                                         try {
+                                             reignStage.close();
+                                         } catch (Exception e) {
+                                             throw new RuntimeException(e);
+                                         }
+                                     }
+                                 }
+        );
+        section.getChildren().addAll(criteriaListView,button);
         return section;
     }
     public void openChangingMenu(){
@@ -122,19 +150,19 @@ public class ReignMenu extends Menu{
         Label taxLabel = new Label("Tax Rate:");
         Slider taxSlider = createSlider(-2, 8, 0);
         taxSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            reignController.setTaxRate((Integer) newValue);
+            reignController.setTaxRate(newValue.intValue());
         });
         root.getChildren().addAll(taxLabel, taxSlider);
         Label fearLabel = new Label("Fear Factor:");
         Slider fearSlider = createSlider(-5, 5, 0);
         fearSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-           reignController.setFearRate((Integer) newValue);
+           reignController.setFearRate(newValue.intValue());
         });
         root.getChildren().addAll(fearLabel, fearSlider);
         Label foodLabel = new Label("Food Rate:");
         Slider foodSlider = createSlider(-2, 2, 0);
         foodSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-           reignController.setFoodRate((Integer) newValue);
+           reignController.setFoodRate(newValue.intValue());
         });
         root.getChildren().addAll(foodLabel, foodSlider);
         Scene scene = new Scene(root, 300, 200);

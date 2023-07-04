@@ -20,14 +20,12 @@ public enum FieldType {
     plain("plain.jpg" , false, true,false),
     moat("moat.jpg" , false, false,false); // can' struct but unpassable
 
-    //private String fieldURL;
-    private Image fieldImage;
+    public final Image fieldImage;
     public boolean isSuitableForBuilding;
     public final boolean canTroopPass;
     public final boolean isAquatic;
     FieldType(String fieldURL, boolean isSuitableForBuilding, boolean canTroopPass, boolean isAquatic) {
-        if(fieldURL != null)
-          //  this.fieldImage = new Image(FieldType.class.getResource("/Images/field/" + fieldURL).toExternalForm());
+        this.fieldImage = new Image(FieldType.class.getResource("/Images/field/" + fieldURL).toExternalForm());
         this.isSuitableForBuilding = isSuitableForBuilding;
         this.canTroopPass = canTroopPass;
         this.isAquatic = isAquatic;
@@ -52,9 +50,8 @@ public enum FieldType {
     }
     public Image getFieldImage() {
 //        Image image = new Image(FieldType.class.getResource("/Images/field/" + this.fieldURL).toExternalForm());
-//        System.out.println(this.fieldURL);
-//        return image;
-        return this.fieldImage;
+//        return image;4
+        return fieldImage;
     }
 
 

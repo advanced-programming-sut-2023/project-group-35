@@ -1,10 +1,13 @@
 package view;
 
+import Server.GameData;
+import controller.GameController;
 import controller.ShopController;
 import Enum.*;
 import controller.TradeController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
@@ -51,7 +55,7 @@ public class ShopMenu extends Menu{
     private static Pane pane;
     private Scene scene;
     String allItems[]={"WOOD","STONE","WHEAT","APPLE","CHEESE","MEAT","PROCESSED_MEAT","IRON","HOP","BEAR","FLOUR","BREAD","HORSE","TAR","BOW","SPEAR","ARMOR","SWORD"};
-    public static Stage shopStage;
+    public Stage shopStage;
     public static Game game;
 
     public void setShopController(ShopController shopController) {
@@ -77,8 +81,8 @@ public class ShopMenu extends Menu{
 
     @Override
     public void start(Stage stage) throws Exception {
-        ShopMenu.stage = stage;
-        stage.setFullScreen(true);
+        shopStage = stage;
+        shopStage.setFullScreen(true);
         URL url = ProfileMenu.class.getResource("/FXML/ShopMenu.fxml");
         Background background = new Background(new BackgroundImage(new Image(ProfileMenu.class.getResource("/Images/BG/bgPM.jpg").toString(),
                 Screen.getPrimary().getBounds().getHeight(), Screen.getPrimary().getBounds().getWidth(), false, false)
@@ -89,12 +93,25 @@ public class ShopMenu extends Menu{
         );
         pane = FXMLLoader.load(url);
         pane.setBackground(background);
+        Button button = new Button("Back");
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                     @Override
+                                     public void handle(MouseEvent mouseEvent) {
+                                         try {
+                                             shopStage.close();
+                                         } catch (Exception e) {
+                                             throw new RuntimeException(e);
+                                         }
+                                     }
+                                 }
+        );
+        pane.getChildren().add(button);
         scene = new Scene(pane);
-        stage.setScene(scene);
-        stage.show();
+        shopStage.setScene(scene);
+        shopStage.show();
     }
     public void setImages(int ptr){
-        Image image1 = new Image(ShopMenu.class.getResource("/Assests/0.png").toString());
+        Image image1 = new Image(ShopMenu.class.getResource("/Images/Assests/0.png").toString());
         int lPtr;
         int rPtr;
         if(ptr == 0)
@@ -105,9 +122,9 @@ public class ShopMenu extends Menu{
             rPtr = 17;
         else
             rPtr = ptr+1;
-        Image image2 = new Image(ShopMenu.class.getResource(("/Assests/+"+(lPtr+1)+".png")).toString());
-        Image image3 = new Image(ShopMenu.class.getResource(("/Assests/+"+rPtr+".png")).toString());
-        Image image4 = new Image(ShopMenu.class.getResource(("/Assests/+"+(ptr+1)+".png")).toString());
+        Image image2 = new Image(ShopMenu.class.getResource(("/Images/Assests/"+(lPtr+1)+".png")).toString());
+        Image image3 = new Image(ShopMenu.class.getResource(("/Images/Assests/"+rPtr+".png")).toString());
+        Image image4 = new Image(ShopMenu.class.getResource(("/Images/Assests/"+(ptr+1)+".png")).toString());
         beforeItem.setImage(image2);
         beforeItem.setPreserveRatio(true);
         beforeItem.setFitHeight(50);
@@ -124,7 +141,7 @@ public class ShopMenu extends Menu{
         gold.setPreserveRatio(true);
         gold.setFitHeight(150);
         gold.setFitHeight(150);
-        goldYouHave.setText(""+shopController.getPlayingReign().getGold());
+        goldYouHave.setText(""+game.getPlayingReign().getGold());
     }
     public void goLeft(){
         if(pointer == 0)
@@ -144,6 +161,7 @@ public class ShopMenu extends Menu{
         amountYouWannaChange = Double.parseDouble(amountOF.getText());
     }
     public void buying(){
+        shopController = new ShopController(game);
         String res = shopController.purchase((int)amountYouWannaChange,Resource.getResourceByName(allItems[pointer]));
         Alert alert = new Alert(Alert.AlertType.INFORMATION, res, ButtonType.CLOSE);
         if(!res.equals("you have bought the resources successfully")){
@@ -155,6 +173,7 @@ public class ShopMenu extends Menu{
         alert.showAndWait();
     }
     public void selling(){
+        shopController = new ShopController(game);
         String res = shopController.sell((int)amountYouWannaChange,Resource.getResourceByName(allItems[pointer]));
         Alert alert = new Alert(Alert.AlertType.INFORMATION, res, ButtonType.CLOSE);
         if(!res.equals("selling resources successful")){
@@ -166,10 +185,13 @@ public class ShopMenu extends Menu{
         alert.showAndWait();
     }
     public void enterTrade() throws Exception {
-        stage.setFullScreen(false);
+        shopStage.setFullScreen(false);
         TradeMenu tradeMenu = new TradeMenu();
         tradeMenu.setTradeController(new TradeController(game));
         tradeMenu.start(shopStage);
+    }
+    public void back() throws Exception {
+        shopStage.close();
     }
 
 

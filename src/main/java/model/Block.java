@@ -137,6 +137,7 @@ public class Block {
     }
 
     public FieldType getFieldType() {
+        System.out.println(fieldType.getName());
         return fieldType;
     }
 
