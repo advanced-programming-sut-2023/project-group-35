@@ -161,11 +161,11 @@ public class UserController {
             return "your password changed!";
         }
     }
-            public String changePassword (String newPass, String confirmPass) throws NoSuchAlgorithmException, IOException {
+            public String changePassword (String newPass, String confirmPass, User user) throws NoSuchAlgorithmException, IOException {
             String result;
-            if (newPass.equals(confirmPass)) return "please check the confirmation again";
+            if (!newPass.equals(confirmPass)) return "please check the confirmation again";
             if (!(result = checkPasswordErrors(newPass)).equals("perfect")) return result;
-            loggedInUser.setPassword(turnPasswordToSha256(newPass));
+            user.setPassword(turnPasswordToSha256(newPass));
             return "your password changed successfully!";
 
         }

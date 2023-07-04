@@ -50,6 +50,7 @@ public class User implements Comparable {
         this.attemptsNumber = 0;
         this.lastAttemptForLogin = System.currentTimeMillis();
         maps.add(Map.generateDefaultMap(this.getUserName()));
+        this.getMaps().add(map);
     }
 
 

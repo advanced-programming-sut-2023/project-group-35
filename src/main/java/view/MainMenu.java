@@ -201,7 +201,9 @@ public class MainMenu extends Menu{
                 if(loggedInUser.getMaps().size() > 3) Menu.buildInformationAlert("YOU CAN'T HAVE MORE THAN 4 MAPS IN THE GAME!");
                 else {
                     MapMenu mapMenu = new MapMenu();
-                    mapMenu.setMap(Map.generateDefaultMap(loggedInUser.getUserName()));
+                    Map map = Map.generateDefaultMap(loggedInUser.getUserName());
+                    mapMenu.setMap(map);
+                    userController.getLoggedInUser().getMaps().add(map);
                     try {
                         mapMenu.start(Menu.stage);
                     } catch (Exception e) {

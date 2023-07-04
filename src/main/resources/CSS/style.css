@@ -1,0 +1,40 @@
+Button{
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-background-color: rgb(214,199,159);
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-font-family: "times new roman";
+    -fx-background-insets: 0,1,2;
+    -fx-text-fill: black;
+    -fx-font-size: 16px;
+    -fx-border-color: #7a7a7a;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+}
+HBox {
+    -fx-spacing: 15px;
+}
+VBox{
+    -fx-spacing: 15px;
+}
+.text-field{
+
+}
+TextField, PasswordField{
+        -fx-background-color: white;
+        -fx-border-color: #7a7a7a;
+        -fx-border-radius: 10;
+        -fx-background-radius: 11;
+        -fx-border-width: 2;
+        -fx-font-family: "Arial";
+}
+.warning-label{
+    -fx-fill: #818181;
+    -fx-font-size: 14px;
+
+    -fx-text-fill: #c24d32;
+}
+.label{
+    -fx-font-family: "times new roman";
+}

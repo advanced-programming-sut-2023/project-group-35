@@ -13,10 +13,18 @@ public enum ImageEnum {
     START_GAME_MENU("/startGameMenu.jpg"),
     DEFAULT_AVATAR("/user.png"),
     TAB_MENU_IMAGE("/tabMenu.jpg"),
-    BACK_GROUND("backGround.png"),
-    REPAIR_ICON(""),
-    DELETE_ICON(""),
+    //BACK_GROUND("backGround.png"),
+    REPAIR_ICON("/icon/delete.png"),
+    DELETE_ICON("/icon/repair.png"),
     REIGN_MENU_MAN("/man.png"),
+    BACK("/icon/back.png"),
+    DOWN("/icon/down.png"),
+    RIGHT("/icon/right.png"),
+    UP("/icon/up.png"),
+    POPUP_BACKGROUND("/popupBackGround.PNG"),
+
+
+
 
     //UNSELECTED_MAP_IMAGE(""),
     ;

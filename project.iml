@@ -11,7 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.10.1" level="project" />
     <orderEntry type="library" name="Maven: org.mockito:mockito-inline:5.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.mockito:mockito-core:5.2.0" level="project" />
     <orderEntry type="library" name="Maven: net.bytebuddy:byte-buddy:1.14.1" level="project" />
@@ -44,5 +44,7 @@
     <orderEntry type="library" name="Maven: com.dorkbox:Notify:3.7" level="project" />
     <orderEntry type="library" name="Maven: com.dorkbox:TweenEngine:8.3" level="project" />
     <orderEntry type="library" name="Maven: com.dorkbox:ObjectPool:2.11" level="project" />
+    <orderEntry type="library" name="Maven: com.solidfire.code.gson:gson:2.6.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson-parent:2.10.1" level="project" />
   </component>
 </module>
