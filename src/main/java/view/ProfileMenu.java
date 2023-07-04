@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
-
+import java.security.spec.RSAOtherPrimeInfo;
 import controller.UserController;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -27,81 +27,82 @@ import javafx.stage.Stage;
 import model.User;
 
 public class ProfileMenu extends Menu{
-    public javafx.scene.control.Button chooseFromDeviceButton;
-    private UserController userController = new UserController();
-    private User loggedInUser;
+    @FXML
+    public Button chooseFromDeviceButton = new Button();
+    private UserController userController;
+    private User loggedInUser = UserController.loggedInUser;
     private static Pane pane;
     private Scene scene;
     @FXML
-    TextField usernameTextField;
+    TextField usernameTextField = new TextField();
     @FXML
-    TextField nicknameTextField;
+    TextField nicknameTextField = new TextField();
     @FXML
-    TextField emailTextField;
+    TextField emailTextField = new TextField();
     @FXML
-    TextField sloganTextField;
+    TextField sloganTextField = new TextField();
     @FXML
-    TextField passwordTextField;
+    TextField passwordTextField = new TextField();
     @FXML
-    TextField confirmationTextField;
+    TextField confirmationTextField = new TextField();
     @FXML
-    TextField oldPasswordTextField;
+    TextField oldPasswordTextField= new TextField();
     @FXML
-    TextField textFieldToShowPassword;
+    TextField textFieldToShowPassword = new TextField();
     @FXML
-    TextField textFieldToShowConfirmation;
+    TextField textFieldToShowConfirmation = new TextField();
     @FXML
-    TextField textFieldToShowOldPassword;
+    TextField textFieldToShowOldPassword = new TextField();
     @FXML
-    Label confirmationText;
+    Label confirmationText = new Label();
     @FXML
-    Label oldPasswordText;
+    Label oldPasswordText = new Label();
     @FXML
-    Label usernameWarningLabel;
+    Label usernameWarningLabel = new Label();
     @FXML
-    Label nicknameWarningLabel;
+    Label nicknameWarningLabel = new Label();
     @FXML
-    Label emailWarningLabel;
+    Label emailWarningLabel = new Label();
     @FXML
-    Label passwordWarningLabel;
+    Label passwordWarningLabel = new Label();
     @FXML
-    Label confirmationWarningLabel;
+    Label confirmationWarningLabel = new Label();
     @FXML
-    Button submitUsername;
+    Button submitUsername = new Button();
     @FXML
-    Button submitNickname;
+    Button submitNickname = new Button();
     @FXML
-    Button submitEmail;
+    Button submitEmail = new Button();
     @FXML
-    Button submitSlogan;
+    Button submitSlogan = new Button();
     @FXML
-    Button submitPassword;
+    Button submitPassword = new Button();
     @FXML
-    Button changeUsername;
+    Button changeUsername = new Button();
     @FXML
-    Button changeNickname;
+    Button changeNickname = new Button();
     @FXML
-    Button changeEmail;
+    Button changeEmail =new Button();
     @FXML
-    Button changeSlogan;
+    Button changeSlogan = new Button();
     @FXML
-    Button changePassword;
+    Button changePassword = new Button();
     @FXML
-    Button chooseAnExistingAvatarButton;
+    Button chooseAnExistingAvatarButton = new Button();
     @FXML
     Button enterScoreBoardButton;
     @FXML
-    Rectangle avatar;
+    Rectangle avatar = new Rectangle();
     @FXML
-    CheckBox showPasswordCheckBox;
+    CheckBox showPasswordCheckBox = new CheckBox();
 
 
 
     @Override
     public void start(Stage stage) throws Exception {
+        if(userController == null) System.out.println("null in start");
         stage.setFullScreen(true);
-        this.stage = stage;
-        URL url = ProfileMenu.class.getResource("/FXML/ProfileMenu.fxml");
+        URL url = ProfileMenu.class.getResource("/fxml/ProfileMenu.fxml");
         Background background = new Background(new BackgroundImage(new Image(ProfileMenu.class.getResource("/Images/BG/bgPM.jpg").toString(),
                 Screen.getPrimary().getBounds().getHeight(), Screen.getPrimary().getBounds().getWidth(), false, false)
                 ,BackgroundRepeat.NO_REPEAT,
@@ -109,24 +110,33 @@ public class ProfileMenu extends Menu{
                 BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)
                 );
-        pane = FXMLLoader.load(url);
-        pane.setBackground(background);
-        scene = new Scene(pane);
+
+        Pane pane1 = FXMLLoader.load(url);
+        pane1.setBackground(background);
+        scene = new Scene(pane1);
+        pane = pane1;
         stage.setScene(scene);
         stage.show();
+        initialized();
 
     }
-    @FXML
-    public void initialize(){
-        resetAll();
+
+    public void initialized() {
+        System.out.println(1 + loggedInUser.getUserName());
         addListeners();
-        if(loggedInUser.avatar == null){
-            loggedInUser.avatar = ProfileMenu.class.getResource("/Images/1.jpeg").toString();
-        }
-        avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/1.jpeg").toString()+
-                loggedInUser.avatar,
-                Screen.getPrimary().getBounds().getHeight(),
-                Screen.getPrimary().getBounds().getWidth(),false,false)));
+        setImage();
+        resetAll();
+    }
+
+    public void setImage(){
+            if(loggedInUser.avatar == null){
+                loggedInUser.avatar = ProfileMenu.class.getResource("/Images/Avatar/1.jpeg").toString();
+            }
+            avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/Avatar").toString()+
+                    loggedInUser.avatar,
+                    Screen.getPrimary().getBounds().getHeight(),
+                    Screen.getPrimary().getBounds().getWidth(),false,false)));
+
     }
     public void addListeners(){
         nicknameTextField.textProperty().addListener(new javafx.beans.value.ChangeListener<String>() {
@@ -219,22 +229,20 @@ public class ProfileMenu extends Menu{
 
     }
     public void resetAll(){
-        userController.setLoggedInUser(loggedInUser);
+        System.out.println(loggedInUser);
         submitUsername.setVisible(false);
         submitNickname.setVisible(false);
         submitEmail.setVisible(false);
         submitSlogan.setVisible(false);
         submitPassword.setVisible(false);
-        chooseAnExistingAvatarButton.setVisible(false);
-        chooseFromDeviceButton.setVisible(false);
-        usernameTextField.setText(userController.getLoggedInUser().getUserName());
+        usernameTextField.setText(getUserController().getLoggedInUser().getUserName());
         usernameTextField.setDisable(true);
-        nicknameTextField.setText(userController.getLoggedInUser().getNickName());
+        nicknameTextField.setText(getUserController().getLoggedInUser().getNickName());
         nicknameTextField.setDisable(true);
-        emailTextField.setText(userController.getLoggedInUser().getEmail());
+        emailTextField.setText(getUserController().getLoggedInUser().getEmail());
         emailTextField.setDisable(true);
-        if(userController.getLoggedInUser().getSloganOfUser() != null) {
-            sloganTextField.setText(userController.getLoggedInUser().getSloganOfUser());
+        if(getUserController().getLoggedInUser().getSloganOfUser() != null) {
+            sloganTextField.setText(getUserController().getLoggedInUser().getSloganOfUser());
             sloganTextField.setDisable(true);
         }
         else{
@@ -352,7 +360,7 @@ public class ProfileMenu extends Menu{
     public void submitEmail(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfEmail = new Alert(Alert.AlertType.ERROR);
         alertOfEmail.setTitle("Email");
-        String res = userController.emailChange(emailTextField.getText());
+        String res = getUserController().emailChange(emailTextField.getText());
         if(res.equals("Invalid Email format!")) {
             alertOfEmail.setHeaderText("Invalid!");
         }else if(res.equals("this email is already in database!")){
@@ -364,14 +372,14 @@ public class ProfileMenu extends Menu{
         stage.setFullScreen(false);
         alertOfEmail.showAndWait();
         stage.setFullScreen(true);
-        emailTextField.setText(userController.getLoggedInUser().getEmail());
+        emailTextField.setText(getUserController().getLoggedInUser().getEmail());
         emailWarningLabel.setText("");
     }
     @FXML
     public void submitNickname(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfNickname = new Alert(Alert.AlertType.ERROR);
         alertOfNickname.setTitle("NickName");
-        String res = userController.nicknameChange(nicknameTextField.getText());
+        String res = getUserController().nicknameChange(nicknameTextField.getText());
         if(res.equals("Invalid username format!")) {
             alertOfNickname.setHeaderText("Invalid!");
         }
@@ -382,14 +390,14 @@ public class ProfileMenu extends Menu{
         stage.setFullScreen(false);
         alertOfNickname.showAndWait();
         stage.setFullScreen(true);
-        nicknameTextField.setText(userController.getLoggedInUser().getNickName());
+        nicknameTextField.setText(getUserController().getLoggedInUser().getNickName());
         nicknameWarningLabel.setText("");
     }
     @FXML
     public void submitSlogan(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfSlogan = new Alert(Alert.AlertType.ERROR);
         alertOfSlogan.setTitle("Slogan");
-        String res = userController.changeOrRemoveSlogan(sloganTextField.getText());
+        String res = getUserController().changeOrRemoveSlogan(sloganTextField.getText());
         if(res.equals("you have no slogan to remove!")) {
             alertOfSlogan.setHeaderText("Invalid Try!");
         }else if(res.equals("your slogan removed")){
@@ -403,15 +411,15 @@ public class ProfileMenu extends Menu{
         stage.setFullScreen(false);
         alertOfSlogan.showAndWait();
         stage.setFullScreen(true);
-        if(userController.getLoggedInUser().getSloganOfUser() != null)
-        sloganTextField.setText(userController.getLoggedInUser().getSloganOfUser());
+        if(getUserController().getLoggedInUser().getSloganOfUser() != null)
+        sloganTextField.setText(getUserController().getLoggedInUser().getSloganOfUser());
         else sloganTextField.setText("Doesn't has slogan!");
     }
     @FXML
     public void SubmitPassword(MouseEvent mouseEvent) throws IOException, NoSuchAlgorithmException {
         Alert alertOfPassword = new Alert(Alert.AlertType.ERROR);
         alertOfPassword.setTitle("Password");
-        String res = userController.passwordChanger(oldPasswordTextField.getText(),
+        String res = getUserController().passwordChanger(oldPasswordTextField.getText(),
                passwordTextField.getText(),confirmationTextField.getText());
         if(res.equals("You entered wrong password!")) {
             alertOfPassword.setHeaderText("Invalid Try!");
@@ -432,7 +440,7 @@ public class ProfileMenu extends Menu{
         passwordTextField.setText("");
         passwordWarningLabel.setText("");
         oldPasswordText.setText("");
-        oldPasswordTextField.setText(userController.getLoggedInUser().getPassword());
+        oldPasswordTextField.setText(getUserController().getLoggedInUser().getPassword());
         confirmationTextField.setText("");
         confirmationText.setText("");
     }
@@ -452,8 +460,8 @@ public class ProfileMenu extends Menu{
                 image = null;
             }
         }
-        userController.getLoggedInUser().setAvatar(image.getName());
-        avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/1.jpeg").toString()+
+        getUserController().getLoggedInUser().setAvatar(image.getName());
+        avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/Avatar").toString()+
                 loggedInUser.avatar,
                 Screen.getPrimary().getBounds().getHeight(),
                 Screen.getPrimary().getBounds().getWidth(),false,false)));
@@ -461,13 +469,13 @@ public class ProfileMenu extends Menu{
     @FXML
     private void chooseAnExistingAvatar(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(ProfileMenu.class.getResource("/Images/Avatars").toString().substring("file:/".length())));
+        fileChooser.setInitialDirectory(new File(ProfileMenu.class.getResource("/Images/Avatar").toString().substring("file:/".length())));
         stage.setFullScreen(false);
         File image = fileChooser.showOpenDialog(stage);
         stage.setFullScreen(true);
         if (image != null) {
-            userController.getLoggedInUser().setAvatar(image.getName());
-            avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/1.jpeg").toString()+
+            getUserController().getLoggedInUser().setAvatar(image.getName());
+            avatar.setFill(new ImagePattern(new Image(ProfileMenu.class.getResource("/Images/Avatar").toString()+
                     loggedInUser.avatar,
                     Screen.getPrimary().getBounds().getHeight(),
                     Screen.getPrimary().getBounds().getWidth(),false,false)));
@@ -475,7 +483,11 @@ public class ProfileMenu extends Menu{
     }
     @FXML
     public void back(){
-
+        try {
+            Menu.startMainMenu(UserController.loggedInUser);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     public void scoreboard(){
@@ -537,11 +549,24 @@ public class ProfileMenu extends Menu{
     } */
 
     public void setUserController(UserController userController) {
+        System.out.println(userController.getLoggedInUser().getUserName());
         this.userController = userController;
+        if(userController == null) System.out.println("null");
+        else System.out.println("not null");
         this.loggedInUser = userController.getLoggedInUser();
+        System.out.println(loggedInUser.getUserName());
     }
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
+    }
+    public UserController getUserController() {
+        if(userController != null) return userController;
+        else {
+            UserController userController1 = new UserController();
+            if(loggedInUser == null) System.out.println("loggedin use null in get controller");
+            userController1.setLoggedInUser(loggedInUser);
+            return userController1;
+        }
     }
 }

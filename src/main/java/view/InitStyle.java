@@ -33,7 +33,7 @@ public class InitStyle {
         label.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
     }
     public static Image makeImageBySize(String address, int width, int height ) {
-        return new Image(ImageEnum.class.getResource(address).toExternalForm(), width, height, false, true);
+        return new Image(ImageEnum.class.getResource("Images/Avatar").toExternalForm()+address, width, height, false, true);
     }
     public static Button setGameButtonStyles(String name, int height, int width) {
         Button button = new Button(name);

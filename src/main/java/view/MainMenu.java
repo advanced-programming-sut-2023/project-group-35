@@ -144,7 +144,7 @@ public class MainMenu extends Menu{
             @Override
             public void handle(MouseEvent mouseEvent) {
                 try {
-                    Menu.startProfileMenu(userController);
+                    Menu.startProfileMenu(loggedInUser);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -211,6 +211,7 @@ public class MainMenu extends Menu{
             }
         });
     }
+
 
 
 //    public void run() throws NoSuchAlgorithmException, IOException {
