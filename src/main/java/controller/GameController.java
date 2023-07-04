@@ -206,7 +206,7 @@ public class GameController {
         return blocksAround;
     }
     public String removeBuilding(Building building) {
-        if(building.getHp() > 0) return "";
+        //if(building.getHp() > 0) return "";
         game.getAllTheBuildings().remove(building);
         building.getBlock().removeBuilding();
         building.getOwner().getBuildings().remove(building);

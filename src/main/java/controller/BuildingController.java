@@ -25,7 +25,6 @@ public class BuildingController extends GameController{
         if(playingReign.getGold() < unitType.cost * count) return "you don't have enough gold";
         if(unitType.resourceToBuild != null && playingReign.getResourceAmount(unitType.resourceToBuild) < count)
             return "you don't have enough" + unitType.resourceToBuild.name() + "to build this unit";
-
         if(playingReign.getUnemployedPopulation() < count) return "you don't have enough unemployed population";
         MilitaryUnit unit = new MilitaryUnit(unitType , playingReign, block, count);
         playingReign.changeUnemployedPopulation(-count);

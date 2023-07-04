@@ -1,14 +1,20 @@
 package view;
 
+import controller.GameController;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import model.Block;
 import model.Reign;
-import model.structures.Structure;
+import model.buildings.Building;
 import javafx.scene.image.ImageView;
+import model.people.MilitaryUnit;
+import Enum.*;
+
 import java.util.ArrayList;
 
-public class rectBlock extends Rectangle {
+import static view.MapMenu.mapPane;
+
+public class RectBlock extends Rectangle {
     private final Block block;
     private ImageView BuildingView;
     private ImageView treeView;
@@ -16,7 +22,7 @@ public class rectBlock extends Rectangle {
     private ArrayList<ImageView> troopsView = new ArrayList<>();
     private ArrayList<ImageView> structuresView = new ArrayList<>();
 
-    public rectBlock(Block block, double x, double y, double height, double width) {
+    public RectBlock(Block block, double x, double y, double height, double width) {
         super(x, y, height, width);
         this.block = block;
     }
@@ -60,6 +66,18 @@ public class rectBlock extends Rectangle {
         imageViews.clear();
     }
 
+    public String removeBuilding(Reign reign, GameController gameController) {
+        if(!block.hasABuilding()) return "not a building here";
+        Building building = block.getBuilding();
+        if(!building.getOwner().equals(reign)) return "you are not the owner of this building";
+        if(this.getBuildingView() != null) {
+            this.setBuildingView(null);
+            mapPane.getChildren().remove(this.getBuildingView());
+        }
+        gameController.removeBuilding(building);
+        return "building removed successfully!";
+    }
+
     public ArrayList<ImageView> getImageViews() {
         return imageViews;
     }
@@ -72,4 +90,18 @@ public class rectBlock extends Rectangle {
         return structuresView;
     }
 
+
+    public void removeUnit(MilitaryUnit unit, Pane mapPane) {
+        ArrayList<ImageView> views = new ArrayList<>();
+        for (ImageView imageView : troopsView) {
+            UnitType type = UnitType.getUnitByImage(imageView.getImage());
+            if(unit.getUnitType().equals(type)) {
+                mapPane.getChildren().remove(imageView);
+                views.add(imageView);
+            }
+        }
+        for (ImageView view : views) {
+            troopsView.remove(view);
+        }
+    }
 }

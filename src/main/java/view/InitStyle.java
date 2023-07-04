@@ -95,4 +95,17 @@ public class InitStyle {
         pane.getChildren().add(imageView);
         return imageView;
     }
+    public static Rectangle getPointerIcon(ImageEnum direction) {
+        Rectangle rectangle = new Rectangle(20 ,20);
+        rectangle.setFill(InitStyle.getImagePattern(ImageEnum.getImage(direction, false), 20, 20));
+        return rectangle;
+    }
+    public static Label getLabel(String content, int height, int width) {
+        Label label = new Label(content);
+        label.setPrefHeight(height);
+        label.setPrefWidth(width);
+        label.setFont(Font.font("times new roman", 14));
+        return label;
+    }
+
 }
