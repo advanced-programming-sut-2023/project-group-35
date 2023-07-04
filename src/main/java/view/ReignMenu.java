@@ -31,7 +31,8 @@ public class ReignMenu extends Menu{
     private ImageView popularityImageView;
     private ImageView popularityCImageView;
     private Label popularityChangeLabel;
-    public ReignMenu(ReignController reignController) {
+
+    public void setReignController(ReignController reignController) {
         this.reignController = reignController;
     }
 

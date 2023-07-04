@@ -4,13 +4,13 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.*;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import Enum.*;
-import controller.MapController;
+
+import controller.ReignController;
+import controller.ShopController;
+import controller.TradeController;
 import controller.UserController;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
@@ -18,9 +18,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
-import model.Map;
+import model.Game;
 import model.User;
-import org.testng.reporters.jq.Main;
 
 public class Menu extends Application {
     public static final Scanner scanner = new Scanner(System.in);
@@ -72,6 +71,16 @@ public class Menu extends Application {
         profileMenu.start(Menu.stage);
     }
 
+    public static void startReignMenu(Game game) throws Exception {
+        ReignMenu reignMenu = new ReignMenu();
+        reignMenu.setReignController(new ReignController(game));
+        reignMenu.start(stage);
+    }
+    public static void startShopMenu(Game game) throws Exception {
+        ShopMenu shopMenu = new ShopMenu();
+        shopMenu.setShopController(new ShopController(game));
+        shopMenu.start(stage);
+    }
         //System.out.println(reader.toString());
 
         //boolean exists = tempFile.exists();

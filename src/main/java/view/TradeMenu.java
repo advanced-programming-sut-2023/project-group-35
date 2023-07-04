@@ -38,9 +38,10 @@ public class TradeMenu extends Menu{
     private ObservableList<String> userReceivedOffers = FXCollections.observableList(tradeController.showMyRequestsFromOthers());
     private ObservableList<String> userSentOffers = FXCollections.observableList(tradeController.showRequestsFromMe());
 
-    public TradeMenu(TradeController tradeController) {
+    public void setTradeController(TradeController tradeController) {
         this.tradeController = tradeController;
     }
+
     @FXML
     public void initialize(){
     }

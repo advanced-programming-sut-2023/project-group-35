@@ -16,6 +16,8 @@ public enum ImageEnum {
     BACK_GROUND("backGround.png"),
     REPAIR_ICON(""),
     DELETE_ICON(""),
+    REIGN_MENU_MAN("/man.png"),
+
     //UNSELECTED_MAP_IMAGE(""),
     ;
 

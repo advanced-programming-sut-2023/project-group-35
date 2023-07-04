@@ -21,7 +21,6 @@ import model.Block;
 import model.Map;
 import model.buildings.Building;
 import model.people.MilitaryUnit;
-import org.testng.internal.EclipseInterface;
 
 import java.util.ArrayList;
 
@@ -40,11 +39,12 @@ public class GameMenu extends Menu{
     private GameTabMenuMode menuMode = GameTabMenuMode.DROP_BUILDING;
     public static int MENU_ITEM_SIZE = 60;
     public static int BuildingImageSize;
-    public static int MapPaneHeight = 700;
+    public static int MapPaneHeight = 740;
     public static int SCREEN_HEIGHT = 912;
-    public static int SCREEN_WIDTH = 1368;
+    public static int SCREEN_WIDTH = 1348;
     private BuildingType selectedBuildingType;
 
+    private Building copiedBuilding;
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
@@ -57,22 +57,24 @@ public class GameMenu extends Menu{
 
     @Override
     public void start(Stage stage) throws Exception {
-        //if(gameMap == null) System.out.println("null bood in start");
-        //if(gameController == null) System.out.println("game conroller ham null in sart");
-        //if(gameController.getMap() == null) System.out.println("map of game controller ham null");
-        //gameMap = gameController.getMap();
-       // stage.setFullScreen(true);
+        stage.setFullScreen(true);
         Pane root = new Pane();
-        initializeMap(root);
+
         initMenuPane(root);
+
+
         buildingTabPane = createBuildingsTabPane();
+        initializeMap(root);
         initializeMenuBar();
+        initReignMenuOpenerImage(root);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
     public void initMenuPane(Pane root) {
+
+
         Pane pane = new Pane();
         root.getChildren().add(pane);
         pane.setLayoutY(MapPaneHeight);
@@ -80,13 +82,14 @@ public class GameMenu extends Menu{
 //        pane.setPrefWidth(root.getPrefWidth());
         pane.setPrefWidth(SCREEN_WIDTH);
         pane.setPrefHeight(200);
+        //pane.getChildren().add(reignMenuOpener());
         //pane.setBackground(new Background(new BackgroundFill(Color.rgb(212, 195, 142), CornerRadii.EMPTY, Insets.EMPTY)));
         HBox hBox = new HBox();
         pane.getChildren().add(hBox);
         ImageView tabMenuIcon = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.TAB_MENU_IMAGE, false),SCREEN_HEIGHT - MapPaneHeight, SCREEN_WIDTH / 3);
         ImageView tabMenuIcon1 = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.TAB_MENU_IMAGE, false),SCREEN_HEIGHT - MapPaneHeight, SCREEN_WIDTH / 3);
         Pane menuPane = new Pane();
-        pane.setPrefWidth(SCREEN_WIDTH / 3);
+
         menuPane.setPrefHeight(SCREEN_HEIGHT - MapPaneHeight);
         //InitStyle.setBackGround(pane, ImageEnum.BACK_GROUND);
         hBox.getChildren().add(tabMenuIcon);
@@ -130,8 +133,16 @@ public class GameMenu extends Menu{
         }
     }
     private void initializeMenuBar() {
-        if(menuMode.equals(GameTabMenuMode.DROP_BUILDING)) menuPane.getChildren().add(buildingTabPane);
-        else if(menuMode.equals(GameTabMenuMode.BUILDING_SELECTED)) menuPane.getChildren().add(getBuildingSelectedMenu(selectedBuilding));
+        if(menuMode.equals(GameTabMenuMode.DROP_BUILDING)){
+            menuPane.getChildren().clear();
+            menuPane.getChildren().add(buildingTabPane);
+        }
+        else if(menuMode.equals(GameTabMenuMode.BUILDING_SELECTED)) {
+            menuPane.getChildren().clear();
+            System.out.println("initializemenubar befor");
+            menuPane.getChildren().add(getBuildingSelectedMenu(selectedBuilding));
+            System.out.println("initializemenubar selected buildign");
+        }
         //else menuPane.getChildren().add(getUnitSelectedMenu());
 
     }
@@ -141,12 +152,13 @@ public class GameMenu extends Menu{
         if(type.isEqualToAnyOf(BuildingType.MERCENARY_CAMP, BuildingType.BARRACK, BuildingType.ENGINEER_GUILD, BuildingType.CATHEDRAL)) {
             hBox.getChildren().add(getUnitsTabCreatedByBuilding(type));
         }
+        System.out.println("salam");
         hBox.getChildren().add(createBuildingsOptions());
-
+        System.out.println("khodafes");
         //if(type.isEqualToAnyOf(BuildingType.INN)) //todo
         //if(type.isEqualToAnyOf()
         TabPane tabPane = new TabPane();
-        tabPane.getTabs().add(new Tab("buildingSelect" + hBox));
+        tabPane.getTabs().add(new Tab("buildingSelect" , hBox));
         return tabPane;
     }
     public VBox createBuildingsOptions() {
@@ -176,14 +188,16 @@ public class GameMenu extends Menu{
         ArrayList<UnitType> units = UnitType.getUnitsProducedIn(buildingType);
         HBox hBox = InitStyle.createHbox();
         for (UnitType unit : units) {
-            ImageView imageView = InitStyle.getImageView(unit.getImage(), MENU_ITEM_SIZE, MENU_ITEM_SIZE);
-            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    if(mouseEvent.getClickCount() > 1) createUnit(UnitType.getUnitByImage(imageView.getImage()));
-                }
-            });
-            hBox.getChildren().add(imageView);
+            //ImageView imageView = InitStyle.getImageView(new Image(GameMenu.class.getResource("/Images/castle1.png").toExternalForm()), MENU_ITEM_SIZE, MENU_ITEM_SIZE);
+//            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent mouseEvent) {
+//                    if(mouseEvent.getClickCount() > 1) {
+//                        createUnit(UnitType.getUnitByImage(imageView.getImage()));
+//                    }
+//                }
+//            });
+            //hBox.getChildren().add(imageView);
         }
         //hBox.setMaxHeight(); needed??
         ScrollPane scrollPane = InitStyle.makeScrollPane(true, ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -218,8 +232,10 @@ public class GameMenu extends Menu{
         scrollPane.setPannable(true);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
         HBox hBox = InitStyle.createHbox();
         for (BuildingType building : buildingTypes) {
+            System.out.println("buildings type for menu bar: " + building);
             ImageView imageView = InitStyle.getImageView(building.getImage(), 60, 60);
             hBox.getChildren().add(imageView);
             imageView.setOnDragDetected(event -> {
@@ -233,7 +249,9 @@ public class GameMenu extends Menu{
                 event.consume();
             });
         }
+        scrollPane.setContent(hBox);
         Tab tab = new Tab();
+        setTabMenuIcon(tab, new Image(GameMenu.class.getResource("/Images/icon/" + iconUrl).toExternalForm(),10, 10,true, true ));
         tab.setContent(scrollPane);
         return tab;
     }
@@ -252,13 +270,45 @@ public class GameMenu extends Menu{
             if(block.hasABuilding()) {
                 selectedBuilding = block.getBuilding();
                 menuMode = GameTabMenuMode.BUILDING_SELECTED;
+                System.out.println("building selected " + selectedBuilding.getBuildingType() );
+            } else {
+                menuMode = GameTabMenuMode.UNIT_SELECTED;
+                selectedUnit = block.getMilitaryUnits().get(0);
             }
         } if(modes.size() > 1) {
             System.out.println("more than 1"); //todo contunue to select one
+            chooseWhichComponentToSelect(block, block.hasABuilding());
         }
-        initializeMenuBar();
+
+//        initializeMenuBar();
+
+
     }
 
+    public void chooseWhichComponentToSelect(Block block, boolean hasBuilding) {
+        TextInputDialog textInputDialog = new TextInputDialog("text");
+        String component = "";
+        if(hasBuilding) {
+            component += "B- building: " + block.getBuilding().getBuildingType();
+        }
+        int i =1;
+        for (MilitaryUnit militaryUnit : block.getMilitaryUnits()) {
+            component += "\n" + i++ + "- " + militaryUnit.getUnitType();
+        }
+        textInputDialog.setContentText("choose one of these to be selected in the block!\n" + component);
+        textInputDialog.showAndWait();
+        String input = textInputDialog.getEditor().getText();
+        if(input.equals("B")) {
+            menuMode = GameTabMenuMode.BUILDING_SELECTED;
+            selectedBuilding = block.getBuilding();
+            return;
+        }
+        try {
+            int j = Integer.parseInt(input);
+            selectedUnit = block.getMilitaryUnits().get(j);
+        } catch (Exception ignored) {
+        }
+    }
     public void setRectangleSettings(rectBlock rectangle, Block block) {
         //todo find another way to do it the right way
         rectangle.hoverProperty().addListener(new ChangeListener<Boolean>() {
@@ -277,24 +327,45 @@ public class GameMenu extends Menu{
                 if(isFocused) {
                     System.out.println("rectangle " + rectangle.getBlock().getX() + " ," + rectangle.getBlock().getY() + "selected");
                     rectangle.setStroke(Color.rgb(224, 66, 18));
-                    rectangle.setStrokeWidth(5);
+                    rectangle.setStrokeWidth(3);
                     selectedRectangle = rectangle;
-
+                    selectedRectangle.requestFocus();
                 } else resetRectangle(rectangle);
             }
         });
-
-        rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        rectangle.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getClickCount() > 1) selectBlock(rectangle);
-                Tooltip.install(rectangle, InitStyle.BuildToolTip(block.getBlockInfo(true)));
-                rectangle.setOnKeyPressed(new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent keyEvent) {
-                        if(keyEvent.getCode().equals(KeyCode.DELETE)) block.clearBlock(null); //todo check if works correctly
+            public void handle(KeyEvent keyEvent) {
+                System.out.println("here at least");
+                if(keyEvent.getCode().equals(KeyCode.DELETE)) rectangle.clearBlock(mapPane, gameController.getGame().getPlayingReign());
+                if(keyEvent.getCode().equals(KeyCode.R)) {
+                    try {
+                        Menu.startReignMenu(gameController.getGame());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
                     }
-                });
+                }
+                if(keyEvent.getCode().equals(KeyCode.T)) {
+                    try {
+                        Menu.startShopMenu(gameController.getGame());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if(keyEvent.getCode().equals(KeyCode.C)) {
+                    if(rectangle.getBlock().hasABuilding()) {
+                        copiedBuilding = rectangle.getBlock().getBuilding();
+                    } else copiedBuilding = null;
+                }
+                if(keyEvent.getCode().equals(KeyCode.P)) {
+                    if(copiedBuilding != null) {
+//
+//                        String result = gameController.dropBuilding(copiedBuilding.getBuildingType(), rectangle.getBlock());
+//                        Menu.buildInformationAlert(result);
+                        dropBuilding(rectangle, copiedBuilding.getBuildingType());
+                        copiedBuilding = null;
+                    }
+                }
             }
         });
 
@@ -320,19 +391,61 @@ public class GameMenu extends Menu{
                 // todo handle select multiple block
             }
             if(selectedBuildingType != null) {
-                if(block.isOccupied(gameMap)){
-                    selectedBuildingType = null;
-                    return;
-                }
-                setMapBlockImageView(mapPane, BuildingType.BASE.getImage(), block, true);
-//                Map.makeNewBase(gameMap, x, y);
-                String result = gameController.dropBuilding(selectedBuildingType, block);
-                Menu.buildInformationAlert(result);
-                selectedBuildingType = null;
+//                if(block.isOccupied(gameMap)){
+//                    selectedBuildingType = null;
+//                    return;
+//                }
+//                ImageView buildingView = setMapBlockImageView(mapPane, selectedBuildingType.getImage(), block, true);
+//                rectangle.setBuildingView(buildingView);
+//                buildingView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                    @Override
+//                    public void handle(MouseEvent mouseEvent) {
+//                        if(mouseEvent.getClickCount() > 1) {
+//                            System.out.println("select request from imageview");
+//                            //selectBlock(rectangle);
+//
+//                        }
+//                    }
+//                });
+////                Map.makeNewBase(gameMap, x, y);
+//                String result = gameController.dropBuilding(selectedBuildingType, block);
+//                Menu.buildInformationAlert(result);
+                dropBuilding(rectangle, selectedBuildingType);
             }
+            selectedBuildingType = null;
             event.setDropCompleted(success);
             event.consume();
         });
+        rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                rectangle.requestFocus();
+
+                Tooltip.install(rectangle, InitStyle.BuildToolTip(block.getBlockInfo(true)));
+                //if(mouseEvent.getClickCount() > 1) {
+                selectBlock(rectangle);
+                initializeMenuBar();
+                System.out.println("from rectangle");
+                //}
+            }
+        });
+    }
+
+    public void dropBuilding(rectBlock rectangle, BuildingType buildingType) {
+        ImageView buildingView = setMapBlockImageView(mapPane, buildingType.getImage(), rectangle.getBlock(), true);
+        rectangle.setBuildingView(buildingView);
+        buildingView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(mouseEvent.getClickCount() > 1) {
+                    System.out.println("select request from imageview");
+                    //selectBlock(rectangle);
+
+                }
+            }
+        });
+        String result = gameController.dropBuilding(buildingType, rectangle.getBlock());
+        Menu.buildInformationAlert(result);
     }
 
     public int getUnitNumberFromUser() {
@@ -365,6 +478,23 @@ public class GameMenu extends Menu{
     public void resetRectangle(Rectangle rectangle) {
         rectangle.setStroke(null);
         rectangle.setStrokeWidth(0);
+    }
+    public ImageView initReignMenuOpenerImage(Pane root) {
+        ImageView imageView = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.REIGN_MENU_MAN, false),180, 180);
+        imageView.setLayoutX(900);
+        imageView.setLayoutY(700);
+        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    Menu.startReignMenu(gameController.getGame());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        root.getChildren().add(imageView);
+        return imageView;
     }
 
 //    public Block getBlockByRectangle(Rectangle rectangle) {
