@@ -2,7 +2,7 @@ package Server;
 
 import controller.GameController;
 import model.Game;
-import model.GameMap;
+import model.Map;
 import model.User;
 
 import java.io.IOException;
@@ -12,11 +12,11 @@ import java.util.HashSet;
 
 public class Lobby {
     private Game game = null;
-    private GameController gameMenuController = null;
+    private GameControllerPhaseOne gameMenuController = null;
     private final ArrayList<User> users = new ArrayList<>();
     private boolean isPublic = true;
     public long creationTime;
-    private GameMap map;
+    private Map map;
     private User admin;
     private final int lobbyId;
     private int numberOfPlayers;
@@ -24,7 +24,7 @@ public class Lobby {
     private long idleTime = 0;
     private GroupChat groupChat = null;
 
-    public Lobby(boolean isPublic, GameMap map, User admin, int numberOfPlayers, int initialGolds) {
+    public Lobby(boolean isPublic, Map map, User admin, int numberOfPlayers, int initialGolds) {
         this.numberOfPlayers = numberOfPlayers;
         this.initialGolds = initialGolds;
         this.isPublic = isPublic;
@@ -80,11 +80,11 @@ public class Lobby {
         return game;
     }
 
-    public void setGameMenuController(GameController gameMenuController) {
+    public void setGameMenuController(GameControllerPhaseOne gameMenuController) {
         this.gameMenuController = gameMenuController;
     }
 
-    public GameController getGameMenuController() {
+    public GameControllerPhaseOne getGameMenuController() {
         return gameMenuController;
     }
 
@@ -92,7 +92,7 @@ public class Lobby {
         this.isPublic = isPublic;
     }
 
-    public GameMap getMap() {
+    public Map getMap() {
         return map;
     }
 

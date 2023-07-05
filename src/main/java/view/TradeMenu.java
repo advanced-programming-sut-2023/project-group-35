@@ -1,5 +1,6 @@
 package view;
 
+import controller.GameController;
 import controller.ShopController;
 import controller.TradeController;
 import Enum.*;
@@ -35,22 +36,25 @@ public class TradeMenu extends Menu{
     ImageView afterItem = new ImageView();
     Button goRight = new Button();
     Button goLeft = new Button();
+    public static Stage tradeStage;
 
-    private ObservableList<String> userReceivedOffers = FXCollections.observableList(tradeController.showMyRequestsFromOthers());
-    private ObservableList<String> userSentOffers = FXCollections.observableList(tradeController.showRequestsFromMe());
+    private ObservableList<String> userReceivedOffers = FXCollections.observableList(getTradeController().showMyRequestsFromOthers());
+    private ObservableList<String> userSentOffers = FXCollections.observableList(getTradeController().showRequestsFromMe());
 
     public void setTradeController(TradeController tradeController) {
         this.tradeController = tradeController;
     }
 
+
     @FXML
     public void initialize(){
+        tradeController = getTradeController();
     }
     @Override
     public void start(Stage stage) throws Exception {
+        tradeStage = stage;
         Pane pane = new Pane();
         Scene scene;
-        stage.setFullScreen(true);
         this.stage = stage;
         URL url = ProfileMenu.class.getResource("/FXML/TradeMenu.fxml");
         Background background = new Background(new BackgroundImage(new Image(ProfileMenu.class.getResource("/Images/BG/bgPM.jpg").toString(),
@@ -63,11 +67,11 @@ public class TradeMenu extends Menu{
         pane = FXMLLoader.load(url);
         pane.setBackground(background);
         scene = new Scene(pane);
-        stage.setScene(scene);
-        stage.show();
+        tradeStage.setScene(scene);
+        tradeStage.show();
     }
     public void openTheList(){
-        ArrayList<Reign> allReigns = tradeController.getGame().getReigns();
+        ArrayList<Reign> allReigns = getTradeController().getGame().getReigns();
         ArrayList<String> reignName = new ArrayList<>();
         for(Reign reign:allReigns){
             reignName.add(reign.getNickName());
@@ -76,7 +80,7 @@ public class TradeMenu extends Menu{
         ListView<String> listView = new ListView<>(userList);
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                String res = tradeController.chooseSecondReign(newValue);
+                String res = getTradeController().chooseSecondReign(newValue);
                 if(res.equals("Wrong")){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("NO valid User");
@@ -93,12 +97,12 @@ public class TradeMenu extends Menu{
         scrollPane.setFitToHeight(true);
         VBox vbox = new VBox(scrollPane);
         Scene scene = new Scene(vbox, 200, 300);
-        stage.setScene(scene);
-        stage.setTitle("User List");
-        stage.show();
+        tradeStage.setScene(scene);
+        tradeStage.setTitle("User List");
+        tradeStage.show();
     }
     public void openTradeMenuWithPerson(){
-        stage.setTitle("Resource Trading Page");
+        tradeStage.setTitle("Resource Trading Page");
         VBox root = new VBox(10);
         root.setPadding(new Insets(10));
         Label resourcesLabel = new Label("Available Resources");
@@ -110,10 +114,10 @@ public class TradeMenu extends Menu{
         root.getChildren().addAll(resourcesLabel, resourceBox);
         Label quantityLabel = new Label("Select quantity:");
         Button decreaseButton = new Button("-");
-        decreaseButton.setOnMouseClicked(e -> decreaseQuantity());
-        Button increaseButton = new Button("+");
-        increaseButton.setOnMouseClicked(e -> increaseQuantity());
         TextField quantityField = new TextField(String.valueOf(quantity));
+        decreaseButton.setOnMouseClicked(e -> decreaseQuantity(quantityField));
+        Button increaseButton = new Button("+");
+        increaseButton.setOnMouseClicked(e -> increaseQuantity(quantityField));
         quantityField.setPrefWidth(50);
         quantityField.setEditable(false);
         HBox quantityBox = new HBox(10, decreaseButton, quantityField, increaseButton);
@@ -137,8 +141,8 @@ public class TradeMenu extends Menu{
         submitButton.setOnAction(e -> submitOffer());
         root.getChildren().add(submitButton);
         Scene scene = new Scene(root, 400, 400);
-        stage.setScene(scene);
-        stage.show();
+        tradeStage.setScene(scene);
+        tradeStage.show();
     }
     public void setImages(int ptr){
         goLeft.setText("Left");
@@ -153,8 +157,8 @@ public class TradeMenu extends Menu{
             rPtr = 17;
         else
             rPtr = ptr+1;
-        Image image2 = new Image(ShopMenu.class.getResource(("/Assests/+"+(lPtr+1)+".png")).toString());
-        Image image3 = new Image(ShopMenu.class.getResource(("/Assests/+"+rPtr+".png")).toString());
+        Image image2 = new Image(ShopMenu.class.getResource(("/Images/Assests/"+(lPtr+1)+".png")).toString());
+        Image image3 = new Image(ShopMenu.class.getResource(("/Images/Assests/"+rPtr+".png")).toString());
         beforeItem.setImage(image2);
         beforeItem.setPreserveRatio(true);
         beforeItem.setFitHeight(50);
@@ -178,15 +182,17 @@ public class TradeMenu extends Menu{
             pointer++;
         setImages(pointer);
     }
-    private void increaseQuantity() {
+    private void increaseQuantity(TextField txt) {
         quantity++;
         System.out.println("Quantity increased: " + quantity);
+        txt.setText(quantity+"");
     }
 
-    private void decreaseQuantity() {
+    private void decreaseQuantity(TextField txt) {
         if (quantity > 0) {
             quantity--;
             System.out.println("Quantity decreased: " + quantity);
+            txt.setText(quantity+"");
         }
     }
 
@@ -197,9 +203,9 @@ public class TradeMenu extends Menu{
     private void submitOffer() {
         String res;
         if(type.equals("Donate"))
-            res = tradeController.donate(quantity,Resource.getResourceByName(allItems[pointer]),message);
+            res = getTradeController().donate(quantity,Resource.getResourceFormal(allItems[pointer]),message);
         else
-            res = tradeController.addRequest(quantity,Resource.getResourceByName(allItems[pointer]),message);
+            res = getTradeController().addRequest(quantity,Resource.getResourceFormal(allItems[pointer]),message);
         if(!(res.equals("add request successful")|res.equals("donation successful"))){
             Alert alert =  new Alert(Alert.AlertType.INFORMATION, res, ButtonType.CLOSE);
             alert.setTitle("Failure!");
@@ -240,9 +246,9 @@ public class TradeMenu extends Menu{
         mainVBox.setSpacing(20);
         mainVBox.setPadding(new Insets(20));
         Scene scene = new Scene(mainVBox);
-        stage.setTitle("Game Page");
-        stage.setScene(scene);
-        stage.show();
+        tradeStage.setTitle("Game Page");
+        tradeStage.setScene(scene);
+        tradeStage.show();
     }
     public TradeItem selector(String str){
         for(TradeItem tradeItem:tradeController.getPlayingReign().getRequestsFromMe()){
@@ -299,15 +305,16 @@ public class TradeMenu extends Menu{
         scrollPane.setFitToHeight(true);
         VBox vbox = new VBox(scrollPane);
         Scene scene = new Scene(vbox, 200, 300);
-        stage.setScene(scene);
-        stage.setTitle("Trade History");
-        stage.show();
+        tradeStage.setScene(scene);
+        tradeStage.setTitle("Trade History");
+        tradeStage.show();
     }
     public void back() throws Exception {
-        stage.setFullScreen(false);
-        ShopMenu tradeMenu = new ShopMenu();
-        tradeMenu.setShopController(new ShopController(this.tradeController.getGame()));
-        tradeMenu.start(stage);
+        tradeStage.close();
+    }
+    public static TradeController getTradeController(){
+        TradeController tradeController1 = new TradeController(ShopMenu.game);
+        return tradeController1;
     }
 
     /*public void run() {

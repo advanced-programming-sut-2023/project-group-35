@@ -3,7 +3,6 @@ package Server;
 import controller.GameController;
 import controller.MapController;
 import controller.UserController;
-import model.GameMap;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -32,7 +31,7 @@ public class MasterServer {
 
         try {
             UserController.loadTheData();
-           // MapController.loadTheMaps();
+            MapController.loadTheMaps();
             serverSocket = new ServerSocket(port);
             while (true) {
                 Socket socket = serverSocket.accept();

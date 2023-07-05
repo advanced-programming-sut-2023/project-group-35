@@ -88,7 +88,8 @@ public class Menu extends Application {
         ShopMenu shopMenu = new ShopMenu();
         shopMenu.setShopController(new ShopController(game));
         ShopMenu.game = game;
-        shopMenu.start(stage);
+        Stage shop = new Stage();
+        shopMenu.start(shop);
     }
         //System.out.println(reader.toString());
 

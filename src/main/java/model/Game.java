@@ -14,14 +14,21 @@ public class Game {
     private final ArrayList<MilitaryUnit> allOfTheUnits = new ArrayList<>();
     private final ArrayList<Building> allTheBuildings = new ArrayList<>();
     private int numberOfPlayers = 0;
-    private final ArrayList<User> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Reign> reigns = new ArrayList<>();
-    private int turnsPassed;
+    private int turnsPassed = 0;
 
     public Game(User starter, Map map) {
         this.starter = starter;
         this.map = map;
         addReign(starter);
+    }
+    public Game(User starter,ArrayList<User> users,Map map){
+        this.starter = starter;
+        this.map = map;
+        addReign(starter);
+        for(User ussr:users)
+            addReign(ussr);
     }
 
     public MilitaryUnit getSelectedUnit() {

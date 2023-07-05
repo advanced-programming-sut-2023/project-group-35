@@ -48,6 +48,12 @@ public enum Resource {
         }
         return null;
     }
+    public static Resource getResourceFormal(String name){
+        for (Resource value : Resource.values()) {
+            if(value.name().equals(name)) return value;
+        }
+        return null;
+    }
     public static Resource getEntry(BuildingType type) {
        /* for (Resource value : Resource.values()) {
             if(value.producedIn == null)
