@@ -58,4 +58,8 @@ public class ReignController extends GameController{
         int amount = (int) (game.getPlayingReign().getTaxRate()-game.getPlayingReign().getFearRate()+game.getPlayingReign().getFoodRate());
         return ""+amount;
     }
+    public int getPopularity(){
+        return game.getPlayingReign().getPopularity();
+    }
+
 }

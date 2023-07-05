@@ -3,8 +3,8 @@ package Server;
 import java.util.ArrayList;
 
 public class GameData {
-    private String order;
-    private long StoppageTime;
+    public String order;
+    public long StoppageTime;
     public static ArrayList<ArrayList<GameData>> historyOfMatches = new ArrayList<>();
     static {
         ArrayList<GameData> gameData = new ArrayList<>();

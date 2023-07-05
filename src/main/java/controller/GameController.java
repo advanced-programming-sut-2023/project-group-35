@@ -4,11 +4,14 @@ import model.*;
 import model.buildings.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import Enum.*;
 
+import model.people.Engineer;
 import model.people.MilitaryUnit;
 import view.GameMenu;
+import view.Menu;
 
 public class GameController {
     private UnitController unitController;
@@ -25,76 +28,72 @@ public class GameController {
     public void setUnitController() {
         this.unitController = new UnitController(game);
     }
+
     public String addUser(Matcher matcher) {
         User user = User.getUserByUsername(matcher.group("username"));
-        if(user == null) return "this user does not exist";
-        if(game.isUserInTheGame(user)) return "this user is already in the game";
+        if (user == null) return "this user does not exist";
+        if (game.isUserInTheGame(user)) return "this user is already in the game";
         game.addReign(user);
         return "user added successfully";
     }
 
     public String dropBuilding(BuildingType type, Block block) {
 
-        if(map.getBlockByLocation(block.x, block.y).hasABuilding()) return "there is already a building in this block";
-        if(map.getBlockByLocation(block.x, block.y).getStructures().size() > 0) {
+        if (map.getBlockByLocation(block.x, block.y).hasABuilding()) return "there is already a building in this block";
+        if (map.getBlockByLocation(block.x, block.y).getStructures().size() > 0) {
             return "drop building failed: there are some structures in this block";
         }
         //if(type.equals(BuildingType.BASE)) return "you can't build a new base inside a game";
-        if(type.equals(BuildingType.PITCH_RIG) && !block.getFieldType().equals(FieldType.plain))
+        if (type.equals(BuildingType.PITCH_RIG) && !block.getFieldType().equals(FieldType.plain))
             return "you should build the pitch rig on a plain";
-        if(type.goldCost > playingReign.getGold()) return "you do not have enough gold";
-        if(playingReign.getResourceAmount(type.resourceToBuild) < type.resourceAmount)
+        if (type.goldCost > playingReign.getGold()) return "you do not have enough gold";
+        if (playingReign.getResourceAmount(type.resourceToBuild) < type.resourceAmount)
             return "you do not have enough resources to build this building";
 
         return buildTheBuilding(type, block);
     }
+
     public String buildTheBuilding(BuildingType type, Block block) {
         Building building = null;
-        if(type.checkForEquals(BuildingType.SHOP, BuildingType.BARRACK, BuildingType.MERCENARY_CAMP, BuildingType.ENGINEER_GUILD)) {
+        if (type.checkForEquals(BuildingType.SHOP, BuildingType.BARRACK, BuildingType.MERCENARY_CAMP, BuildingType.ENGINEER_GUILD)) {
             building = new Building(type, playingReign, block);
-        }
-        else if(type.checkForEquals(BuildingType.SMALL_STONE_GATE, BuildingType.BIG_STONE_GATEHOUSE)) {
-             building = new GateHouse(type, playingReign, block);
-        } else if(type.checkForEquals(BuildingType.HOVEL)) {
+        } else if (type.checkForEquals(BuildingType.SMALL_STONE_GATE, BuildingType.BIG_STONE_GATEHOUSE)) {
+            building = new GateHouse(type, playingReign, block);
+        } else if (type.checkForEquals(BuildingType.HOVEL)) {
             building = new House(type, playingReign, block);
-        } else if(type.checkForEquals(BuildingType.MOVING_BRIDGE)) {
+        } else if (type.checkForEquals(BuildingType.MOVING_BRIDGE)) {
             building = new MovingBridge(type, playingReign, block);
-        } else if(type.checkForEquals(BuildingType.LOOKOUT_TOWER, BuildingType.PERIMETER_TOWER, BuildingType.DEFENCE_TURRET)) {
+        } else if (type.checkForEquals(BuildingType.LOOKOUT_TOWER, BuildingType.PERIMETER_TOWER, BuildingType.DEFENCE_TURRET)) {
             building = new Tower(type, playingReign, block);
-        } else if(type.checkForEquals(BuildingType.SQUARE_TOWER, BuildingType.CIRCLE_TOWER)) {
+        } else if (type.checkForEquals(BuildingType.SQUARE_TOWER, BuildingType.CIRCLE_TOWER)) {
             building = new Tower(type, playingReign, block);
-        } else if(type.checkForEquals(BuildingType.ARMOURY)) {
+        } else if (type.checkForEquals(BuildingType.ARMOURY)) {
             building = new StoreHouse(type, playingReign, block); // delete this class?
-        }
-        else if(type.checkForEquals(BuildingType.ARMOURER, BuildingType.MILL, BuildingType.BLACK_SMITH,
+        } else if (type.checkForEquals(BuildingType.ARMOURER, BuildingType.MILL, BuildingType.BLACK_SMITH,
                 BuildingType.FLETCHER, BuildingType.POLE_TURNER, BuildingType.HUNTING_GROUND, BuildingType.BREWERY)) {
             building = new Converter(type, playingReign, block, Resource.getEntry(type), Resource.getProduct(type));
-        }
-        else if(type.checkForEquals(BuildingType.INN)) {
+        } else if (type.checkForEquals(BuildingType.INN)) {
             building = new Inn(type, playingReign, block); // delete???
-        }
-        else if(type.checkForEquals(BuildingType.PITCH_RIG)) {
-            if(!block.getFieldType().equals(FieldType.plain)) return "you should drop a pitch rig on a plain";
+        } else if (type.checkForEquals(BuildingType.PITCH_RIG)) {
+            if (!block.getFieldType().equals(FieldType.plain)) return "you should drop a pitch rig on a plain";
             building = new Producer(type, playingReign, block, Resource.TAR);
-        } else if(type.checkForEquals(BuildingType.STONE_MINE)) {
-            if(!block.getFieldType().equals(FieldType.Stone)) return "you should drop a stone mine on a Stone field";
-            building = new Producer(type, playingReign, block , Resource.STONE);
-        } else if(type.checkForEquals(BuildingType.IRON_MINE)) {
-            if(!block.getFieldType().equals(FieldType.Iron)) return "you should drop an Iron Mine on an Iron field";
+        } else if (type.checkForEquals(BuildingType.STONE_MINE)) {
+            if (!block.getFieldType().equals(FieldType.Stone)) return "you should drop a stone mine on a Stone field";
+            building = new Producer(type, playingReign, block, Resource.STONE);
+        } else if (type.checkForEquals(BuildingType.IRON_MINE)) {
+            if (!block.getFieldType().equals(FieldType.Iron)) return "you should drop an Iron Mine on an Iron field";
             building = new Producer(type, playingReign, block, Resource.IRON);
-        }
-        else if(type.checkForEquals(BuildingType.STOCK_PILE, BuildingType.FOOD_STOCK_PILE)) {
-            if(!foundTheSameBuildingAround(block, type)) return "you should place a this building around a building of its type";
+        } else if (type.checkForEquals(BuildingType.STOCK_PILE, BuildingType.FOOD_STOCK_PILE)) {
+            if (!foundTheSameBuildingAround(block, type))
+                return "you should place a this building around a building of its type";
             building = new StoreHouse(type, playingReign, block);
-        }
-        else if(type.checkForEquals(BuildingType.CHURCH, BuildingType.CATHEDRAL)) {
-            building = new Church(type, playingReign , block);
-        }
-        else if(type.checkForEquals(BuildingType.APPLE_GARDEN, BuildingType.WHEAT_FARM, BuildingType.BAKERY, BuildingType.DAIRY_FARM)) {
+        } else if (type.checkForEquals(BuildingType.CHURCH, BuildingType.CATHEDRAL)) {
+            building = new Church(type, playingReign, block);
+        } else if (type.checkForEquals(BuildingType.APPLE_GARDEN, BuildingType.WHEAT_FARM, BuildingType.BAKERY, BuildingType.DAIRY_FARM)) {
             building = new Producer(type, playingReign, block, Resource.getProduct(type));
             System.out.println(Resource.getProduct(type));
-        } else if(type.checkForEquals(BuildingType.CAGED_WAR_DOGS)) {
-            building = new dogCage(type, playingReign , block);
+        } else if (type.checkForEquals(BuildingType.CAGED_WAR_DOGS)) {
+            building = new dogCage(type, playingReign, block);
         }
         game.addBuilding(building);
         playingReign.spendGold(type.goldCost);
@@ -105,10 +104,10 @@ public class GameController {
     public String selectBuilding(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(!areCoordinatesCorrect(x, y)) return "coordinates are not correct";
+        if (!areCoordinatesCorrect(x, y)) return "coordinates are not correct";
         Building building = map.getBlockByLocation(x, y).getBuilding();
-        if(building == null) return "there is no building in this block";
-        if(!building.isOwnerCorrect(game.getPlayingReign())) return "the building is not yours";
+        if (building == null) return "there is no building in this block";
+        if (!building.isOwnerCorrect(game.getPlayingReign())) return "the building is not yours";
         game.setSelectedBuilding(building);
         return "select building successful";
     }
@@ -154,10 +153,11 @@ public class GameController {
         playingReign.calculatePopularityRate();
         playingReign = game.getNextReign();
         game.setPlayingReign(playingReign);
-        if(playingReign.equals(game.getReigns().get(0))) nextTurn();
-        if(game.getReigns().size() == 1) return "endGame";
+        if (playingReign.equals(game.getReigns().get(0))) nextTurn();
+        if (game.getReigns().size() == 1) return "endGame";
         return "turn switched.\nplayer " + playingReign.getNickName() + " is now playing!";
     }
+
     public void nextTurn() {
         game.oneTurnPassed();
         boolean opponentFound = false;
@@ -165,8 +165,8 @@ public class GameController {
             ArrayList<Block> blocks = getBlocksAround(unit.getBlock(), unit.getUnitType().range);
             for (Block block : blocks) {
                 String result = unitController.attackBlock(unit, block, false);
-                if(block.findOpponentInBlock(playingReign)) opponentFound = true;
-                if(result.equals("endGame")) return;
+                if (block.findOpponentInBlock(playingReign)) opponentFound = true;
+                if (result.equals("endGame")) return;
             }
             if(unit.isMoving()) unitController.move(unit);
 //            if(unit.isPatrolling()) unitController.patrol(unit);
@@ -181,43 +181,48 @@ public class GameController {
         }
 
     }
+
     public Block findTheNearestOpponent(Block block, int range) {
-        for(int i = 1;; i++) {
+        for (int i = 1; ; i++) {
             Block block1 = getOpponentInRange(block, i);
-            if(block1 != null) return block1;
-            if(i == range) return null;
+            if (block1 != null) return block1;
+            if (i == range) return null;
         }
     }
-    public Block getOpponentInRange(Block block,  int range) {
-        for(int i = -range; i <= range; i++) {
-            for(int j = -range; j <= range; j++) {
+
+    public Block getOpponentInRange(Block block, int range) {
+        for (int i = -range; i <= range; i++) {
+            for (int j = -range; j <= range; j++) {
                 Block block1 = map.getBlockByLocation(block.x + i, block.y + j);
-                if(block1.findOpponentInBlock(playingReign)) return block1;
+                if (block1.findOpponentInBlock(playingReign)) return block1;
             }
         }
         return null;
     }
-    public ArrayList<Block> getBlocksAround (Block block , int range) {
+
+    public ArrayList<Block> getBlocksAround(Block block, int range) {
         ArrayList<Block> blocksAround = new ArrayList<>();
-        for(int i = -range; i <= range; i++) {
+        for (int i = -range; i <= range; i++) {
             for (int j = -range; j <= range; j++) {
                 blocksAround.add(map.getBlockByLocation(block.x + i, block.y + j));
             }
         }
         return blocksAround;
     }
+
     public String removeBuilding(Building building) {
         //if(building.getHp() > 0) return "";
         game.getAllTheBuildings().remove(building);
         building.getBlock().removeBuilding();
         building.getOwner().getBuildings().remove(building);
-        if(building instanceof Base){
+        if (building instanceof Base) {
             endReign(building.getOwner());
             //GameMenu.announceDeadReign(building.getOwner(), calculateAndGiveScore(building.getOwner()));
         }
-        if(game.getReigns().size() == 1) return "endGame";
+        if (game.getReigns().size() == 1) return "endGame";
         return "";
     }
+
     public void endReign(Reign reign) {
         for (Building building : reign.getBuildings()) {
             building.getBlock().removeBuilding();
@@ -228,32 +233,37 @@ public class GameController {
             game.getAllOfTheUnits().remove(unit);
         }
         game.getReigns().remove(reign);
-        if(game.getReigns().size() == 1) endGame();
+        if (game.getReigns().size() == 1) endGame();
         // structures?
     }
+
     public int calculateAndGiveScore(Reign reign) {
         int score = (int) ((game.getNumberOfPlayers() - game.getReigns().size()) * game.getTurnsPassed() * reign.getGold() * 100);
-        if(game.getReigns().size() == 1) score *= 2;
+        if (game.getReigns().size() == 1) score *= 2;
         reign.getUser().addScore(score);
         return score;
     }
+
     public String endGame() {
         int score = calculateAndGiveScore(game.getReigns().get(0));
-        return "the game is now over and the winner is: " + game.getReigns().get(0).getNickName() + " with the score of " + score ;
+        return "the game is now over and the winner is: " + game.getReigns().get(0).getNickName() + " with the score of " + score;
     }
-    public String quitGame(Reign reign){
+
+    public String quitGame(Reign reign) {
         endReign(reign);
         return "player " + reign.getNickName() + "has quit the game!";
     }
-    public void collectingGarbageUnits(){
-        for(MilitaryUnit militaryUnit:game.getAllOfTheUnits()){
-            if(militaryUnit.getNumber() < 1){
+
+    public void collectingGarbageUnits() {
+        for (MilitaryUnit militaryUnit : game.getAllOfTheUnits()) {
+            if (militaryUnit.getNumber() < 1) {
                 game.getAllOfTheUnits().remove(militaryUnit);
                 militaryUnit.getOwner().getMilitaryUnits().remove(militaryUnit);
             }
         }
     }
-    public String showTurnsPassed(){
+
+    public String showTurnsPassed() {
         String output = game.getTurnsPassed() + "turns have passed up to now!";
         output += "\ndo not give up " + playingReign.getNickName() + ". we have a long way to go!";
         return output;
@@ -262,30 +272,90 @@ public class GameController {
     public boolean foundTheSameBuildingAround(Block block, BuildingType type) {
         for (Direction value : Direction.values()) {
             Block block1 = map.getNeighborBlock(block, value);
-            if(block1.hasABuilding())
-                if(block1.getBuilding().buildingType.equals(type)) return true;
+            if (block1.hasABuilding())
+                if (block1.getBuilding().buildingType.equals(type)) return true;
         }
         return false;
     }
 
-    public Game getGame () {
+    public Game getGame() {
         return game;
     }
+
     public Reign getPlayingReign() {
         return playingReign;
     }
+
     public Map getMap() {
         return game.getMap();
     }
+
     public UnitController getUnitController() {
         unitController.setSelectedUnit(game.getSelectedUnit());
         return unitController;
     }
-    public boolean areCoordinatesCorrect(int x , int y) {
+
+    public boolean areCoordinatesCorrect(int x, int y) {
         int dimension = game.getMap().dimensions;
-        if(x <= dimension && x >= 1 && y <= dimension && y >= 1) return true;
+        if (x <= dimension && x >= 1 && y <= dimension && y >= 1) return true;
         return false;
     }
-}
 
+    public void makeItSick() {
+        for (int i = 0; i < 3; i++) {
+            Random random = new Random();
+            int x = random.nextInt() % 49;
+            int y = random.nextInt() % 49;
+            Block block = map.getBlockByLocation(x, y);
+            if (!block.isSick && !block.hasBase()) block.isSick = true;
+        }
+    }
+
+    public static String cureThePoison(MilitaryUnit militaryUnit, Block block) {
+        if (!block.isSick) return "There is no Sickness there!";
+        else if (!(militaryUnit.getUnitType().name().equals("engineer") || militaryUnit instanceof Engineer))
+            return "These troops can't cure";
+        else {
+            block.isSick = false;
+            return "Cured!";
+        }
+    }
+
+    public void sicknessNextTurn(int x, int y) {
+        Block block = map.getBlockByLocation(x, y);
+        if (block.isSick) {
+            block.getBuilding().destroy();
+            block.getMilitaryUnits().clear();
+        }
+    }
+    public void setOnFire(int x,int y){
+        Block block = map.getBlockByLocation(x,y);
+        MilitaryUnit militaryUnit = null;
+        if(block.isSick) return;
+        else if((militaryUnit = hasAnySlave(block))== null) return;
+        else if(militaryUnit.getOwner().equals(block.getBuilding().getOwner())) return;
+        else{
+            block.isOnFire = true;
+            block.theTurnOnFire = game.getTurnsPassed();
+        }
+    }
+    public MilitaryUnit hasAnySlave(Block block){
+        for(MilitaryUnit militaryUnit: block.getMilitaryUnits()){
+            if(militaryUnit.getUnitType().equals(UnitType.SLAVE)) {
+                return militaryUnit;
+            }
+        }
+        return null;
+    }
+    public void fireNextTurn(int x,int y){
+        Block block = map.getBlockByLocation(x,y);
+        if(block.isOnFire){
+            if(game.getTurnsPassed() > block.theTurnOnFire+1) return;
+            block.getBuilding().getDamaged(50);
+            for(MilitaryUnit militaryUnit:block.getMilitaryUnits())
+                militaryUnit.setHp(militaryUnit.getHp()-10);
+        }
+    }
+
+}
 

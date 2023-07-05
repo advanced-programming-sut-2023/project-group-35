@@ -4,6 +4,7 @@ import controller.GameController;
 import controller.ReignController;
 import controller.UserController;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -15,10 +16,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Game;
 import model.Reign;
@@ -43,6 +43,15 @@ public class ReignMenu extends Menu{
     @Override
     public void start(Stage stage) throws Exception {
             reignStage = stage;
+            Pane pane = new Pane();
+        Background background = new Background(new BackgroundImage(new Image(ProfileMenu.class.getResource("/Images/BG/bgPM.jpg").toString(),
+                Screen.getPrimary().getBounds().getHeight(), Screen.getPrimary().getBounds().getWidth(), false, false)
+                , BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)
+        );
+        pane.setBackground(background);
             VBox root = new VBox();
             root.setSpacing(10);
             root.setPadding(new Insets(20));
@@ -55,8 +64,10 @@ public class ReignMenu extends Menu{
             button2.setOnAction(event -> {
                 openChangingMenu();
             });
+            root.setAlignment(Pos.CENTER);
             root.getChildren().addAll(button1, button2);
-            Scene scene = new Scene(root, 300, 200);
+            pane.getChildren().add(root);
+            Scene scene = new Scene(pane, 300, 200);
             reignStage.setTitle("Reign Menu");
             reignStage.setScene(scene);
             reignStage.show();
@@ -67,7 +78,17 @@ public class ReignMenu extends Menu{
         root.setCenter(popularitySection);
         VBox criteriaSection = createCriteriaSection();
         root.setRight(criteriaSection);
-        Scene scene = new Scene(root, 800, 600);
+        Pane pane = new Pane();
+        Background background = new Background(new BackgroundImage(new Image(ProfileMenu.class.getResource("/Images/BG/bgPM.jpg").toString(),
+                Screen.getPrimary().getBounds().getHeight(), Screen.getPrimary().getBounds().getWidth(), false, false)
+                , BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)
+        );
+        pane.setBackground(background);
+        pane.getChildren().add(root);
+        Scene scene = new Scene(pane, 800, 600);
         reignStage.setTitle("View Menu");
         reignStage.setScene(scene);
         reignStage.show();
@@ -80,6 +101,16 @@ public class ReignMenu extends Menu{
         popularityLabel.setStyle("-fx-font-size: 24px;");
         Image currentPopularityImage = null;
         assignColorAndPicture(popularityLabel,currentPopularityImage,30);
+        if(reignController.getPlayingReign().getPopularity() > 66){
+            popularityLabel.setTextFill(Color.GREEN);
+            currentPopularityImage = new Image(ProfileMenu.class.getResource("/Images/Masks/1.png").toString(),30,30,false,false);
+        }else if(reignController.getPlayingReign().getPopularity() > 33){
+            popularityLabel.setTextFill(Color.YELLOW);
+            currentPopularityImage = new Image(ProfileMenu.class.getResource("/Images/Masks/0.png").toString(),30,30,false,false);
+        }else{
+            popularityLabel.setTextFill(Color.GREEN);
+            currentPopularityImage = new Image(ProfileMenu.class.getResource("/Images/Masks/2.png").toString(),30,30,false,false);
+        }
         popularityImageView = new ImageView(currentPopularityImage);
         HBox imageContainer = new HBox(popularityImageView);
         imageContainer.setAlignment(Pos.CENTER);
@@ -89,6 +120,16 @@ public class ReignMenu extends Menu{
         popularityCImageView = new ImageView(popularityChange);
         HBox imageContainer2 = new HBox(popularityCImageView);
         assignColorAndPicture(popularityChangeLabel,popularityChange,5);
+        if(reignController.getPlayingReign().getPopularity() > 66){
+            popularityChangeLabel.setTextFill(Color.GREEN);
+            popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/1.png").toString(),5,5,false,false);
+        }else if(reignController.getPlayingReign().getPopularity() > 33){
+            popularityChangeLabel.setTextFill(Color.YELLOW);
+            popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/0.png").toString(),5,5,false,false);
+        }else{
+            popularityChangeLabel.setTextFill(Color.GREEN);
+            popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/2.png").toString(),5,5,false,false);
+        }
         Button button = new Button("Back");
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -165,10 +206,20 @@ public class ReignMenu extends Menu{
            reignController.setFoodRate(newValue.intValue());
         });
         root.getChildren().addAll(foodLabel, foodSlider);
-        Scene scene = new Scene(root, 300, 200);
-        stage.setTitle("Setting factors");
-        stage.setScene(scene);
-        stage.show();
+        Pane pane = new Pane();
+        Background background = new Background(new BackgroundImage(new Image(ProfileMenu.class.getResource("/Images/BG/bgPM.jpg").toString(),
+                Screen.getPrimary().getBounds().getHeight(), Screen.getPrimary().getBounds().getWidth(), false, false)
+                , BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)
+        );
+        pane.setBackground(background);
+        pane.getChildren().add(root);
+        Scene scene = new Scene(pane, 300, 200);
+        reignStage.setTitle("Setting factors");
+        reignStage.setScene(scene);
+        reignStage.show();
     }
     private Slider createSlider(double min, double max, double value) {
         Slider slider = new Slider(min, max, value);

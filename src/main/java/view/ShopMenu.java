@@ -55,7 +55,7 @@ public class ShopMenu extends Menu{
     private static Pane pane;
     private Scene scene;
     String allItems[]={"WOOD","STONE","WHEAT","APPLE","CHEESE","MEAT","PROCESSED_MEAT","IRON","HOP","BEAR","FLOUR","BREAD","HORSE","TAR","BOW","SPEAR","ARMOR","SWORD"};
-    public Stage shopStage;
+    public static Stage shopStage;
     public static Game game;
 
     public void setShopController(ShopController shopController) {
@@ -66,6 +66,7 @@ public class ShopMenu extends Menu{
     public void initialize(){
         pointer = 0;
         setImages(pointer);
+        addWatcher();
     }
     public void addWatcher(){
         amountOF.textProperty().addListener(new ChangeListener<String>() {
@@ -82,7 +83,6 @@ public class ShopMenu extends Menu{
     @Override
     public void start(Stage stage) throws Exception {
         shopStage = stage;
-        shopStage.setFullScreen(true);
         URL url = ProfileMenu.class.getResource("/FXML/ShopMenu.fxml");
         Background background = new Background(new BackgroundImage(new Image(ProfileMenu.class.getResource("/Images/BG/bgPM.jpg").toString(),
                 Screen.getPrimary().getBounds().getHeight(), Screen.getPrimary().getBounds().getWidth(), false, false)
@@ -162,7 +162,8 @@ public class ShopMenu extends Menu{
     }
     public void buying(){
         shopController = new ShopController(game);
-        String res = shopController.purchase((int)amountYouWannaChange,Resource.getResourceByName(allItems[pointer]));
+        System.out.println(allItems[pointer]);
+        String res = shopController.purchase((int)amountYouWannaChange,Resource.getResourceFormal(allItems[pointer]));
         Alert alert = new Alert(Alert.AlertType.INFORMATION, res, ButtonType.CLOSE);
         if(!res.equals("you have bought the resources successfully")){
             alert.setTitle("Failure!");
@@ -174,7 +175,7 @@ public class ShopMenu extends Menu{
     }
     public void selling(){
         shopController = new ShopController(game);
-        String res = shopController.sell((int)amountYouWannaChange,Resource.getResourceByName(allItems[pointer]));
+        String res = shopController.sell((int)amountYouWannaChange,Resource.getResourceFormal(allItems[pointer]));
         Alert alert = new Alert(Alert.AlertType.INFORMATION, res, ButtonType.CLOSE);
         if(!res.equals("selling resources successful")){
             alert.setTitle("Failure!");
@@ -185,9 +186,10 @@ public class ShopMenu extends Menu{
         alert.showAndWait();
     }
     public void enterTrade() throws Exception {
-        shopStage.setFullScreen(false);
+        shopStage.close();
         TradeMenu tradeMenu = new TradeMenu();
         tradeMenu.setTradeController(new TradeController(game));
+
         tradeMenu.start(shopStage);
     }
     public void back() throws Exception {

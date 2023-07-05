@@ -16,8 +16,12 @@ public class Block {
     private Building building;
     private ArrayList<Structure> structures;
     private ArrayList<MilitaryUnit> militaryUnits;
-    private boolean hasBase = false;
+    public boolean hasBase = false;
     private Tree tree;
+    public boolean isSick;
+    public boolean isOnFire;
+    public int theTurnOnFire;
+
 
     private FieldType fieldType;
 
@@ -27,6 +31,8 @@ public class Block {
         this.fieldType = fieldType;
         this.structures = new ArrayList<>();
         this.militaryUnits = new ArrayList<>();
+        isSick = false;
+        isOnFire = false;
     }
 
     public String getBlockInfo(Boolean detailed) {
