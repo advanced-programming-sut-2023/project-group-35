@@ -65,6 +65,13 @@ public enum UnitType {
         this.range = range;
     }
 
+    public static UnitType getUnitTypeByImage(Image image) {
+        for (UnitType value : UnitType.values()) {
+            if(image.equals(value.getImage())) return value;
+        }
+        return null;
+    }
+
     public static ArrayList<UnitType> getUnitsProducedIn(BuildingType buildingType) {
         ArrayList<UnitType> units = new ArrayList<>();
         for (UnitType value : UnitType.values()) {

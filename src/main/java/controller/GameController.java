@@ -168,17 +168,18 @@ public class GameController {
                 if (block.findOpponentInBlock(playingReign)) opponentFound = true;
                 if (result.equals("endGame")) return;
             }
-            if (unit.isMoving()) unitController.move(unit);
-            if (unit.isPatrolling()) unitController.patrol(unit);
-            if (!opponentFound && !unit.isPatrolling() && !unit.isMoving()) {
-                Block block = findTheNearestOpponent(unit.getBlock(), unit.getUnitState().getRange());
-                if (block != null) {
-                    unit.setDestination(block);
-                    unitController.move(unit);
-                }
-            }
+            if(unit.isMoving()) unitController.move(unit);
+//            if(unit.isPatrolling()) unitController.patrol(unit);
+//            if(!opponentFound && !unit.isPatrolling() && !unit.isMoving()) {
+//                 Block block = findTheNearestOpponent(unit.getBlock(), unit.getUnitState().getRange());
+//                 if(block != null) {
+//                     unit.setDestination(block);
+//                     unitController.move(unit);
+//                 }
+//            }
             //todo
         }
+
     }
 
     public Block findTheNearestOpponent(Block block, int range) {
@@ -210,7 +211,7 @@ public class GameController {
     }
 
     public String removeBuilding(Building building) {
-        if (building.getHp() > 0) return "";
+        //if(building.getHp() > 0) return "";
         game.getAllTheBuildings().remove(building);
         building.getBlock().removeBuilding();
         building.getOwner().getBuildings().remove(building);

@@ -25,20 +25,12 @@ public class UnitController extends GameController{
     }
 
     public String moveUnitCommand(int x, int y) {
-        if (!areCoordinatesCorrect(x, y)) return ResponseToUser.COORDINATES_NOT_CORRECT.text;
-        if (selectedUnit instanceof Engineer) {
-            if(((Engineer)selectedUnit).hasStructure())
-                return "you can't move an engineering unit inside a structure\ntry moving the structure itself";
-        }
         if (x == selectedUnit.getBlock().x && y == selectedUnit.getBlock().y) return "troops are already in this block";
-        String destMessage;
-        if (!(destMessage = checkTheDestination(x, y)).equals("correct")) return destMessage;
         selectedUnit.setDestination(map.getBlockByLocation(x, y));
-        String result = move(selectedUnit);
-        if(result.equals("no path")) return "there is no path to this block";
-        if(result.equals("killed")) return "the Military unit was killed by a trap";
-        if(result.equals("arrived")) return "move unit successful. the unit is in the dest block";
-        return "the unit is moving toward the destination block";
+//        String result = move(selectedUnit);
+//        if(result.equals("no path")) return "there is no path to this block";
+        moveTo(selectedUnit, map.getBlockByLocation(x, y));
+        return "move successful";
     }
 
     public String patrolUnit(int x1, int x2, int y1, int y2) {
@@ -105,20 +97,13 @@ public class UnitController extends GameController{
     public String move(MilitaryUnit unit) {
         ArrayList<Block> path = findAPath(unit.getBlock(), unit.getDestBlock());
         if(path == null) return "no path";
-        for(int i = 1; i<= unit.unitType.speed; i++) {
-            moveTo(unit, path.get(i));
-            if(path.get(i).isATrapFor(unit)){
-                game.removeUnitIfKilled(unit);
-                return "killed";
-            }
-            if(path.get(i).equals(unit.getDestBlock())) return "arrived";
-        }
-        return "still moving";
+        return "moving";
     }
     private void moveTo(MilitaryUnit unit, Block dest) {
         unit.getBlock().removeUnit(unit);
         unit.setBlock(dest);
         dest.getMilitaryUnits().add(unit);
+
     }
 
     public ArrayList<Block> arrayListMaker(HashMap<Block, Block> father, Block dest) {

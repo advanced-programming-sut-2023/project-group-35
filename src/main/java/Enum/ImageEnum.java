@@ -22,8 +22,10 @@ public enum ImageEnum {
     RIGHT("/icon/right.png"),
     UP("/icon/up.png"),
     POPUP_BACKGROUND("/popupBackGround.PNG"),
-
-
+    PAPER_BACK_GROUND("/oldPaper.png"),
+    MINI_MAP("/miniMap.png"),
+    FIRE("/fire.jpg"),
+    ILLNESS("illness.png"),
 
 
     //UNSELECTED_MAP_IMAGE(""),
