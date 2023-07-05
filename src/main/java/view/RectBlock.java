@@ -19,6 +19,7 @@ public class RectBlock extends Rectangle {
     private ImageView BuildingView;
     private ImageView treeView;
     private ImageView fireView;
+    private ImageView illnessView;
     private ArrayList<ImageView> imageViews = new ArrayList<>();
     private ArrayList<ImageView> troopsView = new ArrayList<>();
     private ArrayList<ImageView> structuresView = new ArrayList<>();
@@ -119,5 +120,24 @@ public class RectBlock extends Rectangle {
 
     public void setFireView(ImageView fireView) {
         this.fireView = fireView;
+    }
+
+    public void setIllness(ImageView imageView, Pane mapPane, RectBlock rectBlock) {
+        imageView.setX(rectBlock.getX() + 5);
+        imageView.setY(rectBlock.getY());
+        this.illnessView = imageView;
+        mapPane.getChildren().add(imageView);
+
+    }
+
+    public ImageView getIllnessView() {
+        return illnessView;
+    }
+
+    public void removeIllness(Pane mapPane) {
+        if(illnessView != null) {
+            mapPane.getChildren().remove(illnessView);
+            illnessView = null;
+        }
     }
 }
