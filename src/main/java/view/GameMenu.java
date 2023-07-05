@@ -19,6 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Popup;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Block;
 import model.Map;
@@ -46,8 +47,8 @@ public class GameMenu extends Menu{
     public static int MENU_ITEM_SIZE = 60;
     public static int BuildingImageSize;
     public static int MapPaneHeight = 740;
-    public static int SCREEN_HEIGHT = 912;
-    public static int SCREEN_WIDTH = 1348;
+    public static int SCREEN_HEIGHT =912;
+    public static int SCREEN_WIDTH =1348;
     private BuildingType selectedBuildingType;
     private boolean isMovingAllowed = false;
 

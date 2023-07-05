@@ -108,26 +108,36 @@ public class ReignMenu extends Menu{
             popularityLabel.setTextFill(Color.YELLOW);
             currentPopularityImage = new Image(ProfileMenu.class.getResource("/Images/Masks/0.png").toString(),30,30,false,false);
         }else{
-            popularityLabel.setTextFill(Color.GREEN);
+            popularityLabel.setTextFill(Color.RED);
             currentPopularityImage = new Image(ProfileMenu.class.getResource("/Images/Masks/2.png").toString(),30,30,false,false);
         }
         popularityImageView = new ImageView(currentPopularityImage);
         HBox imageContainer = new HBox(popularityImageView);
         imageContainer.setAlignment(Pos.CENTER);
-        popularityChangeLabel = new Label("-"+reignController.showAmountOfChange()+"-");
+        popularityChangeLabel = new Label(reignController.showAmountOfChange());
         popularityChangeLabel.setStyle("-fx-font-size: 18px;");
         Image popularityChange = null;
-        popularityCImageView = new ImageView(popularityChange);
-        HBox imageContainer2 = new HBox(popularityCImageView);
-        assignColorAndPicture(popularityChangeLabel,popularityChange,5);
-        if(reignController.getPlayingReign().getPopularity() > 66){
+        if(Integer.parseInt(popularityChangeLabel.getText()) > 0){
             popularityChangeLabel.setTextFill(Color.GREEN);
             popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/1.png").toString(),5,5,false,false);
-        }else if(reignController.getPlayingReign().getPopularity() > 33){
+        }else if(Integer.parseInt(popularityChangeLabel.getText()) == 0){
             popularityChangeLabel.setTextFill(Color.YELLOW);
             popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/0.png").toString(),5,5,false,false);
         }else{
+            popularityChangeLabel.setTextFill(Color.RED);
+            popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/2.png").toString(),5,5,false,false);
+        }
+        popularityCImageView = new ImageView(popularityChange);
+        HBox imageContainer2 = new HBox(popularityCImageView);
+        assignColorAndPicture(popularityChangeLabel,popularityChange,5);
+        if(Integer.parseInt(popularityChangeLabel.getText()) > 0){
             popularityChangeLabel.setTextFill(Color.GREEN);
+            popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/1.png").toString(),5,5,false,false);
+        }else if(Integer.parseInt(popularityChangeLabel.getText()) == 0){
+            popularityChangeLabel.setTextFill(Color.YELLOW);
+            popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/0.png").toString(),5,5,false,false);
+        }else{
+            popularityChangeLabel.setTextFill(Color.RED);
             popularityChange = new Image(ProfileMenu.class.getResource("/Images/Masks/2.png").toString(),5,5,false,false);
         }
         Button button = new Button("Back");
@@ -167,6 +177,8 @@ public class ReignMenu extends Menu{
         factors.add(reignController.showFoodRate());
         factors.add(reignController.showFearRate());
         factors.add(reignController.showPopularity());
+        factors.add(reignController.getPlayingReign().getPopulation()+"");
+        factors.add(reignController.getPlayingReign().getGold()+"");
         criteriaListView = new ListView<>();
         criteriaListView.getItems().addAll(factors);
         Button button = new Button("Back");
