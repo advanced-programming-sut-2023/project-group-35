@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
@@ -27,6 +28,7 @@ import model.buildings.Building;
 import model.people.MilitaryUnit;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static view.MapMenu.BLOCK_SIZE;
@@ -325,7 +327,7 @@ public class GameMenu extends Menu{
             dropUnit(unitType, count, false);
             selectedUnit = null;
         }
-        Menu.buildInformationAlert(message);
+        Menu.buildInformationAlert(message + "\n" + unitType.name());
 
     }
     public void dropUnit(UnitType unitType, int number, boolean moving) {
@@ -349,6 +351,10 @@ public class GameMenu extends Menu{
             mapPane.getChildren().add(imageView);
             rectangle.setFireView(imageView);
         }
+        if(unitType.equals(UnitType.ENGINEER)) {
+            rectangle.removeIllness(mapPane);
+        }
+
     }
 
     public TabPane createBuildingsTabPane() {
@@ -435,7 +441,19 @@ public class GameMenu extends Menu{
     }
 
     public void applyChangesOfTurn() {
-        //gameController.getGame().getbl
+        ArrayList<RectBlock> rectBlocks = new ArrayList<>();
+        for (Node child : mapPane.getChildren()) {
+            if(!(child instanceof RectBlock)) continue;
+            RectBlock rectBlock = (RectBlock) child;
+            int rand = new Random().nextInt(40);
+
+            if(rand == 1) {
+                rectBlocks.add(rectBlock);
+            }
+        }
+        for (RectBlock rectBlock : rectBlocks) {
+            rectBlock.setIllness(InitStyle.getImageView(ImageEnum.getImage(ImageEnum.ILLNESS, false), 15, 15), mapPane, rectBlock);
+        }
     }
     public Tab getBuildingTabFor(String iconUrl, BuildingType...buildingTypes) {
         ScrollPane scrollPane = new ScrollPane();
@@ -657,7 +675,7 @@ public class GameMenu extends Menu{
             }
         });
         String result = gameController.dropBuilding(buildingType, rectangle.getBlock());
-        Menu.buildInformationAlert(result);
+        Menu.buildInformationAlert(result + "\n" + buildingType.getName());
     }
 
     public int getUnitNumberFromUser() {
