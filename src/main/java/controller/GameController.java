@@ -169,16 +169,17 @@ public class GameController {
                 if(result.equals("endGame")) return;
             }
             if(unit.isMoving()) unitController.move(unit);
-            if(unit.isPatrolling()) unitController.patrol(unit);
-            if(!opponentFound && !unit.isPatrolling() && !unit.isMoving()) {
-                 Block block = findTheNearestOpponent(unit.getBlock(), unit.getUnitState().getRange());
-                 if(block != null) {
-                     unit.setDestination(block);
-                     unitController.move(unit);
-                 }
-            }
+//            if(unit.isPatrolling()) unitController.patrol(unit);
+//            if(!opponentFound && !unit.isPatrolling() && !unit.isMoving()) {
+//                 Block block = findTheNearestOpponent(unit.getBlock(), unit.getUnitState().getRange());
+//                 if(block != null) {
+//                     unit.setDestination(block);
+//                     unitController.move(unit);
+//                 }
+//            }
             //todo
         }
+
     }
     public Block findTheNearestOpponent(Block block, int range) {
         for(int i = 1;; i++) {

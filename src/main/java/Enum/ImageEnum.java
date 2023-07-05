@@ -24,7 +24,8 @@ public enum ImageEnum {
     POPUP_BACKGROUND("/popupBackGround.PNG"),
     PAPER_BACK_GROUND("/oldPaper.png"),
     MINI_MAP("/miniMap.png"),
-
+    FIRE("/fire.jpg"),
+    ILLNESS("illness.png"),
 
 
     //UNSELECTED_MAP_IMAGE(""),

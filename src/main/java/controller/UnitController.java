@@ -103,6 +103,7 @@ public class UnitController extends GameController{
         unit.getBlock().removeUnit(unit);
         unit.setBlock(dest);
         dest.getMilitaryUnits().add(unit);
+
     }
 
     public ArrayList<Block> arrayListMaker(HashMap<Block, Block> father, Block dest) {

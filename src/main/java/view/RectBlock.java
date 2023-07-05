@@ -18,6 +18,7 @@ public class RectBlock extends Rectangle {
     private final Block block;
     private ImageView BuildingView;
     private ImageView treeView;
+    private ImageView fireView;
     private ArrayList<ImageView> imageViews = new ArrayList<>();
     private ArrayList<ImageView> troopsView = new ArrayList<>();
     private ArrayList<ImageView> structuresView = new ArrayList<>();
@@ -100,8 +101,23 @@ public class RectBlock extends Rectangle {
                 views.add(imageView);
             }
         }
+        if(unit.getUnitType().equals(UnitType.SLAVE) || unit.getUnitType().equals(UnitType.FIRETHROWER))  {
+            if(fireView != null) {
+                mapPane.getChildren().remove(fireView);
+                fireView = null;
+            }
+
+        }
         for (ImageView view : views) {
             troopsView.remove(view);
         }
+    }
+
+    public ImageView getFireView() {
+        return fireView;
+    }
+
+    public void setFireView(ImageView fireView) {
+        this.fireView = fireView;
     }
 }

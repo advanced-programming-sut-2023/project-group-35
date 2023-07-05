@@ -322,13 +322,13 @@ public class GameMenu extends Menu{
             message = "you did not write a valid number!";
         } else message = BuildingController.createUnit(selectedBuilding.getBlock(), unitType, count, gameController.getPlayingReign(), gameController.getGame());
         if(message.equals("create unit successful")) {
-            dropUnit(unitType, count);
+            dropUnit(unitType, count, false);
             selectedUnit = null;
         }
         Menu.buildInformationAlert(message);
 
     }
-    public void dropUnit(UnitType unitType, int number) {
+    public void dropUnit(UnitType unitType, int number, boolean moving) {
         RectBlock rectangle = selectedRectangle;
         int x = (int) selectedRectangle.getX();
         int y = (int) (selectedRectangle.getY() + BLOCK_SIZE - 13);
@@ -341,6 +341,13 @@ public class GameMenu extends Menu{
             imageView.setX(x + i * delta);
             mapPane.getChildren().add(imageView);
             rectangle.getTroopsView().add(imageView);
+        }
+        if(moving && (unitType.equals(UnitType.SLAVE) || unitType.equals(UnitType.FIRETHROWER))) {
+            ImageView imageView = InitStyle.getImageView(ImageEnum.getImage(ImageEnum.FIRE, false), 10, 10);
+            imageView.setY(y);
+            imageView.setX(x -5);
+            mapPane.getChildren().add(imageView);
+            rectangle.setFireView(imageView);
         }
     }
 
@@ -362,10 +369,11 @@ public class GameMenu extends Menu{
         HBox hBox = new HBox();
         hBox.setBackground(new Background(new BackgroundImage(ImageEnum.getImage(ImageEnum.PAPER_BACK_GROUND, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         hBox.setSpacing(20);
-        hBox.setPadding(new Insets(-10, 30, 0, 30));
+        hBox.setPadding(new Insets(30, 30, 0, 30));
         hBox.getChildren().add(getNextTurnButton());
         //hBox.getChildren().add(getLeaveGame()); //todo
         hBox.getChildren().add(getBriefing());
+//        hBox.setLayoutY(30);
         Tab tab = new Tab();
         tab.setContent(hBox);
         return tab;
@@ -387,6 +395,7 @@ public class GameMenu extends Menu{
             if(gameController.getGame().getPlayingReign().equals(reign)) content += " ***";
             Label label = InitStyle.getLabel(content, 40, 250);
             box.getChildren().add(label);
+            label.setBackground(new Background(new BackgroundFill(Color.rgb(179, 84, 43), CornerRadii.EMPTY, Insets.EMPTY)));
         }
 
 
@@ -417,13 +426,16 @@ public class GameMenu extends Menu{
             public void handle(MouseEvent mouseEvent) {
                 AtomicBoolean isSureToEndTurn = Menu.alertForConfirmation("next turn", "Are you sure you want to end Your turn?","end turn");
                 if(!isSureToEndTurn.get()) return;
-                gameController.nextTurn(); //todo handle changes of next turn
+                gameController.nextReign();
                 buildInformationAlert(gameController.getGame().getPlayingReign().getNickName() + " is now playing");
-
+                applyChangesOfTurn();
             }
         });
         return button;
+    }
 
+    public void applyChangesOfTurn() {
+        //gameController.getGame().getbl
     }
     public Tab getBuildingTabFor(String iconUrl, BuildingType...buildingTypes) {
         ScrollPane scrollPane = new ScrollPane();
@@ -611,7 +623,7 @@ public class GameMenu extends Menu{
                 }
                 if(isMovingAllowed) {
                     moveUnit(selectedUnit, rectangle);
-                    dropUnit(selectedUnit.unitType, selectedUnit.getNumber());
+                    dropUnit(selectedUnit.unitType, selectedUnit.getNumber(), true);
                     isMovingAllowed = false;
                 }
                 Tooltip.install(rectangle, InitStyle.BuildToolTip(block.getBlockInfo(true)));
