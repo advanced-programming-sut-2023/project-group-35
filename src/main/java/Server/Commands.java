@@ -7,6 +7,7 @@ public enum Commands {
         SHOW_CURRENT_PLAYER("^\\s*show\\s+current\\s+player\\s*$"),
         SHOW_POPULARITY_FACTORS("^\\s*show\\s+popularity\\s+factors\\s*$"),
         SHOW_POPULARITY("^\\s*show\\s+popularity\\s*$"),
+        ACCEPT_REQUEST("^accept request -i (\\d+) -m(.+)$"),
         SHOW_FOOD_LIST("^\\s*show\\s+food\\s+list\\s*$"),
         SHOW_GOLD("^\\s*show\\s+gold\\s*$"),
         FOOD_RATE("\\s*food\\s+rate\\s+-r\\s+(?<rate>\\-?\\d+)\\s*"),
@@ -58,7 +59,29 @@ public enum Commands {
         BUILD_SIEGE_WEAPON("^\\s*build\\s+-q\\s+(?<type>[a-z\\s]+)\\s*$"),
         NEXT_TURN("^\\s*next\\s+turn\\s*$"),
         DIG_TUNNEL("^\\s*dig\\s+tunnel((\\s+-x\\s+(?<x>-?\\d+))|(\\s+-y\\s+(?<y>-?\\d+))){2}\\s*$"),
-        DISBAND_UNIT("^\\s*disband\\s+unit\\s*$");
+        DISBAND_UNIT("^\\s*disband\\s+unit\\s*$"),
+        TRADE_LIST("^\\s*trade\\s+list\\s*$"),
+        TRADE_HISTORY("^\\s*trade\\s+history\\s*$"),
+        ACCEPT_TRADE("^accept trade -a(\\<?amount>d+) -p(\\d+(?:\\.\\<?price>d+)?) -t\\s+(\\<?type>S+)$"),
+        ID("-i\\s+(?<id>\\d+)"),
+        MESSAGE("-m\\s+(?<message>[^\"\\s]+|(\"[^\"]*\"))"),
+        ADD_REQUEST("^accept trade -a(\\<?amount>d+) -p(\\d+(?:\\.\\<?price>d+)?) -t\\s+(\\<?type>S+)\\s+m\\\\s-+(?<message>[^\\\"\\\\s]+|(\\\"[^\\\"]*\\\"))\"$"),
+        REJECT_TRADE("^\\s*trade\\s+reject\\s+-i\\s+(?<id>\\d+)\\s*$"),
+
+
+        REQUEST_TRADE("^\\s*trade\\s+(" +
+                              "\\s*-t\\s+([^\"\\s]+|\"[^\"]+\")|" +
+                              "\\s*-a\\s+\\d+|" +
+                              "\\s*-p\\s+\\d+|" +
+                              "\\s*-m\\s+([^\"\\s]+|\"[^\"]+\")|" +
+                              "\\s*-c\\s+([^\"\\s]+|\"[^\"]+\")" +
+                              "){5}\\s*$"),
+        RECURSE_TYPE("-t\\s+(?<type>([^\"\\s]+|\"[^\"]+\"))"),
+        AMOUNT("-a\\s+(?<amount>\\d+)"),
+        PRICE("-p\\s+(?<price>\\d+)"),
+        COLOR("-c\\s+(?<color>([^\"\\s]+|\"[^\"]+\"))");
+
+
 
         private String regex;
 

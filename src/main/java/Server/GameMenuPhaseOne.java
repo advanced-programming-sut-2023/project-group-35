@@ -18,7 +18,7 @@ public class GameMenuPhaseOne {
     User currentUser;
     private final GameControllerPhaseOne gameMenuController;
     private ShopMenuServer shopServer;
-    private final MapMenuServer mapMenuServer;
+    //private final MapMenuServer mapMenuServer;
     private TradeMenuServer tradeMenuServer;
     private final Game game;
 
@@ -30,7 +30,7 @@ public class GameMenuPhaseOne {
         this.dataInputStream = dataInputStream;
         this.dataOutputStream = dataOutputStream;
         this.currentUser = currentUser;
-        this.mapMenuServer = new MapMenuServer(dataInputStream, dataOutputStream, game, currentUser);
+        //this.mapMenuServer = new MapMenuServer(dataInputStream, dataOutputStream, game, currentUser);
 
     }
 
@@ -48,7 +48,8 @@ public class GameMenuPhaseOne {
                 } else if (Commands.getMatcher(input, Commands.SHOW_CURRENT_PLAYER) != null) {
                     sendMessage = gameMenuController.getPlayingReign().getNickName();
                 } else if (input.equals("enter map menu")){
-                    mapMenuServer.run(input);
+                    sendMessage = "map menu is not ready:(";
+                  //  mapMenuServer.run(input);
                 } else if ((matcher = Commands.getMatcher(input, Commands.SELECT_BUILDING)) != null) {
                     sendMessage = gameMenuController.selectBuilding(matcher);
                 } else if ((matcher = Commands.getMatcher(input, Commands.SELECT_PIXEL_UNIT)) != null) {
@@ -99,7 +100,8 @@ public class GameMenuPhaseOne {
                     }
                 } else if (Commands.getMatcher(input, Commands.ENTER_TRADE_MENU) != null) {
                     sendMessage = "You have entered the trade menu";
-                    tradeMenuServer.run(dataInputStream, dataOutputStream);
+                    tradeMenuServer = new TradeMenuServer(dataInputStream,dataOutputStream,game);
+                    tradeMenuServer.run();
                 } else {
                     sendMessage = "Invalid command!";
                 }
